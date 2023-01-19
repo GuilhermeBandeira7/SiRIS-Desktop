@@ -1,0 +1,76 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\icons8-direita-16.png" />
+    <None Remove="Images\icons8-direita-30.png" />
+    <None Remove="Images\logoGrande.png" />
+    <None Remove="View\Assets\agenda.png" />
+    <None Remove="View\Assets\close.png" />
+    <None Remove="View\Assets\import.png" />
+    <None Remove="View\Assets\menu.png" />
+    <None Remove="View\Assets\menudois.png" />
+    <None Remove="View\Assets\menum.png" />
+    <None Remove="View\Assets\minus.png" />
+    <None Remove="View\Assets\refresh.png" />
+    <None Remove="View\Assets\search-file.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MaterialDesignColors" Version="2.1.2-ci143" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.7.2-ci143" />
+    <PackageReference Include="MaterialDesignThemes.MahApps" Version="2.1.2-ci143" />
+    <PackageReference Include="Vlc.DotNet.Wpf" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ApiClientMtwServer\ApiClientMtwServer.csproj" />
+    <ProjectReference Include="..\EntityMtwServer\EntityMtwServer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\icons8-direita-16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\icons8-direita-30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\logoGrande.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Assets\agenda.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Assets\close.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Assets\import.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Assets\menu.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Assets\menudois.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Assets\menum.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Assets\minus.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Assets\refresh.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Assets\search-file.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+</Project>
