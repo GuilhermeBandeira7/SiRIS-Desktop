@@ -10,7 +10,7 @@
     <Grid>
         <Border Margin="4"
                 BorderBrush="#2F3136"
-                Background="#2F3136"
+                Background="#54708A"
                 BorderThickness="1,1,1,1"
                 CornerRadius="8,8,8,8">
         </Border>
