@@ -9,120 +9,236 @@
         xmlns:vm="clr-namespace:SiRISApp.ViewModel" 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="SiRIS" Height="1024" Width="1280" Background="#202020" WindowStyle="ToolWindow">
+        Title="SiRIS" Height="1024" Width="1280" Background="Transparent" 
+        WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <ResourceDictionary>
             <vm:SiRISVm x:Key="vm"/>
         </ResourceDictionary>
     </Window.Resources>
-    <Border>
-        <DockPanel DataContext="{StaticResource vm}">
 
-            <Grid DockPanel.Dock="Top">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="15*"/>
-                    <ColumnDefinition Width="113*"/>
-                    <ColumnDefinition Width="128*"/>
-                    <ColumnDefinition Width="128*"/>
-                    <ColumnDefinition Width="128*"/>
-                    <ColumnDefinition Width="128*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="{Binding User.Name}" Foreground="White" Grid.ColumnSpan="2"></TextBlock>
-                <TextBlock Grid.Column="2" Text="V1.0.0.0" Foreground="White"></TextBlock>
-            </Grid>
+    <materialDesign:Card DataContext="{StaticResource vm}" Background="#13293d">
 
-
-            <materialDesign:Card>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="75*"/>
+                <ColumnDefinition Width="128*"/>
+                <ColumnDefinition Width="128*"/>
+                <ColumnDefinition Width="128*"/>
+                <ColumnDefinition Width="128*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="200"/>
+            </Grid.RowDefinitions>
+            
+            <Label Grid.Column="1" 
+                   Grid.Row="1" 
+                   Content="SiRIS"
+                   FontFamily="{DynamicResource MaterialDesignFont}"
+                   Foreground="White" FontSize="35" Margin="5"/>
+            <materialDesign:Card Grid.Column="0"
+                                 Grid.RowSpan="5"
+                                 Grid.Row="0"
+                                 Margin="10 5 10 25"
+                                 Width="205">
+                
+                
                 <Menu
-                     materialDesign:MenuAssist.TopLevelMenuItemHeight="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type materialDesign:Card}}, Path=ActualHeight}">
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Left"
+                    materialDesign:MenuAssist.TopLevelMenuItemHeight="{Binding RelativeSource={RelativeSource FindAncestor, 
+                    AncestorType={x:Type materialDesign:Card}}, Path=ActualHeight}">
+
+                    <Menu.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </Menu.ItemsPanel>
                     <MenuItem
-                        Header="File">
-                        <MenuItem
-                            Header="Item 1" />
-                        <MenuItem
-                            Header="Item 2" />
-                        <MenuItem
-                            Header="Item 3" />
+                        Height="100"
+                        Header="Menu">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="Menu"/>
+                        </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem
-                        Header="Edit">
+                            Height="100"
+                            Header="Home">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="Home"/>
+                        </MenuItem.Icon>
                         <MenuItem
-                            Header="Item 1" />
+                            Header="Agendar">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Schedule"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
                         <MenuItem
-                            Header="Item 2" />
+                            Header="Chamada">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Call"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
                         <MenuItem
-                            Header="Item 3" />
+                            Header="Filtrar">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Filter"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </MenuItem>
                     <MenuItem
-                        Header="About" />
+                            Height="100"
+                            Header="Importar">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="Import"/>
+                        </MenuItem.Icon>
+                        <MenuItem
+                            Header="Arquivo">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="File"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem
+                            Header="Vídeo">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Video"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem
+                        Height="100"
+                        Header="Visualizar">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="ViewAgenda"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem
+                        Height="100"
+                        Header="Atualizar">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="Update"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
                 </Menu>
             </materialDesign:Card>
-            <Menu DockPanel.Dock="Top">
-                <MenuItem Header="Menu" Margin="20,5,20,5">
-                    <MenuItem Header="Agendar">
-                        <MenuItem Header="Open"/>
-                        <MenuItem Header="Close"/>
-                    </MenuItem>
-                    <MenuItem Header="Chamada"/>
-                    <MenuItem Header="Filtar"/>
-                </MenuItem>
-                <MenuItem Header="Importar" Margin="20,5,20,5"/>
-                <MenuItem Header="Visualizar" Margin="20,5,20,5"/>
-                <MenuItem Header="Atualizar" 
-                      Command="{Binding RefreshSessionsCommand}"
-                      CommandParameter="{Binding User}"/>
-            </Menu>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="3*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="66*"/>
-                        <ColumnDefinition Width="1000*"/>
-                        <ColumnDefinition Width="213*"/>
-                    </Grid.ColumnDefinitions>
-                    <uc:PlayerControl Grid.Column="0" Margin="20,20,20,20" Grid.ColumnSpan="2"/>
-                    <ListView Grid.Column="2"
-                          SelectedValue="{Binding SelectedSession, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            <materialDesign:Card Grid.Column="1"
+                                 Grid.ColumnSpan="4"
+                                 Background="#54708A"
+                                 Grid.Row="0"
+                                 Margin="8">
+                <Menu>
+                    <MenuItem
+                            Header="Iniciar Transmissão"
+                        Foreground="{DynamicResource PrimaryHueMidForegroundBrush}">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="Broadcast"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem
+                        Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+                        Header="Inciar Gravação">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="Videocam"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem
+                        Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+                        Header="LIVE">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="ViewStream"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="REC"
+                        Foreground="{DynamicResource PrimaryHueMidForegroundBrush}">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="RecordRec"/>
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+                    <MenuItem Header="CPU"
+                              Foreground="{DynamicResource PrimaryHueMidForegroundBrush}">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="Cpu64Bit"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </Menu>
+            </materialDesign:Card>
+
+            <materialDesign:Card Grid.Column="1" 
+                                 Grid.ColumnSpan="3"
+                                 Grid.Row="2"
+                                 Margin="20 30 10 10"
+                                 Background="#13293d">
+                <uc:PlayerControl/>
+            </materialDesign:Card>
+            <materialDesign:Card Grid.Column="2"
+                                 Grid.Row="3"
+                                 Margin="5">
+                <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
+                    <Button
+                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                            Style="{StaticResource MaterialDesignIconForegroundButton}"
+                            ToolTip="MaterialDesignIconForegroundButton">
+                        <materialDesign:PackIcon Kind="Play" />
+                    </Button>
+                    <Button
+                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                            Style="{StaticResource MaterialDesignIconForegroundButton}"
+                            ToolTip="MaterialDesignIconForegroundButton">
+                        <materialDesign:PackIcon Kind="Pause" />
+                    </Button>
+                    <Button
+                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                            Style="{StaticResource MaterialDesignIconForegroundButton}"
+                            ToolTip="MaterialDesignIconForegroundButton">
+                        <materialDesign:PackIcon Kind="Stop" />
+                    </Button>
+                </StackPanel>
+            </materialDesign:Card>
+
+            <materialDesign:Card Grid.Column="5" 
+                                 Grid.Row="2"
+                                 Margin="10"
+                                 Background="#54708A">
+                <ListView
+                    SelectedValue="{Binding SelectedSession, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           ItemsSource="{Binding Sessions}"
                           Background="#202020">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="{x:Type ListViewItem}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Active}" Value="False">
-                                        <Setter Property="Visibility" Value="Collapsed"></Setter>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ListView.ItemContainerStyle>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Active}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListView.ItemContainerStyle>
 
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <uc:SessionsControl Session="{Binding}">
-                                        <uc:SessionsControl.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Header="Iniciar" Command="{Binding Source={StaticResource vm}, Path=StartSessionCommand}" CommandParameter="{Binding}"></MenuItem>
-                                            </ContextMenu>
-                                        </uc:SessionsControl.ContextMenu>
-                                    </uc:SessionsControl>
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <uc:SessionsControl Session="{Binding}">
+                                    <uc:SessionsControl.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Iniciar" Command="{Binding Source={StaticResource vm}, Path=StartSessionCommand}" CommandParameter="{Binding}"></MenuItem>
+                                        </ContextMenu>
+                                    </uc:SessionsControl.ContextMenu>
+                                </uc:SessionsControl>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>                
+            </materialDesign:Card>
+        </Grid>
 
-                    </ListView>
-                </Grid>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="3*"/>
-                    </Grid.ColumnDefinitions>
-                </Grid>
-            </Grid>
-        </DockPanel>
-    </Border>
+
+
+    </materialDesign:Card>
 </Window>
