@@ -5,53 +5,96 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>View\Assets\LogoSiRIS.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Images\icons8-direita-16.png" />
-    <None Remove="Images\icons8-direita-30.png" />
-    <None Remove="Images\logoGrande.png" />
     <None Remove="View\Assets\agenda.png" />
+    <None Remove="View\Assets\bg.jpg" />
+    <None Remove="View\Assets\bg2.jpg" />
+    <None Remove="View\Assets\black-linen.png" />
     <None Remove="View\Assets\close.png" />
+    <None Remove="View\Assets\diagmonds.png" />
+    <None Remove="View\Assets\diagonal-striped-brick.png" />
+    <None Remove="View\Assets\gplay.png" />
     <None Remove="View\Assets\import.png" />
+    <None Remove="View\Assets\light-honeycomb-dark.png" />
+    <None Remove="View\Assets\light-wool.png" />
+    <None Remove="View\Assets\logoS.png" />
+    <None Remove="View\Assets\LogoSiRIS.jpg" />
+    <None Remove="View\Assets\LogoSiRIS.png" />
     <None Remove="View\Assets\menu.png" />
     <None Remove="View\Assets\menudois.png" />
     <None Remove="View\Assets\menum.png" />
     <None Remove="View\Assets\minus.png" />
+    <None Remove="View\Assets\pattern.png" />
     <None Remove="View\Assets\refresh.png" />
     <None Remove="View\Assets\search-file.png" />
+    <None Remove="View\Assets\subtle-grey.png" />
+    <None Remove="View\Assets\window-maximize.ico" />
+    <None Remove="View\Assets\window-maximize.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MaterialDesignColors" Version="2.1.2-ci143" />
-    <PackageReference Include="MaterialDesignThemes" Version="4.7.2-ci143" />
+    <Content Include="View\Assets\LogoSiRIS.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MaterialDesignColors" Version="2.1.4" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
     <PackageReference Include="MaterialDesignThemes.MahApps" Version="2.1.2-ci143" />
+    <PackageReference Include="obs-websocket-dotnet" Version="5.0.0.3" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.0.1" />
     <PackageReference Include="Vlc.DotNet.Wpf" Version="3.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ApiClientMtwServer\ApiClientMtwServer.csproj" />
-    <ProjectReference Include="..\EntityMtwServer\EntityMtwServer.csproj" />
+    <ProjectReference Include="..\MTWServerApi\ApiMtwServer\ApiMtwServer.csproj" />
+    <ProjectReference Include="..\MTWServerApi\EntityMtwServer\EntityMtwServer.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Images\icons8-direita-16.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\icons8-direita-30.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\logoGrande.png">
+    <Resource Include="View\Assets\agenda.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="View\Assets\agenda.png">
+    <Resource Include="View\Assets\bg.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Assets\bg2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Assets\black-linen.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="View\Assets\close.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="View\Assets\diagmonds.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Assets\diagonal-striped-brick.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Assets\gplay.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="View\Assets\import.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Assets\light-honeycomb-dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Assets\light-wool.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Assets\logoS.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Assets\LogoSiRIS.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Assets\LogoSiRIS.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="View\Assets\menu.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -65,12 +108,37 @@
     <Resource Include="View\Assets\minus.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="View\Assets\pattern.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="View\Assets\refresh.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="View\Assets\search-file.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="View\Assets\subtle-grey.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Assets\window-maximize.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Assets\window-maximize.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="View\UserControls\CommonControls\" />
+    <Folder Include="View\UserControls\Login\" />
+    <Folder Include="View\UserControls\SiRIS\" />
+    <Folder Include="View\Windows\SessionPlayer\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="serverConfig.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

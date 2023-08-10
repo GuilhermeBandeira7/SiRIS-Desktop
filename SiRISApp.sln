@@ -5,9 +5,11 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SiRISApp", "SiRISApp.csproj", "{1B089A54-35C3-4BF3-8927-FA3599E026CC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityMtwServer", "..\EntityMtwServer\EntityMtwServer.csproj", "{87C97415-87C5-4434-ABD3-515D992DC746}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityMtwServer", "..\MTWServerApi\EntityMtwServer\EntityMtwServer.csproj", "{0EF32021-4BE5-457E-A88D-D81FF568BB0F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiClientMtwServer", "..\ApiClientMtwServer\ApiClientMtwServer.csproj", "{DC476B7C-EDA0-4622-A986-D0A664DD3B9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiMtwServer", "..\MTWServerApi\ApiMtwServer\ApiMtwServer.csproj", "{A651A277-8E25-4AE3-A107-D2416CDF1F46}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilsMtwServer", "..\MTWServerApi\UtilsMtwServer\UtilsMtwServer.csproj", "{BFA1AB11-77F9-42C9-8017-6B6B4B26D3EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +21,18 @@ Global
 		{1B089A54-35C3-4BF3-8927-FA3599E026CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B089A54-35C3-4BF3-8927-FA3599E026CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B089A54-35C3-4BF3-8927-FA3599E026CC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{87C97415-87C5-4434-ABD3-515D992DC746}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{87C97415-87C5-4434-ABD3-515D992DC746}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{87C97415-87C5-4434-ABD3-515D992DC746}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{87C97415-87C5-4434-ABD3-515D992DC746}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DC476B7C-EDA0-4622-A986-D0A664DD3B9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DC476B7C-EDA0-4622-A986-D0A664DD3B9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DC476B7C-EDA0-4622-A986-D0A664DD3B9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DC476B7C-EDA0-4622-A986-D0A664DD3B9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EF32021-4BE5-457E-A88D-D81FF568BB0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EF32021-4BE5-457E-A88D-D81FF568BB0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EF32021-4BE5-457E-A88D-D81FF568BB0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EF32021-4BE5-457E-A88D-D81FF568BB0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A651A277-8E25-4AE3-A107-D2416CDF1F46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A651A277-8E25-4AE3-A107-D2416CDF1F46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A651A277-8E25-4AE3-A107-D2416CDF1F46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A651A277-8E25-4AE3-A107-D2416CDF1F46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFA1AB11-77F9-42C9-8017-6B6B4B26D3EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFA1AB11-77F9-42C9-8017-6B6B4B26D3EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFA1AB11-77F9-42C9-8017-6B6B4B26D3EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFA1AB11-77F9-42C9-8017-6B6B4B26D3EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
