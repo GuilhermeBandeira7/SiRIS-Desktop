@@ -1,0 +1,172 @@
+﻿<Window x:Class="SiRISApp.View.Windows.SiRIS.ApplicationsMenu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:SiRISApp.View.Windows.SiRIS"
+        xmlns:vm="clr-namespace:SiRISApp.ViewModel.SiRIS"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        Name="AppMenu"
+        Background="Transparent"
+        AllowsTransparency="True"
+        Title="ApplicationsMenu" 
+        Height="25" 
+        Width="50" 
+        Loaded="Window_Loaded"
+        ShowInTaskbar="False"
+        Deactivated="Window_Deactivated">
+    <Window.Resources>
+        <ResourceDictionary>
+            <vm:ApplicationMenuViewModel x:Key="vm"/>
+            <Storyboard x:Key="showWinW">
+                <DoubleAnimation Storyboard.TargetName="AppMenu" Storyboard.TargetProperty="Width" Duration="0:0:.1" To="490" />
+                <DoubleAnimation Storyboard.TargetName="AppMenu" Storyboard.TargetProperty="Height" To="75" />
+            </Storyboard>
+            <Storyboard x:Key="showWinP">
+                <DoubleAnimation Storyboard.TargetName="AppMenu" Storyboard.TargetProperty="Left" Duration="0:0:.1" To="705" />
+            </Storyboard>
+            <Storyboard x:Key="hideWinW">
+                <DoubleAnimation Storyboard.TargetName="AppMenu" Storyboard.TargetProperty="Width" Duration="0:0:.1" To="50" />
+                <DoubleAnimation Storyboard.TargetName="AppMenu" Storyboard.TargetProperty="Height" To="20" />
+            </Storyboard>
+            <Storyboard x:Key="hideWinP">
+                <DoubleAnimation Storyboard.TargetName="AppMenu" Storyboard.TargetProperty="Left" Duration="0:0:.1" To="935" />
+            </Storyboard>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Border DataContext="{StaticResource vm}" CornerRadius="0 0 20 20"  Background="{Binding BackgroundColor}">
+        <Border CornerRadius="0 0 20 20">
+            <Border.Background>
+                <ImageBrush ImageSource="../../Assets/Texture/diagonal-striped-brick.png" 
+                            Opacity="0.5"                       
+                            TileMode="FlipX" 
+                            Viewport="0,0,150,150"
+                            ViewportUnits="Absolute" />
+            </Border.Background>
+            <DockPanel x:Name="ApplicationMenu">
+                <Grid DockPanel.Dock="Top" 
+                  Height="50"
+                  Margin="0 5 0 0" 
+                  Visibility="{Binding IsVisible}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0"
+                        Width="40"
+                        Height="40"
+                        Background="#D35230"
+                        BorderBrush="#D35230"
+                        Command="{Binding DisplayApplicationCommand}"
+                        CommandParameter="PowerPoint"
+                        Style="{StaticResource MaterialDesignFloatingActionButton}"
+                        ToolTip="Microsoft Power Point">
+                    <materialDesign:PackIcon Width="30"
+                                             Height="30"
+                                             Kind="MicrosoftPowerpoint" />
+                </Button>
+                <Button Grid.Column="1"
+                        Width="40"
+                        Height="40"
+                        Background="#103F91"
+                        BorderBrush="#103F91"
+                        Command="{Binding DisplayApplicationCommand}"
+                        CommandParameter="Word"
+                        Style="{StaticResource MaterialDesignFloatingActionButton}"
+                        ToolTip="Microsoft Word">
+                    <materialDesign:PackIcon Width="30"
+                                             Height="30"
+                                             Kind="MicrosoftWord" />
+                </Button>
+                <Button Grid.Column="2"
+                        Width="40"
+                        Height="40"
+                        Background="#185C37"
+                        BorderBrush="#185C37"
+                        Command="{Binding DisplayApplicationCommand}"
+                        CommandParameter="Excel"
+                        Style="{StaticResource MaterialDesignFloatingActionButton}"
+                        ToolTip="Microsoft Excel">
+                    <materialDesign:PackIcon Width="30"
+                                             Height="30"
+                                             Kind="MicrosoftExcel" />
+                </Button>
+                <Button Grid.Column="3"
+                        Width="40"
+                        Height="40"
+                        Background="#af282725"
+                        BorderBrush="#af282725"
+                        Command="{Binding DisplayApplicationCommand}"
+                        CommandParameter="Video"
+                        Style="{StaticResource MaterialDesignFloatingActionButton}"
+                        ToolTip="Video">
+                    <materialDesign:PackIcon Width="30"
+                                             Height="30"
+                                             Kind="Filmstrip" />
+                </Button>
+                <Button Grid.Column="4"
+                        Width="40"
+                        Height="40"
+                        Background="Snow"
+                        BorderBrush="DarkGray"
+                        Command="{Binding DisplayApplicationCommand}"
+                        CommandParameter="PDF"
+                        Style="{StaticResource MaterialDesignFloatingActionButton}"
+                        ToolTip="PDF">
+                    <materialDesign:PackIcon Width="30"
+                                             Height="30"
+                                             Foreground="Red"
+                                             Kind="FilePdfBox" />
+                </Button>
+                <Button Grid.Column="5"
+                        Width="40"
+                        Height="40"
+                        Background="White"
+                        BorderBrush="DarkGray"
+                        Command="{Binding DisplayApplicationCommand}"
+                        CommandParameter="Photo"
+                        Style="{StaticResource MaterialDesignFloatingActionButton}"
+                        ToolTip="Fotos">
+                    <materialDesign:PackIcon Width="30"
+                                             Height="30"
+                                             Foreground="#2B73C2"
+                                             Kind="Image" />
+                </Button>
+                <Button Grid.Column="6"                          
+                        Width="40"
+                        Height="40"
+                        Background="Honeydew"
+                        BorderBrush="DarkGray"
+                        Command="{Binding DisplayApplicationCommand}"
+                        CommandParameter="SiRIS"
+                        Style="{StaticResource MaterialDesignFloatingActionButton}"
+                        ToolTip="SiRIS">
+                    <Image Source="../../Assets/Logo-Icone-S-02-FulllHD.ico"/>
+                </Button>
+            </Grid>
+                <Button DockPanel.Dock="Bottom" 
+                    Width="50"
+                    Height="20"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Command="{Binding ToggleMenuCommand}"
+                    Click="Button_Click">
+                <materialDesign:PackIcon Width="40"
+                                         Height="40"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Center"
+                                         Background="Transparent"
+                                         Foreground="Orange" 
+                                         Kind="{Binding CollapseButtonImage}"/>
+            </Button>
+        </DockPanel>
+        </Border>
+    </Border>
+</Window>

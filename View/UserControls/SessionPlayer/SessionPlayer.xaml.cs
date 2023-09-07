@@ -1,18 +1,14 @@
 ﻿using SiRISApp.Services;
+using SiRISApp.View.Windows.SiRIS;
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
+using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Vlc.DotNet.Wpf;
 
 namespace SiRISApp.View.UserControls.SessionPlayer
 {
@@ -24,6 +20,34 @@ namespace SiRISApp.View.UserControls.SessionPlayer
         public SessionPlayer()
         {
             InitializeComponent();
+        }
+
+        public ApplicationsMenu? applicationMenu = null;
+
+
+        private void FolderButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            FtpService.Instance.ShowFileManagement();
+        }
+
+        private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if((bool)e.NewValue)
+            {
+                if(applicationMenu == null)
+                {
+                    applicationMenu = new();
+                    applicationMenu.Show();
+                }
+            }
+            else
+            {
+                if(applicationMenu != null)
+                {
+                    applicationMenu.Close();
+                    applicationMenu = null;
+                }
+            }
         }
     }
 }

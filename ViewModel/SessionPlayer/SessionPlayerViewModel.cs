@@ -2,14 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using SiRISApp.Services;
 using SiRISApp.ViewModel.SessionManagement;
+using SiRISApp.ViewModel.SessionPlayer.Commands;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SiRISApp.ViewModel.SessionPlayer
 {
@@ -31,57 +27,184 @@ namespace SiRISApp.ViewModel.SessionPlayer
             }
         }
 
-        public ObservableCollection<CellViewModel> Cells { get; set; } = new();
-        public SessionViewModel SessionViewModel { get; set; } = new();
-
-
-        public void InitSession(long sessionId)
+        private bool status;
+        public bool Status
         {
-            Session? session = AppSessionService.Instance.Context
-                 .Sessions
-                 .Include(s => s.Events)
-                 .Include(s => s.Recipients)
-                 .Include(s => s.Course)
-                 .Include(s => s.Class)
-                 .Include(s => s.Transmitter)
-                 .Where(s => s.Id == sessionId)
-                 .FirstOrDefault();
-
-            if (session != null)
+            get { return status; }
+            set
             {
-                SessionViewModel = new(session);
-                List<Cell> cells = AppSessionService.Instance.Context.Cells
-                    .Include(c => c.Dvc)
-                    .Include(c => c.Members)
-                    .ToList();
-                foreach (Cell cell in cells)
-                {
-                    if (cell.Members != null && cell.Dvc != null)
-                    {
-                        CellViewModel cellViewModel = new();
-                        cellViewModel.Id = cell.Id;
-                        cellViewModel.Name = cell.Name;
-                        cellViewModel.Dvc = cell.Dvc;
-                        foreach (User user in cell.Members)
-                        {
-                            if (session.Recipients != null)
-                                if (session.Recipients.Select(r => r.Id).Contains(user.Id))
-                                    cellViewModel.UsersInsideSession.Add(new UserViewModel(user));
-                                else
-                                    cellViewModel.UsesOutsideSession.Add(new UserViewModel(user));
-                        }
-                            
-                        Cells.Add(cellViewModel);   
-        
-                    }
-                }
+                status = value;
+                OnPropertyChanged(nameof(Status));
             }
         }
 
+        private string statusText = "Pausar transmisão";
+        public string StatusText
+        {
+            get { return statusText; }
+            set
+            {
+                statusText = value;
+                OnPropertyChanged(nameof(StatusText));
+            }
+        }
+
+        private string statusImage = "pause";
+        public string StatusImage
+        {
+            get { return statusImage; }
+            set
+            {
+                statusImage = value;
+                OnPropertyChanged(nameof(StatusImage));
+            }
+        }
+
+        private bool sessionRunning = false;
+        public bool SessionRunning
+        {
+            get
+            {
+                return sessionRunning;
+            }
+            set
+            {
+                sessionRunning = value;
+                OnPropertyChanged(nameof(SessionRunning));
+            }
+        }
+
+        private long sessionId = -1;    
+        public long SessionId
+        {
+            get
+            {
+                return sessionId;
+            }
+            set
+            {
+                sessionId = value;
+                OnPropertyChanged(nameof(SessionId));
+            }
+        }
+        
+        private Session? activeSession = null;
+
+
+        public SessionPreviewViewModel SessionPreviewViewModel { get; set; }
+        public SessionMembersViewModel SessionMembersViewModel { get; set; }
+
+        public SessionViewModel SessionViewModel { get; set; } = new();
+        public TogglePauseCommand TogglePauseCommand { get; set; }
+        public StopSessionCommand StopSessionCommand { get; set; }
+
+        public SessionPlayerViewModel()
+        {
+            TogglePauseCommand = new(this);
+            StopSessionCommand = new(this);
+            SessionPreviewViewModel = new SessionPreviewViewModel();
+            SessionMembersViewModel = new SessionMembersViewModel();
+        }
+
+
+ 
+        public void InitSession(long sessionId)
+        {
+
+            SessionId = sessionId;
+            LoadSession();
+
+            if (activeSession != null)
+            {
+                RestartSession();
+                sessionRunning = true;
+     
+
+                if (activeSession.StartDateTime > DateTime.Now)
+                {
+                    TimeSpan duration = activeSession.EndDateTime - activeSession.StartDateTime;
+                    activeSession.StartDateTime = DateTime.Now;
+                    activeSession.EndDateTime = DateTime.Now + duration;
+                    AppSessionService.Instance.Context.Entry(activeSession).State = EntityState.Modified;
+                }
+
+                AppSessionService.Instance.Context.SaveChanges();
+            }
+
+        }
+
+        public void PauseSession()
+        {
+            if (activeSession != null && sessionRunning)
+            {
+                SessionMembersViewModel.Pause();
+                Status = false;
+                StatusImage = "play";
+                StatusText = "Reiniciar transmissão";
+                activeSession.Status = false;
+                OBSService.Instance.PauseStreaming();
+                AppSessionService.Instance.Context.Entry(activeSession).State = EntityState.Modified;
+                AppSessionService.Instance.Context.SaveChanges();
+            }
+        }
+
+        public void RestartSession()
+        {
+            if (activeSession != null)
+            {
+                SessionMembersViewModel.Restart();
+                activeSession.Status = true;
+       
+
+                Status = true;
+                StatusImage = "pause";
+                StatusText = "Pausar transmissão";
+                activeSession.Status = true;
+                OBSService.Instance.StartStreaming();
+                AppSessionService.Instance.Context.Entry(activeSession).State = EntityState.Modified;
+                AppSessionService.Instance.Context.SaveChanges();
+            }
+        }
+
+        public void StopSession()
+        {
+            if (activeSession != null)
+            {
+                activeSession.Status = false;
+                activeSession.EndDateTime = DateTime.Now;
+                AppSessionService.Instance.Context.Entry(activeSession).State = EntityState.Modified;
+                AppSessionService.Instance.Context.SaveChanges();
+                sessionRunning = false;
+            }
+        }
 
         public void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void LoadSession()
+        {
+            Session? session = AppSessionService.Instance.Context
+                .Sessions
+                .Include(s => s.Events)
+                .Include(s => s.Recipients)
+                .Include(s => s.Course)
+                .Include(s => s.Class)
+                .Include(s => s.Transmitter)
+                .Where(s => s.Id == SessionId)
+                .FirstOrDefault();
+            activeSession = session;
+    
+            if (session != null)
+            {
+                SessionViewModel = new(session);
+                SessionMembersViewModel.Load(session);
+                if (session.Status)
+                    StatusImage = "pause";
+                else
+                    StatusImage = "play";
+            }
         }
     }
 }

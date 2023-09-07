@@ -5,11 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sessionManagament="clr-namespace:SiRISApp.View.UserControls.SessionManagement"
         xmlns:sessionPlayer="clr-namespace:SiRISApp.View.UserControls.SessionPlayer"
+        xmlns:login="clr-namespace:SiRISApp.View.UserControls.Login"
         xmlns:vm="clr-namespace:SiRISApp.ViewModel"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="SiRIS" Height="1024" Width="1280" 
-        WindowStyle="None" WindowStartupLocation="CenterScreen">
+        WindowStyle="None" 
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        Deactivated="Window_Deactivated"
+        Activated="Window_Activated" StateChanged="Window_StateChanged">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -27,161 +33,149 @@
 
 
     <DockPanel DataContext="{StaticResource vm}">
-
         <DockPanel.Background>
             <ImageBrush ImageSource="../../Assets/bg.jpg" Opacity="0.3"/>
         </DockPanel.Background>
         <Grid>
             <Grid.Background>
-                <ImageBrush ImageSource="../../Assets/black-linen.png" Opacity="0.55"/>
+                <ImageBrush ImageSource="../../Assets/Texture/black-linen.png" Opacity="1"/>
             </Grid.Background>
-
             <Grid.RowDefinitions>
-                <RowDefinition Height="80"/>
+                <RowDefinition Height="60"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0" 
-                  Background="#141613" 
-                  Height="60"
-                  VerticalAlignment="Top">
+            <Border Grid.Row="0"
+                    Height="60">
+                <Border.Background>
+                    <ImageBrush ImageSource="../../Assets/Texture/diagonal-striped-brick.png" 
+                                Opacity="1" 
+                                TileMode="FlipX" 
+                                Viewport="0,0,150,150"
+                                ViewportUnits="Absolute" />
+                </Border.Background>
+                <Grid VerticalAlignment="Top"
+                      Height="60">
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                            <GradientStop Color="#afefefef" Offset="0.0"/>
+                            <GradientStop Color="#2fefefef" Offset="1" />
+                        </LinearGradientBrush>
+                    </Grid.Background>
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="85"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="50"/>
-                </Grid.ColumnDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
 
-                <Image Source="../../Assets/LogoSiRIS.jpg"/>
+                    <Border Padding="5"
+                        CornerRadius="20">
+                        <Image Source="../../Assets/Logo-Siris-HD.png"/>
+                    </Border>
 
-                <Menu Grid.Column="1"
-                      FontSize="25" 
-                      VerticalAlignment="Center">
-                    <MenuItem Header="_File"
-                          Foreground="{DynamicResource PrimaryHueMidForegroundBrush}">
-                        <MenuItem.Icon>
-                            <materialDesign:PackIcon Kind="Menu" Height="25" Width="25" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="-4,-4,-4,-4"/>
-                        </MenuItem.Icon>
-                        <MenuItem Header="Save" 
-                              Icon="{materialDesign:PackIcon Kind=ContentSave}"
-                              Background="#141613"/>
-                        <MenuItem Header="Save As.."/>
-                        <MenuItem Header="Exit" 
-                              Icon="{materialDesign:PackIcon Kind=ExitToApp}"
-                              InputGestureText="Ctrl+E"/>
-                        <Separator/>
-                        <MenuItem Header="Excellent"
-                              IsCheckable="True"
-                              IsChecked="True"/>
-                        <MenuItem Header="Rubbish"
-                              IsCheckable="True"/>
-                        <MenuItem Header="Dig Deeper"
-                              InputGestureText="Ctrl+D">
-                            <MenuItem Header="Enlightenment?"
-                              IsCheckable="True"/>
-                            <MenuItem Header="Disappointment"
-                              IsCheckable="True"/>
-                        </MenuItem>
-                        <MenuItem Header="Look Deeper"
-                              InputGestureText="Ctrl+D">
-                            <MenuItem Header="Plain"/>
-                            <MenuItem Header="Ice Cream"/>
-                        </MenuItem>
-                    </MenuItem>
-                    <MenuItem
-                    Header="_Importar"
-                    Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                    Background="#141613">
-                        <MenuItem.Icon>
-                            <materialDesign:PackIcon Kind="FileImport" Height="25" Width="25" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="-4 -4"/>
-                        </MenuItem.Icon>
-                        <MenuItem Command="Cut"
-                              Header="_Cut"
-                              Icon="{materialDesign:PackIcon Kind=ContentCut}"/>
-                        <MenuItem Command="Copy"
-                              Header="_Copy"
-                              Icon="{materialDesign:PackIcon Kind=ContentCopy}"/>
-                        <MenuItem Command="Paste"
-                              Header="_Paste"
-                              Icon="{materialDesign:PackIcon Kind=ContentPaste}"/>
-                    </MenuItem>
-                </Menu>
-
-
-                <Button x:Name="MinimizeButton"
+                    <Button x:Name="MinimizeButton"
                         Grid.Column="2"
-                        Foreground="White"
+                        Foreground="Black"
                         IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                         Style="{StaticResource MaterialDesignIconForegroundButton}"
                         ToolTip="MaterialDesignIconForegroundButton" Click="MinimizeButton_Click">
-                    <materialDesign:PackIcon Kind="WindowMinimize"/>
-                </Button>
-                <Button x:Name="CloseButton"
+                        <materialDesign:PackIcon Kind="WindowMinimize"/>
+                    </Button>
+                    <Button x:Name="CloseButton"
                         Grid.Column="3"
-                        Foreground="White"
+                        Foreground="Black"
                         IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                         Style="{StaticResource MaterialDesignIconForegroundButton}"
                         ToolTip="MaterialDesignIconForegroundButton" Margin="1,6,1,6" Click="CloseButton_Click">
-                    <materialDesign:PackIcon Kind="WindowClose"/>
-                </Button>
-            </Grid>
-
-            <materialDesign:Transitioner AutoApplyTransitionOrigins="True"
-                                         SelectedIndex="{Binding  SelectedIndex}"
-                                         Grid.Row="1">
+                        <materialDesign:PackIcon Kind="WindowClose"/>
+                    </Button>
+                </Grid>
+            </Border>
+            <materialDesign:Transitioner Grid.Row="1"
+                                         AutoApplyTransitionOrigins="True"
+                                         SelectedIndex="{Binding  SelectedIndex}">
+                <!--LOGIN-->
+                <materialDesign:TransitionerSlide OpeningEffect="{materialDesign:TransitionEffect FadeIn}">
+                    <login:Login/>
+                </materialDesign:TransitionerSlide>
+                <!--SESSION MANAGEMENT-->
                 <materialDesign:TransitionerSlide OpeningEffect="{materialDesign:TransitionEffect FadeIn}">
                     <materialDesign:DialogHost DialogTheme="Inherit">
                         <materialDesign:DialogHost.DialogContent>
-                            <StackPanel Margin="16">
-                                <TextBlock x:Name="ConfirmTextBox"
-                                           FontSize="24"
-                                           FontStyle="Oblique"
-                                           Text="{Binding Path=SessionManagementViewModel.SelectedSession.Name, StringFormat='Tem certeza que deseja iniciar a aula {0}?'}" />
-                                <StackPanel HorizontalAlignment="Right"
-                                Orientation="Horizontal">
-                                    <Button Margin="0,8,8,0"
-                                            Content="CONFIRMAR"
-                                            IsDefault="True"
-                                            Style="{StaticResource MaterialDesignFlatButton}">
-                                        <Button.CommandParameter>
-                                            <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
-                                                True
-                                            </system:Boolean>
-                                        </Button.CommandParameter>
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="Click">
-                                                <i:InvokeCommandAction  Command="{Binding StartSessionCommand}"/>
-                                                <i:InvokeCommandAction  Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
-                                                <i:InvokeCommandAction  Command="{x:Static materialDesign:Transitioner.MoveNextCommand}"/>
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </Button>
-                                    <Button Margin="0,8,8,0"
-                                            Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                                            Content="CANCELAR"
-                                            IsCancel="True"
-                                            Style="{StaticResource MaterialDesignFlatButton}">
-                                        <Button.CommandParameter>
-                                            <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
-                                                False
-                                            </system:Boolean>
-                                        </Button.CommandParameter>
-                                    </Button>
-                                </StackPanel>
-                            </StackPanel>
+                            <Border Width="500"
+                                    Height="300"
+                                    CornerRadius="20"
+                                    BorderThickness="2"
+                                    BorderBrush="LightYellow">
+                                <Border.Background>
+                                    <RadialGradientBrush GradientOrigin="0.5,0.5">
+                                        <GradientStop Color="#003278" Offset="1"/>
+                                        <GradientStop Color="#00508f" Offset="0" />
+                                    </RadialGradientBrush>
+                                </Border.Background>
+                                <DockPanel>
+                                    <DockPanel.Background>
+                                        <ImageBrush ImageSource="../../Assets/Texture/low-contrast-linen.png" Opacity="1"/>
+                                    </DockPanel.Background>
+                                    <Grid Width="400"
+                                          Height="300"
+                                          Margin="10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock x:Name="ConfirmTextBox" 
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="White"
+                                                   FontSize="24"
+                                                   Grid.Row="0"
+                                                   FontStyle="Italic"
+                                                   TextWrapping="Wrap"
+                                                   materialDesign:ThemeAssist.Theme="Dark"
+                                                   Text="{Binding Path=SessionManagementViewModel.SelectedSession.Name, StringFormat='Tem certeza que deseja iniciar a aula {0}?'}" />
+                                        <Grid Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Button Grid.Column="0"
+                                                    Margin="0 0 10 0"
+                                                    Background="#7f7f7f7f"
+                                                    BorderBrush="Gray"   
+                                                    Height="40"
+                                                    FontSize="18"
+                                                    Content="Cancelar"
+                                                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                                            </Button>
+                                            <Button Grid.Column="1"
+                                                    Height="40"
+                                                    Margin="10 0 0 0"
+                                                    Background="#7f0078bf"   
+                                                    FontSize="18"
+                                                    Content="Confirmar">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="Click">
+                                                        <i:InvokeCommandAction  Command="{Binding StartSessionCommand}"/>
+                                                        <i:InvokeCommandAction  Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                                                        <i:InvokeCommandAction  Command="{x:Static materialDesign:Transitioner.MoveNextCommand}"/>
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                </DockPanel>
+                            </Border>
                         </materialDesign:DialogHost.DialogContent>
                         <sessionManagament:SessionManagement/>
                     </materialDesign:DialogHost>
                 </materialDesign:TransitionerSlide>
+                <!--SESSION PLAYER-->
                 <materialDesign:TransitionerSlide OpeningEffect="{materialDesign:TransitionEffect FadeIn}">
-                    <sessionPlayer:SessionPlayer/>
+                    <sessionPlayer:SessionPlayer x:Name="SessionPlayer"/>
                 </materialDesign:TransitionerSlide>
             </materialDesign:Transitioner>
-
-
-
-
-
         </Grid>
     </DockPanel>
 </Window>

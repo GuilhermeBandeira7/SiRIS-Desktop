@@ -1,4 +1,4 @@
-﻿using EntityMtwServer.Entities;
+﻿using SiRISApp.ViewModel.Login;
 using System;
 using System.Windows.Input;
 
@@ -6,7 +6,7 @@ namespace SiRISApp.ViewModel.Commands
 {
     public class LoginCommand : ICommand
     {
-        public LoginVM ViewModel { get; set; }
+        public LoginViewModel ViewModel { get; set; }
 
         public event EventHandler? CanExecuteChanged
         {
@@ -14,7 +14,7 @@ namespace SiRISApp.ViewModel.Commands
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public LoginCommand(LoginVM vm)
+        public LoginCommand(LoginViewModel vm)
         {
             ViewModel = vm;
         }

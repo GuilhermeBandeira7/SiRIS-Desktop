@@ -7,92 +7,134 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <materialDesign:Card Name="SessionCard"
-                         Width="250"  
-                         MinHeight="450"
-                         Background="#282725">
-        <Grid Name="MainGrid">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="140" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Image Height="140"
+             d:DesignHeight="450" d:DesignWidth="250">
+    <Border Background="{Binding Color}"
+            BorderBrush="LightYellow"
+            CornerRadius="10"
+            BorderThickness="2">
+        <materialDesign:Card Name="SessionCard"
+                             Width="280"  
+                             Height="420">
+            <materialDesign:Card.Background>
+                <ImageBrush ImageSource="../../Assets/Texture/brushed-alum.png" Opacity="0.4"/>
+            </materialDesign:Card.Background>
+            <Grid Name="MainGrid"
+                  Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="140" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Image Grid.Row="1"
+                    Height="140"
                    Source="{Binding SelectedCourse.Image.bytes}"
                    Stretch="Fill"/>
-            <Button Grid.Row="0"
-                    Margin="0,0,16,-20"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Click">
-                        <i:InvokeCommandAction Command="{Binding SelectSessionCommand}" CommandParameter="{Binding}"/>
-                        <i:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-                <materialDesign:PackIcon Kind="Play" />
-            </Button>
-            <StackPanel Grid.Row="1"
+                <StackPanel Grid.Row="1"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Margin="0,0,10,-20">
+                    <Button Margin="2" 
+                            BorderBrush="Black"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:InvokeCommandAction Command="{Binding SelectSessionCommand}" CommandParameter="{Binding}"/>
+                                <i:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <materialDesign:PackIcon Kind="Play" />
+                    </Button>
+                    <Button Margin="2"
+                            BorderBrush="Black"
+                            Background="DodgerBlue"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:InvokeCommandAction Command="{Binding SelectSessionCommand}" CommandParameter="{Binding}"/>
+                                <i:InvokeCommandAction Command="{x:Static materialDesign:Transitioner.MoveNextCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <materialDesign:PackIcon Kind="Pencil" />
+                    </Button>
+                    <Button Margin="2" 
+                            BorderBrush="Black"
+                            Background="Crimson"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:InvokeCommandAction Command="{Binding SelectSessionCommand}" CommandParameter="{Binding}"/>
+                                <i:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <materialDesign:PackIcon Kind="Trash" />
+                    </Button>
+                </StackPanel>
+                <StackPanel Grid.Row="2"
                         Margin="8,24,8,4">
-                <TextBlock Margin="0"
+                    <TextBlock Margin="0"
+                           Foreground="Black"
+                           FontSize="18"
+                           FontStyle="Oblique"
+                           FontWeight="Bold"
                            Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
-                           Text="{Binding Name}" />
-                <TextBlock VerticalAlignment="Center"
+                           Text="{Binding CourseName}" />
+                    <TextBlock VerticalAlignment="Center"
+                           Foreground="Black"
+                           FontSize="16"
+                           FontStyle="Oblique"
                            Style="{StaticResource MaterialDesignBody1TextBlock}"
                            Text="{Binding Description}"
-                           TextWrapping="Wrap" />
-            </StackPanel>
-            <Separator Grid.Row="2"
+                           TextWrapping="Wrap"/>
+                </StackPanel>
+                <Separator Grid.Row="3"
                        Margin="8,0,8,0"
                        Style="{StaticResource MaterialDesignDarkSeparator}" />
-            <TextBlock Grid.Row="3"
+                <TextBlock Grid.Row="4"
                        Margin="8,4,8,4"
+                       FontSize="16"
+                       FontWeight="Bold"
+                       FontStyle="Oblique"
+                       Foreground="Black"
                        Style="{StaticResource MaterialDesignBody2TextBlock}"
                        Text="Agendamento" />
-            <Grid Grid.Row="4">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <materialDesign:PackIcon Grid.Column="0"
-                                         Margin="8,4,4,4"
-                                         VerticalAlignment="Center"
-                                         Kind="Clock" />
-                <ListBox Grid.Column="1"
-                         Margin="4,8,8,4">
-                    <ListBox.ToolTip>
-                        <StackPanel>
-                            <TextBlock Text="MaterialDesignFlatToggleListBox" />
-                            <TextBlock Text="Exclusive selection" />
-                            <TextBlock Text="ListBoxAssist.IsToggle allows more natural toggle behaviour" />
-                        </StackPanel>
-                    </ListBox.ToolTip>
-                    <ListBoxItem>
-                        <TextBlock Text="{Binding StartDate}" />
-                    </ListBoxItem>
-                    <ListBoxItem>
-                        <TextBlock Text="{Binding EndDate}"/>
-                    </ListBoxItem>
-                </ListBox>
+                <Grid Grid.Row="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <ListBox Grid.Column="1"
+                             Margin="4,8,8,4">
+                        <ListBox.ToolTip>
+                            <StackPanel>
+                                <TextBlock Text="MaterialDesignFlatToggleListBox" />
+                                <TextBlock Text="Exclusive selection" />
+                                <TextBlock Text="ListBoxAssist.IsToggle allows more natural toggle behaviour" />
+                            </StackPanel>
+                        </ListBox.ToolTip>
+                        <ListBoxItem>
+                            <TextBlock FontSize="16" 
+                                   FontWeight="Bold" 
+                                   FontStyle="Normal" 
+                                   Foreground="Black"
+                                   Text="{Binding StartDate}" />
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <TextBlock FontSize="16" 
+                                   FontWeight="Bold" 
+                                   FontStyle="Normal" 
+                                   Foreground="Black" 
+                                   Text="{Binding EndDate}"/>
+                        </ListBoxItem>
+                    </ListBox>
+                </Grid>
+
             </Grid>
-            <StackPanel Grid.Row="5">
-                <Button Margin="8,4,8,8"
-                        HorizontalAlignment="Center"
-                        Content="EDITAR"
-                        Style="{StaticResource MaterialDesignOutlinedDarkButton}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <i:InvokeCommandAction Command="{Binding SelectSessionCommand}" CommandParameter="{Binding}"/>
-                            <i:InvokeCommandAction Command="{x:Static materialDesign:Transitioner.MoveNextCommand}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </Button>
-            </StackPanel>
-        </Grid>
-    </materialDesign:Card>
+        </materialDesign:Card>
+    </Border>
+
 </UserControl>

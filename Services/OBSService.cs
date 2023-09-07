@@ -5,6 +5,7 @@ using OBSWebsocketDotNet.Types;
 using OBSWebsocketDotNet.Types.Events;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -21,8 +22,10 @@ namespace SiRISApp.Services
         CONNECTING,
         CONNECTED,
         STREAMING,
+        PAUSED,
         STOPPED,
     }
+
 
     public class OBSService
     {
@@ -33,7 +36,52 @@ namespace SiRISApp.Services
 
         private OBSService()
         {
+            Task.Run(() =>
+            {
 
+                try
+                {
+                    Process p = Process.GetProcessesByName("obs64").First();
+                    if (p != null) 
+                        p.Kill();
+                }
+                catch
+                {
+
+                }
+                Process obs = new();
+
+                while (run)
+                {
+                    Thread.Sleep(5000);
+                    try
+                    {
+                        if (Process.GetProcessesByName("obs64").Count() > 0)
+                            continue;
+
+                        obs.StartInfo.FileName = "obs-studio\\bin\\64bit\\obs64.exe";
+                        obs.StartInfo.WorkingDirectory = "obs-studio\\bin\\64bit\\";
+                        obs.Start();
+                    }
+                    catch
+                    {
+                        obs.StartInfo.FileName = "obs-studio\\bin\\64bit\\obs64.exe";
+                        obs.StartInfo.WorkingDirectory = "obs-studio\\bin\\64bit\\";
+                        obs.Start();
+                    }
+                }
+
+                try
+                {
+                    Process p = Process.GetProcessesByName("obs64").First();
+                    if (p != null)
+                        p.Kill();
+                }
+                catch
+                {
+
+                }
+            });
 
         }
 
@@ -51,15 +99,19 @@ namespace SiRISApp.Services
 
         #endregion
 
-
-        private readonly OBSWebsocket _obs = new();
+        readonly OBSWebsocket _obs = new();
 
         public string Ip { get; set; } = "ws://127.0.0.1:4455";
         public string Password { get; set; } = "123456";
-        public OutputState OutputState { get; set; }
+        public string CurrentSource { get; set; } = string.Empty;
+        public int currentItemId = -1;
         public int lastPosition = 1;
+        public bool run = true;
+        public bool isPipActive = false;
 
-        OBS_STATE State { get; set; }
+        public OBS_STATE State { get; set; }
+        OutputState OutputState { get; set; }
+
 
         public List<SceneBasicInfo> Scenes
         {
@@ -119,9 +171,21 @@ namespace SiRISApp.Services
 
         public void Stop()
         {
+            run = false;
             StopStreaming();
             State = OBS_STATE.STOPPED;
             _obs.Disconnect();
+
+            try
+            {
+                Process p = Process.GetProcessesByName("obs64").First();
+                if (p != null)
+                    p.Kill();
+            }
+            catch
+            {
+
+            }
         }
 
 
@@ -130,7 +194,8 @@ namespace SiRISApp.Services
         {
             try
             {
-                if (State == OBS_STATE.CONNECTED || State == OBS_STATE.STREAMING)
+
+                if (State == OBS_STATE.CONNECTED || State == OBS_STATE.STREAMING || State == OBS_STATE.PAUSED)
                 {
                     if (OutputState == OutputState.OBS_WEBSOCKET_OUTPUT_STOPPED || OutputState == OutputState.OBS_WEBSOCKET_OUTPUT_PAUSED || OutputState == OutputState.OBS_WEBSOCKET_OUTPUT_STARTING)
                     {
@@ -138,12 +203,20 @@ namespace SiRISApp.Services
                         State = OBS_STATE.STREAMING;
                     }
                 }
+
+                if (State != OBS_STATE.STREAMING)
+                {
+                    Task.Run(() =>
+                    {
+                        Thread.Sleep(3000);
+                        StartStreaming();
+                    });
+                }
             }
             catch
             {
 
             }
-
         }
 
         public void StopStreaming()
@@ -165,7 +238,7 @@ namespace SiRISApp.Services
                 if (OutputState == OutputState.OBS_WEBSOCKET_OUTPUT_STARTED)
                 {
                     _obs.StopStream();
-                    State = OBS_STATE.CONNECTED;
+                    State = OBS_STATE.PAUSED;
                 }
             }
         }
@@ -235,7 +308,11 @@ namespace SiRISApp.Services
         {
             int itemId = GetSceneItemId(sourceName);
             if (itemId > 0)
+            {
+                if (currentItemId == itemId)
+                    currentItemId = -1;
                 _obs.SetSceneItemEnabled(CurrentScene, itemId, false);
+            }
         }
 
         public void EnableSource(string sourceName)
@@ -245,16 +322,30 @@ namespace SiRISApp.Services
                 _obs.SetSceneItemEnabled(CurrentScene, itemId, true);
         }
 
-        public void StreamSource(string sourceName)
+        public void ActivateSource(string item)
         {
-            int itemId = GetSceneItemId(sourceName);
-            if (itemId > 0)
-            {
-                var items = _obs.GetSceneItemList(CurrentScene);
-                _obs.SetSceneItemIndex(CurrentScene, itemId, items.Count - 1);
-            }
-
+            int itemId = GetSceneItemId(item);
+            var items = _obs.GetSceneItemList(CurrentScene);
+            _obs.SetSceneItemIndex(CurrentScene, itemId, items.Count - lastPosition);
         }
+
+        public void ActivatePip()
+        {
+            int itemId = GetSceneItemId("PiP Cam Princ");
+            var items = _obs.GetSceneItemList(CurrentScene);
+            _obs.SetSceneItemIndex(CurrentScene, itemId, items.Count - lastPosition);
+            EnableSource("PiP Cam Princ");
+            lastPosition = -2;
+        }
+
+        public void DesactivatePip()
+        {
+            int itemId = GetSceneItemId("PiP Cam Princ");
+            _obs.SetSceneItemIndex(CurrentScene, itemId, 0);
+            DisableSource("PiP Cam Princ");
+            lastPosition = -1;
+        }
+
 
 
         internal void GetInputSettings()
@@ -274,64 +365,7 @@ namespace SiRISApp.Services
 
 
 
-        public void ActivateSceneItem(string item)
-        {
-            int itemId = GetSceneItemId(item);
-            int camera1ItemId = GetSceneItemId("Camera1");
-            int camera2ItemId = GetSceneItemId("Camera2");
-            if (itemId > 0 && camera1ItemId > 0 && camera2ItemId > 0)
-            {
-                var items = _obs.GetSceneItemList(CurrentScene);
-                if (item == "Camera2")
-                {
-                    _obs.SetSceneItemEnabled(CurrentScene, camera1ItemId, false);
-                    _obs.SetSceneItemIndex(CurrentScene, camera2ItemId, items.Count - lastPosition);
-                    _obs.SetSceneItemEnabled(CurrentScene, itemId, true);
-                    lastPosition = 2;
-                }
-                else if (item == "Camera1")
-                {
-                    _obs.SetSceneItemEnabled(CurrentScene, camera2ItemId, false);
-                    _obs.SetSceneItemEnabled(CurrentScene, camera1ItemId, true);
-                    lastPosition = 1;
-                    _obs.SetSceneItemIndex(CurrentScene, itemId, items.Count - lastPosition);
-                }
-                else
-                {
-                    _obs.SetSceneItemIndex(CurrentScene, itemId, items.Count - lastPosition);
-                }
 
-            }
-        }
-
-        public void DesactivateSceneItem(string item)
-        {
-            int itemId = GetSceneItemId(item);
-            int camera1ItemId = GetSceneItemId("Camera1");
-            int camera2ItemId = GetSceneItemId("Camera2");
-            if (itemId > 0 && camera1ItemId > 0 && camera2ItemId > 0)
-            {
-                var items = _obs.GetSceneItemList(CurrentScene);
-                if (item == "Camera2")
-                {
-                    _obs.SetSceneItemEnabled(CurrentScene, camera1ItemId, true);
-                    _obs.SetSceneItemEnabled(CurrentScene, itemId, false);
-                    lastPosition = 1;
-                }
-                else if (item == "Camera1")
-                {
-                    _obs.SetSceneItemEnabled(CurrentScene, camera2ItemId, true);
-                    _obs.SetSceneItemIndex(CurrentScene, camera1ItemId, items.Count - lastPosition);
-                    _obs.SetSceneItemEnabled(CurrentScene, itemId, false);
-                    lastPosition = 2;
-                }
-                else
-                {
-                    _obs.SetSceneItemIndex(CurrentScene, itemId, items.Count - lastPosition);
-                }
-
-            }
-        }
 
 
         private void ConnectObs()
@@ -360,11 +394,15 @@ namespace SiRISApp.Services
             if (State == OBS_STATE.CONNECTING)
                 State = OBS_STATE.CONNECTED;
 
+            try { _obs.StopStream(); } catch { }
             StreamingService settings = _obs.GetStreamServiceSettings();
             ServerConfig serverConfig = ServerConfigService.Instance.GetServerConfig();
             settings.Settings.Server = $"rtmp://{serverConfig.Ip}:1935";
             settings.Settings.Key = $"stream_{AppSessionService.Instance.User.Id}";
             _obs.SetStreamServiceSettings(settings);
+
+            if (State == OBS_STATE.STREAMING)
+                StartStreaming();
         }
 
         private void OnDisconnected(object? sender, ObsDisconnectionInfo e)
@@ -397,6 +435,9 @@ namespace SiRISApp.Services
                         StartStreaming();
                     });
                 }
+
+
+
             }
 
             OutputState = args.OutputState.State;

@@ -1,15 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SiRISApp.Services;
-using SiRISApp.View.UserControls.SessionManagement;
 using SiRISApp.ViewModel.SessionManagement.Commads;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SiRISApp.ViewModel.SessionManagement
 {
@@ -30,7 +26,6 @@ namespace SiRISApp.ViewModel.SessionManagement
                     selectedSession = value;
                     OnPropertyChanged(nameof(SelectedSession));
                 }
-
             }
         }
 
@@ -42,7 +37,6 @@ namespace SiRISApp.ViewModel.SessionManagement
         {
             ReloadSessionsCommand = new(this);
             CreateSessionCommand = new(this);
-            ReloadSessions();
         }
 
         public void OnPropertyChanged(string propertyName)
@@ -68,16 +62,15 @@ namespace SiRISApp.ViewModel.SessionManagement
         {
             Sessions.Clear();
 
-
-
             List<EntityMtwServer.Entities.Session> sessions = AppSessionService.Instance.Context.Sessions
                 .Include(s => s.Course)
                 .Include(s => s.Recipients)
                 .Include(s => s.Transmitter)
-                .Where(s => s.StartDateTime > DateTime.Now)
+                .Where(s => s.StartDateTime > DateTime.Now.Date)
                 .AsNoTracking()
                 .ToList();
 
+            sessions = sessions.Where(s => s.StartDateTime > DateTime.Now).ToList();
 
             foreach (var session in sessions)
             {
@@ -94,9 +87,5 @@ namespace SiRISApp.ViewModel.SessionManagement
                 }
             }
         }
-
-
-
-
     }
 }

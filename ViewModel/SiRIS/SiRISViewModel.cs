@@ -1,6 +1,7 @@
 ﻿using EntityMtwServer.Entities;
 using Microsoft.EntityFrameworkCore;
 using SiRISApp.Services;
+using SiRISApp.ViewModel.Login;
 using SiRISApp.ViewModel.SessionManagement;
 using SiRISApp.ViewModel.SessionPlayer;
 using SiRISApp.ViewModel.SiRIS.Commands;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 
 namespace SiRISApp.ViewModel
 {
@@ -23,13 +25,14 @@ namespace SiRISApp.ViewModel
             set
             {
                 selectedIndex = value;
-                OnPropertyChanged(nameof(SelectedIndex));   
+                OnPropertyChanged(nameof(SelectedIndex));
             }
         }
 
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        public LoginViewModel LoginViewModel { get; set; }
         public SessionManagementViewModel SessionManagementViewModel { get; set; }
         public SessionPlayerViewModel SessionPlayerViewModel { get; set; }
 
@@ -40,27 +43,40 @@ namespace SiRISApp.ViewModel
             StartSessionCommand = new(this);
             SessionManagementViewModel = new();
             SessionPlayerViewModel = new();
+            LoginViewModel = new();
             SelectedIndex = 0;
 
-            OBSService.Instance.Start();
+            LoginViewModel.Authenticated += Authenticated;
 
+        }
+
+        private void Authenticated(object? sender, EventArgs e)
+        {
             List<Session> sessions = AppSessionService.Instance.Context.Sessions
-                .Include(s => s.Transmitter)
-                .Include(s => s.Course)
-                .Include(s => s.Recipients)
-                .Where(s => s.StartDateTime < DateTime.Now && s.EndDateTime > DateTime.Now)
-                .ToList();
+               .Include(s => s.Transmitter)
+               .Include(s => s.Course)
+               .Include(s => s.Recipients)
+               .ToList();
+
+            sessions = sessions.Where(s => s.StartDateTime < DateTime.Now && s.EndDateTime > DateTime.Now).ToList();
+           
+            int resultIndex = 1;
 
             foreach (Session s in sessions)
             {
                 if (s.Transmitter != null && s.Transmitter.Id == AppSessionService.Instance.User.Id)
                 {
-                    SessionPlayerViewModel.InitSession(s.Id);
-                    SelectedIndex = 1;
+                    Application.Current.Dispatcher.Invoke((Action)delegate
+                    {
+                        SessionPlayerViewModel.InitSession(s.Id);
+                    });
+                    resultIndex = 2;
                     break;
                 }
             }
-         
+            SelectedIndex = resultIndex;
+            //SessionManagementViewModel.ReloadSessions();
+
         }
 
         private void OnPropertyChanged(string propertyName)
