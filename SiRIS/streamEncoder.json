@@ -1,5 +1,0 @@
-{
-  "bitrate": 1024,
-  "keyint_sec": 10,
-  "rate_control": "CBR"
-}

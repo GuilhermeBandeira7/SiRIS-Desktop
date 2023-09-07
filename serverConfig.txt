@@ -1,5 +1,0 @@
-172.16.2.214
-MasterServerSiris
-sa
-Senha@mtw
-snteste
