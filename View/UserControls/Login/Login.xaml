@@ -23,108 +23,148 @@
                 <GradientStop Color="#cfefefef" Offset="0.0" />
             </RadialGradientBrush>
         </Border.Background>
-        <materialDesign:Transitioner Grid.Row="0"
-                                     Margin="10"
-                                     AutoApplyTransitionOrigins="True"
-                                     SelectedIndex="{Binding LoginViewModel.LoginIndex}">
-            <materialDesign:Transitioner.Background>
-                 <ImageBrush ImageSource="../../Assets/Texture/diagonal-striped-brick.png" 
+        <DockPanel>
+            <Button DockPanel.Dock="Top"
+                    HorizontalAlignment="Left"
+                    Height="40"
+                    Margin="0 15 10 0"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Foreground="Black"
+                    Command="{Binding LoginViewModel.NavigateCommand}">
+                <materialDesign:PackIcon Kind="{Binding LoginViewModel.NavigateButtonImage}"
+                                         Width="30"
+                                         Height="30"/>
+            </Button>
+            <StackPanel DockPanel.Dock="Top"
+                        HorizontalAlignment="Center" 
+                        Orientation="Horizontal"
+                        Visibility="{Binding LoginViewModel.NavigateVisibility}">
+                <Image HorizontalAlignment="Right"
+                       VerticalAlignment="Center" 
+                       Width="40" 
+                       Height="40" 
+                       Source="{Binding LoginViewModel.SelectedCountry}"/>
+                <ComboBox HorizontalAlignment="Left"
+                          VerticalAlignment="Center"
+                          VerticalContentAlignment="Center"
+                          Height="60"
+                          Width="300"
+                          Margin="10"
+                          FontSize="24"
+                          Foreground="Black" 
+                          Background="{x:Null}"
+                          BorderBrush="Black"
+                          FontStyle="Oblique"
+                          FontWeight="Bold"
+                          materialDesign:HintAssist.HelperText="{DynamicResource language}"
+                          materialDesign:HintAssist.HelperTextFontSize="15"
+                          materialDesign:TextFieldAssist.HasClearButton="True"
+                          materialDesign:ThemeAssist.Theme="Light"
+                          ItemsSource="{Binding LoginViewModel.Languages}"
+                          SelectedItem="{Binding LoginViewModel.SelectedLanguage}">
+                </ComboBox>
+            </StackPanel>
+            <materialDesign:Transitioner Margin="10"
+                                         AutoApplyTransitionOrigins="True"
+                                         SelectedIndex="{Binding LoginViewModel.Index}">
+                <materialDesign:Transitioner.Background>
+                    <ImageBrush ImageSource="../../Assets/Texture/diagonal-striped-brick.png"
                                 Opacity="1" 
                                 TileMode="FlipX" 
                                 Viewport="0,0,150,150"
                                 ViewportUnits="Absolute" />
-            </materialDesign:Transitioner.Background>
-            <!--Login form-->
-            <materialDesign:TransitionerSlide OpeningEffect="{materialDesign:TransitionEffect FadeIn}">
-                <local:Form/>
-            </materialDesign:TransitionerSlide>
-            <!--loading form-->
-            <materialDesign:TransitionerSlide>
-                <materialDesign:Transitioner AutoApplyTransitionOrigins="True"
-                                             SelectedIndex="{Binding LoginViewModel.LoginState}">
-                    <materialDesign:TransitionerSlide  OpeningEffect="{materialDesign:TransitionEffect Kind=SlideInFromRight}">
-                        <StackPanel VerticalAlignment="Center">
-                            <TextBox HorizontalAlignment="Center"
-                                     VerticalAlignment="Center"
-                                     Margin="0 0 0 0"
-                                     FontSize="32"
-                                     FontStyle="Italic"
-                                     Foreground="Black"
-                                     BorderBrush="Transparent"
-                                     IsReadOnly="True"
-                                     Text="Conectando ao servidor"/>
-                            <lottie:LottieAnimationView HorizontalAlignment="Center"
-                                                        Width="500"
-                                                        Height="300"
-                                                        AutoPlay="True"
-                                                        ResourcePath="pack://application:,,,/view/Assets/LottieAnimations/loading8.json"
-                                                        RepeatCount="-1">
-                            </lottie:LottieAnimationView>
-                        </StackPanel>
-                    </materialDesign:TransitionerSlide>
+                </materialDesign:Transitioner.Background>
+                <!--Login form-->
+                <materialDesign:TransitionerSlide OpeningEffect="{materialDesign:TransitionEffect Kind=SlideInFromTop}">
+                    <local:Form/>
+                </materialDesign:TransitionerSlide>
+                <!--config form-->
+                <materialDesign:TransitionerSlide OpeningEffect="{materialDesign:TransitionEffect Kind=SlideInFromBottom}">
+                    <local:LoginConfig/>
+                </materialDesign:TransitionerSlide>
+                <!--connect to database-->
+                <materialDesign:TransitionerSlide  OpeningEffect="{materialDesign:TransitionEffect Kind=SlideInFromRight}">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBox HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"
+                                 Margin="0 0 0 0"
+                                 FontSize="32"
+                                 FontStyle="Italic"
+                                 Foreground="Black"
+                                 BorderBrush="Transparent"
+                                 IsReadOnly="True"
+                                 Text="Conectando ao servidor"/>
+                        <lottie:LottieAnimationView HorizontalAlignment="Center"
+                                                    Width="500"
+                                                    Height="300"
+                                                    AutoPlay="True"
+                                                    ResourcePath="pack://application:,,,/View/Assets/LottieAnimations/loading8.json"
+                                                    RepeatCount="-1">
+                        </lottie:LottieAnimationView>
+                    </StackPanel>
+                </materialDesign:TransitionerSlide>
+                <!--check login-->
+                <materialDesign:TransitionerSlide  OpeningEffect="{materialDesign:TransitionEffect Kind=SlideInFromRight}">
+                    <StackPanel VerticalAlignment="Center" 
+                            Margin="30">
+                        <TextBox HorizontalAlignment="Center"
+                                 Margin="0 0 0 0"
+                                 FontSize="32"
+                                 FontStyle="Italic"
+                                 Foreground="Black"
+                                 BorderBrush="Transparent"
+                                 IsReadOnly="True"
+                                 Text="Validando login"/>
+                        <lottie:LottieAnimationView HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Width="500"
+                                                    Height="300"
+                                                    AutoPlay="True"
+                                                    ResourcePath="pack://application:,,,/View/Assets/LottieAnimations/loading2.json"
+                                                    RepeatCount="-1">
+                        </lottie:LottieAnimationView>
+                    </StackPanel>
+                </materialDesign:TransitionerSlide>
+                <!--load data-->
+                <materialDesign:TransitionerSlide  OpeningEffect="{materialDesign:TransitionEffect Kind=SlideInFromRight}">
+                    <StackPanel VerticalAlignment="Center" 
+                            Margin="30">
+                        <TextBox HorizontalAlignment="Center"
+                                 Margin="0 0 0 0"
+                                 FontSize="32"
+                                 FontStyle="Italic"
+                                 Foreground="Black"
+                                 BorderBrush="Transparent"
+                                 IsReadOnly="True"
+                                 Text="Carregando dados"/>
+                        <lottie:LottieAnimationView HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Width="500"
+                                                    Height="300"
+                                                    AutoPlay="True"
+                                                    ResourcePath="pack://application:,,,/View/Assets/LottieAnimations/loading6.json"
+                                                    RepeatCount="-1">
+                        </lottie:LottieAnimationView>
+                    </StackPanel>
+                </materialDesign:TransitionerSlide>
+                <!--welcome message-->
+                <materialDesign:TransitionerSlide  OpeningEffect="{materialDesign:TransitionEffect Kind=FadeIn}">
+                    <StackPanel VerticalAlignment="Center" 
+                                Margin="30">
+                        <TextBox HorizontalAlignment="Center"
+                                 Margin="0 0 0 60"
+                                 FontSize="32"
+                                 FontStyle="Italic"
+                                 Foreground="Black"
+                                 BorderBrush="Transparent"
+                                 IsReadOnly="True"
+                                 Text="BEM VINDO!"/>
+                        <Image Source="../../Assets/Logo-Siris-HD.png" Width="500" Height="200"/>
+                    </StackPanel>
+                </materialDesign:TransitionerSlide>
+            </materialDesign:Transitioner>
+        </DockPanel>
 
-                    <materialDesign:TransitionerSlide  OpeningEffect="{materialDesign:TransitionEffect Kind=SlideInFromRight}">
-                        <StackPanel VerticalAlignment="Center" 
-                                    Margin="30">
-                            <TextBox HorizontalAlignment="Center"
-                                     Margin="0 0 0 0"
-                                     FontSize="32"
-                                     FontStyle="Italic"
-                                     Foreground="Black"
-                                     BorderBrush="Transparent"
-                                     IsReadOnly="True"
-                                     Text="Validando login"/>
-                            <lottie:LottieAnimationView HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center"
-                                                        Width="500"
-                                                        Height="300"
-                                                        AutoPlay="True"
-                                                        ResourcePath="pack://application:,,,/view/Assets/LottieAnimations/loading2.json"
-                                                        RepeatCount="-1">
-                            </lottie:LottieAnimationView>
-                        </StackPanel>
-                    </materialDesign:TransitionerSlide>
-                    <materialDesign:TransitionerSlide  OpeningEffect="{materialDesign:TransitionEffect Kind=SlideInFromRight}">
-                        <StackPanel VerticalAlignment="Center" 
-                                    Margin="30">
-                            <TextBox HorizontalAlignment="Center"
-                                     Margin="0 0 0 0"
-                                     FontSize="32"
-                                     FontStyle="Italic"
-                                     Foreground="Black"
-                                     BorderBrush="Transparent"
-                                     IsReadOnly="True"
-                                     Text="Carregando dados"/>
-                            <lottie:LottieAnimationView HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center"
-                                                        Width="500"
-                                                        Height="300"
-                                                        AutoPlay="True"
-                                                        ResourcePath="pack://application:,,,/view/Assets/LottieAnimations/loading6.json"
-                                                        RepeatCount="-1">
-                            </lottie:LottieAnimationView>
-                        </StackPanel>
-                    </materialDesign:TransitionerSlide>
-                    <materialDesign:TransitionerSlide  OpeningEffect="{materialDesign:TransitionEffect Kind=FadeIn}">
-                        <StackPanel VerticalAlignment="Center" 
-                                    Margin="30">
-                            <TextBox HorizontalAlignment="Center"
-                                     Margin="0 0 0 60"
-                                     FontSize="32"
-                                     FontStyle="Italic"
-                                     Foreground="Black"
-                                     BorderBrush="Transparent"
-                                     IsReadOnly="True"
-                                     Text="BEM VINDO!"/>
-                            <Image Source="../../Assets/Logo-Siris-HD.png" Width="500" Height="200"/>
-                        </StackPanel>
-                    </materialDesign:TransitionerSlide>
-                </materialDesign:Transitioner>
-            </materialDesign:TransitionerSlide>
-            <!--config form-->
-            <materialDesign:TransitionerSlide>
-                <local:LoginConfig/>
-            </materialDesign:TransitionerSlide>
-        </materialDesign:Transitioner>
     </Border>
 </UserControl>

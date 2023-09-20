@@ -33,12 +33,14 @@ namespace SiRISApp.Services
         #endregion
 
 
+        string configServerFilePath = "_Configs\\serverConfig.txt";
+
         public ServerConfig GetServerConfig()
         {
             ServerConfig serverConfig = new();
-            if(System.IO.File.Exists("serverConfig.txt"))
+            if(System.IO.File.Exists(configServerFilePath))
             {
-                List<string> lines = System.IO.File.ReadAllLines("serverConfig.txt").ToList();
+                List<string> lines = System.IO.File.ReadAllLines(configServerFilePath).ToList();
                 if(lines.Count == 5)
                 {
                     serverConfig.Ip = lines[0];
@@ -54,7 +56,7 @@ namespace SiRISApp.Services
 
         public void SetServerConfig(ServerConfig serverConfig)
         {
-            System.IO.File.WriteAllLines("serverConfig.txt", new string[]
+            System.IO.File.WriteAllLines(configServerFilePath, new string[]
             {
                 serverConfig.Ip,
                 serverConfig.Database,

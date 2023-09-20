@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SiRISApp.View.UserControls.SessionPlayer.SessionPreview"
+﻿<UserControl x:Class="SiRISApp.View.UserControls.SessionPlayer.SessionPreviewMenu"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,7 +9,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" 
              d:DesignWidth="800">
-    <Grid Grid.Column="0">
+    <Grid Grid.Column="0"
+          Width="500">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="300"/>
@@ -39,7 +40,7 @@
                            Foreground="White"
                            Content="Menu de transmissão"/>
                     <ListBox Margin="0 0 0 20"
-                             ItemsSource="{Binding SessionPlayerViewModel.Sources}">
+                             ItemsSource="{Binding SessionPlayerViewModel.SessionPreviewViewModel.Sources}">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="{x:Type ListBoxItem}">
                                 <Setter Property="Width" Value="150"/>
@@ -87,7 +88,7 @@
                    VerticalAlignment="Center" 
                    HorizontalAlignment="Center"
                    Stretch="Fill"
-                   Source="{Binding SessionPlayerViewModel.Pip1Image}">
+                   Source="{Binding SessionPlayerViewModel.SessionPreviewViewModel.Pip1Image}">
             </Image>
         </Border>
         <Button Grid.Row="1"
@@ -97,7 +98,7 @@
                 Background="Transparent"
                 MinHeight="40"
                 BorderThickness="0"
-                Command="{Binding SessionPlayerViewModel.ActivateSourceCommand}">
+                Command="{Binding SessionPlayerViewModel.SessionPreviewViewModel.ActivateSourceCommand}">
             <materialDesign:PackIcon Foreground="DeepSkyBlue" Width="40" Height="40" Kind="ArrowRightThin"/>
         </Button>
     </Grid>

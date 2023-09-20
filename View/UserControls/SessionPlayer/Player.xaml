@@ -6,20 +6,45 @@
              xmlns:local="clr-namespace:SiRISApp.View.UserControls.SessionPlayer"
              xmlns:wpf="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf" 
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <DockPanel>
-        <wpf:VlcControl x:Name="VlcControl"
-                        DockPanel.Dock="Top"
-                        BorderBrush="LightYellow"
-                        BorderThickness="2">
-        </wpf:VlcControl>
-        <Grid DockPanel.Dock="Bottom"
-              Background="Gray">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="60"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="60"/>
-            </Grid.ColumnDefinitions>
+             d:DesignHeight="450" 
+             d:DesignWidth="800"
+             IsVisibleChanged="UserControl_IsVisibleChanged">
+    <Border BorderThickness="2"
+            CornerRadius="20"
+            Background="Black"
+            BorderBrush="LightYellow">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <wpf:VlcControl Grid.Row="0"
+                            Margin="20"
+                            x:Name="VlcControl">
+            </wpf:VlcControl>
+            <Border Grid.Row="1"
+                    CornerRadius="20"
+                    DockPanel.Dock="Bottom"
+                    Background="White">
+                <Border CornerRadius="20">
+                    <Border.Background>
+                        <ImageBrush ImageSource="../../Assets/Texture/shattered.png" 
+                                Opacity="1" 
+                                TileMode="FlipX" 
+                                Viewport="0,0,150,150"
+                                ViewportUnits="Absolute" />
+                    </Border.Background>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="60"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </Border>
+            </Border>
         </Grid>
-    </DockPanel>
+    </Border>
+    
+
 </UserControl>

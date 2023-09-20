@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:local="clr-namespace:SiRISApp.View.UserControls.Login" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignWidth="800"
@@ -12,163 +11,90 @@
     <materialDesign:DialogHost  Background="Transparent"
                                 DialogTheme="Inherit">
         <materialDesign:DialogHost.DialogContent>
-            <Border CornerRadius="20"
-                    BorderThickness="2"
-                    BorderBrush="LightYellow">
+            <Border Width="400"
+                    Height="600"
+                    CornerRadius="20">
                 <Border.Background>
-                    <RadialGradientBrush GradientOrigin="0.5,0.5">
-                        <GradientStop Color="#003278" Offset="1"/>
-                        <GradientStop Color="#00508f" Offset="0" />
-                    </RadialGradientBrush>
+                    <ImageBrush ImageSource="../../Assets/Configbg.jpg" Opacity="1"/>
                 </Border.Background>
-                <materialDesign:Transitioner AutoApplyTransitionOrigins="True"
-                                             Width="500"
-                                             Height="300"
-                                             BorderThickness="2"
-                                             SelectedIndex="{Binding  LoginViewModel.LoginConfig.SelectedIndex}">
-                    <materialDesign:Transitioner.Background>
-                        <ImageBrush ImageSource="../../Assets/Texture/low-contrast-linen.png" Opacity="1"/>
-                    </materialDesign:Transitioner.Background>
-                    <!--SERVER CHANGE-->
-                    <materialDesign:TransitionerSlide>
-                        <Grid Width="400"
-                              Height="300"
-                              Margin="10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock x:Name="ConfirmTextBox" 
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Foreground="White"
-                                       FontSize="24"
-                                       Grid.Row="0"
-                                       FontStyle="Italic"
-                                       TextWrapping="Wrap"
-                                       materialDesign:ThemeAssist.Theme="Dark"
-                                       Text="{Binding Path=LoginViewModel.LoginConfig.SelectedServer, StringFormat='Tem certeza que deseja conectar ao servidor {0}?'}" />
-                            <Grid Grid.Row="1">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0"
-                                        Margin="0 0 10 0"
-                                        Background="#7f7f7f7f"
-                                        BorderBrush="Gray"   
-                                        Height="40"
-                                        FontSize="18"
-                                        Content="Cancelar"
-                                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
-                                </Button>
-                                <Button Grid.Column="1"
-                                        Height="40"
-                                        Margin="10 0 0 0"
-                                        Background="#7f0078bf"   
-                                        FontSize="18"
-                                        Content="Confirmar">
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="Click">
-                                            <i:InvokeCommandAction  Command="{Binding LoginViewModel.LoginConfig.UpdateServerConfigCommand}"/>
-                                            <i:InvokeCommandAction  Command="{x:Static materialDesign:Transitioner.MoveNextCommand}"/>
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </materialDesign:TransitionerSlide>
-                    <!--SERVER CHANGE CONFIRMATION-->
-                    <materialDesign:TransitionerSlide>
-                        <Grid Width="400"
-                              Height="300"
-                              Margin="10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock x:Name="MessageBox"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Foreground="White"
-                                       FontSize="24"
-                                       FontStyle="Italic"
-                                       TextWrapping="Wrap"
-                                       Text="Alteração realizada com sucesso!&#x0a; Para que as modificações tenham efeito é necessário reinciar o sistema" />
-                            <Button Grid.Row="1"
-                                    Width="200"
-                                    HorizontalAlignment="Right"
-                                    FontSize="18"
-                                    Background="#7f7f7f7f"
-                                    BorderBrush="Gray"   
-                                    Height="40"
-                                    Content="Retornar">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="Click">
-                                        <i:InvokeCommandAction  Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
-                                        <i:InvokeCommandAction  Command="{x:Static materialDesign:Transitioner.MoveFirstCommand}"/>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </Button>
-                        </Grid>
-                    </materialDesign:TransitionerSlide>
-                    <!--LOGIN-->
-                    <materialDesign:TransitionerSlide>
-                        <Grid Width="400"
-                              Height="300"
-                              Margin="10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="75"/>
-                                <RowDefinition Height="75"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <TextBox Grid.Row="0"
-                                     VerticalContentAlignment="Center"
-                                     materialDesign:HintAssist.HelperText="Usuário"
-                                     materialDesign:HintAssist.HelperTextFontSize="18"
-                                     FontSize="18"    
-                                     VerticalAlignment="Bottom"
-                                     Foreground="White" 
-                                     Background="{x:Null}"
-                                     BorderBrush="White" 
-                                     materialDesign:TextFieldAssist.HasClearButton="True"
-                                     materialDesign:ThemeAssist.Theme="Dark"
-                                     Text="{Binding LoginViewModel.LoginConfig.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            </TextBox>
-
-                            <PasswordBox Grid.Row="1"
+                <Border  Width="400"
+                         Height="600"
+                         CornerRadius="20"
+                         Background="#da003278"  
+                         BorderThickness="2"
+                         BorderBrush="LightYellow">
+                    <materialDesign:Transitioner AutoApplyTransitionOrigins="True"                                      
+                                                 SelectedIndex="{Binding  LoginViewModel.LoginConfigViewModel.SelectedIndex}">
+                        <!--LOGIN-->
+                        <materialDesign:TransitionerSlide>
+                            <Grid Width="300"
+                                  Height="600">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="100"/>
+                                    <RowDefinition Height="70"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBox Grid.Row="0"
                                          VerticalContentAlignment="Center"
-                                         materialDesign:HintAssist.HelperText="Senha"
-                                         materialDesign:HintAssist.HelperTextFontSize="18"
-                                         FontSize="18"  
+                                         HorizontalContentAlignment="Center"
                                          VerticalAlignment="Bottom"
+                                         FontSize="18"    
+                                         FontWeight="Bold"
                                          Foreground="White" 
-                                         Background="{x:Null}"
-                                         BorderBrush="White"
-                                         materialDesign:TextFieldAssist.HasClearButton="True"
+                                         Background="#1fffffff"
+                                         BorderThickness="0"
                                          materialDesign:ThemeAssist.Theme="Dark"
-                                         Style="{StaticResource MaterialDesignRevealPasswordBox}" 
-                                         materialDesign:PasswordBoxAssist.Password="{Binding Path= LoginViewModel.LoginConfig.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" />
-                            <Grid Grid.Row="2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Button Grid.Column="1"
+                                         materialDesign:TextFieldAssist.HasClearButton="True"
+                                         materialDesign:TextFieldAssist.TextFieldCornerRadius="30"
+                                         materialDesign:HintAssist.HelperTextFontSize="18"
+                                         materialDesign:HintAssist.FloatingHintHorizontalAlignment="Center"
+                                         materialDesign:HintAssist.Foreground="White"
+                                         materialDesign:HintAssist.Background="Transparent"
+                                         materialDesign:HintAssist.Hint="{DynamicResource userName}"
+                                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                         Text="{Binding LoginViewModel.LoginConfigViewModel.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                </TextBox>
+                                <PasswordBox Grid.Row="1"
+                                             VerticalAlignment="Center"
+                                             VerticalContentAlignment="Center"
+                                             HorizontalContentAlignment="Center"
+                                             FontSize="18"  
+                                             FontWeight="Bold"
+                                             Foreground="White" 
+                                             Background="#1fffffff"
+                                             BorderThickness="0"
+                                             materialDesign:ThemeAssist.Theme="Dark"
+                                             materialDesign:TextFieldAssist.HasClearButton="True"
+                                             materialDesign:TextFieldAssist.TextFieldCornerRadius="30"
+                                             materialDesign:HintAssist.HelperTextFontSize="18"
+                                             materialDesign:HintAssist.FloatingHintHorizontalAlignment="Center"
+                                             materialDesign:HintAssist.Foreground="White"
+                                             materialDesign:HintAssist.Background="Transparent"
+                                             materialDesign:HintAssist.Hint="{DynamicResource password}"
+                                             Style="{StaticResource MaterialDesignOutlinedPasswordBox}" 
+                                             materialDesign:PasswordBoxAssist.Password="{Binding Path= LoginViewModel.LoginConfigViewModel.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" 
+                                             KeyDown="PasswordBox_KeyDown"/>
+                                <Button Grid.Row="2"
+                                        x:Name="LoginButton"
+                                        VerticalAlignment="Top"
+                                        Height="50"
                                         FontSize="18"
-                                        Height="40"
-                                        Margin="10 0 0 0"
-                                        Background="#7f0078bf"                                        
-                                        Content="Entrar"
-                                        Command="{Binding LoginViewModel.LoginConfig.ShowCreateServerCommand}"/>
-                                <Button Grid.Column="0"
+                                        Background="#0078bf"           
+                                        materialDesign:ButtonAssist.CornerRadius="20"
+                                        Style="{StaticResource MaterialDesignRaisedButton}"
+                                        Content="{DynamicResource login}"
+                                        Command="{Binding LoginViewModel.LoginConfigViewModel.ValidateLoginCommand}"/>
+                                <Button Grid.Row="3"
+                                        VerticalAlignment="Top"
+                                        Height="50"
                                         FontSize="18" 
-                                        Height="40"
-                                        Margin="0 0 10 0"
-                                        Background="#7f7f7f7f"
-                                        BorderBrush="Gray"                                        
-                                        Content="Cancelar"
-                                        IsCancel="True">
+                                        Background="#7f7f7f"
+                                        BorderBrush="Gray"   
+                                        IsCancel="True"
+                                        materialDesign:ButtonAssist.CornerRadius="20"
+                                        Style="{StaticResource MaterialDesignRaisedButton}"
+                                        Content="{DynamicResource cancel}">
                                     <Button.CommandParameter>
                                         <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
                                             False
@@ -182,80 +108,103 @@
                                     </i:Interaction.Triggers>
                                 </Button>
                             </Grid>
-                        </Grid>
-                    </materialDesign:TransitionerSlide>
-                    <!--CREATE NEW SERVER-->
-                    <materialDesign:TransitionerSlide>
-                        <Grid Width="400"
-                              Height="300"
-                              Margin="10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="75"/>
-                                <RowDefinition Height="75"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <TextBox Grid.Row="0"
-                                     VerticalContentAlignment="Center"
-                                     VerticalAlignment="Bottom"
-                                     FontSize="18"
-                                     Foreground="White" 
-                                     Background="{x:Null}"
-                                     BorderBrush="White" 
-                                     materialDesign:HintAssist.HelperText="IP"
-                                     materialDesign:HintAssist.HelperTextFontSize="18"
-                                     materialDesign:TextFieldAssist.HasClearButton="True"
-                                     materialDesign:ThemeAssist.Theme="Dark"
-                                     Text="{Binding LoginViewModel.LoginConfig.NewServerIp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            </TextBox>
-                            <TextBox Grid.Row="1"
-                                     VerticalContentAlignment="Center"
-                                     VerticalAlignment="Bottom"
-                                     FontSize="18"
-                                     Foreground="White" 
-                                     Background="{x:Null}"
-                                     BorderBrush="White" 
-                                     materialDesign:HintAssist.HelperText="NOME"
-                                     materialDesign:HintAssist.HelperTextFontSize="18"
-                                     materialDesign:TextFieldAssist.HasClearButton="True"
-                                     materialDesign:ThemeAssist.Theme="Dark"
-                                     Text="{Binding LoginViewModel.LoginConfig.NewServerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            </TextBox>
-                            <Button Grid.Row="2"
-                                    HorizontalAlignment="Right"
-                                    Width="200"
-                                    Height="40"
-                                    FontSize="18" 
-                                    Background="#7f0078bf" 
-                                    Content="Salvar">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="Click">
-                                        <i:InvokeCommandAction Command="{Binding  LoginViewModel.LoginConfig.CreateServerCommand}"/>
-                                        <i:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
-                                        <i:InvokeCommandAction  Command="{x:Static materialDesign:Transitioner.MoveFirstCommand}"/>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </Button>
-                        </Grid>
-                    </materialDesign:TransitionerSlide>
-                </materialDesign:Transitioner>
+                        </materialDesign:TransitionerSlide>
+                        <!--CREATE NEW SERVER-->
+                        <materialDesign:TransitionerSlide>
+                            <Grid Width="300"
+                                  Height="600">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="100"/>
+                                    <RowDefinition Height="70"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBox Grid.Row="0"
+                                         VerticalContentAlignment="Center"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalAlignment="Bottom"
+                                         FontSize="18"    
+                                         FontWeight="Bold"
+                                         Foreground="White" 
+                                         Background="#1fffffff"
+                                         BorderThickness="0"
+                                         materialDesign:ThemeAssist.Theme="Dark"
+                                         materialDesign:TextFieldAssist.HasClearButton="True"
+                                         materialDesign:TextFieldAssist.TextFieldCornerRadius="30"
+                                         materialDesign:HintAssist.HelperTextFontSize="18"
+                                         materialDesign:HintAssist.FloatingHintHorizontalAlignment="Center"
+                                         materialDesign:HintAssist.Foreground="White"
+                                         materialDesign:HintAssist.Background="Transparent"
+                                         materialDesign:HintAssist.Hint="{DynamicResource name}"
+                                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                         Text="{Binding LoginViewModel.LoginConfigViewModel.NewServerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         KeyDown="NewServer_KeyDown"/>
+                                <TextBox Grid.Row="1"
+                                         VerticalContentAlignment="Center"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalAlignment="Center"
+                                         FontSize="18"    
+                                         FontWeight="Bold"
+                                         Foreground="White" 
+                                         Background="#1fffffff"
+                                         BorderThickness="0"
+                                         materialDesign:ThemeAssist.Theme="Dark"
+                                         materialDesign:TextFieldAssist.HasClearButton="True"
+                                         materialDesign:TextFieldAssist.TextFieldCornerRadius="30"
+                                         materialDesign:HintAssist.HelperTextFontSize="18"
+                                         materialDesign:HintAssist.FloatingHintHorizontalAlignment="Center"
+                                         materialDesign:HintAssist.Foreground="White"
+                                         materialDesign:HintAssist.Background="Transparent"
+                                         materialDesign:HintAssist.Hint="{DynamicResource ip}"
+                                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                         Text="{Binding LoginViewModel.LoginConfigViewModel.NewServerIp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         KeyDown="NewServer_KeyDown"/>
+                                <Button Grid.Row="2"
+                                        VerticalAlignment="Top"
+                                        Height="50"
+                                        FontSize="18"
+                                        Background="#0078bf"           
+                                        materialDesign:ButtonAssist.CornerRadius="20"
+                                        Style="{StaticResource MaterialDesignRaisedButton}"
+                                        Content="{DynamicResource save}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Click">
+                                            <i:InvokeCommandAction x:Name="CreateServerCommand" Command="{Binding  LoginViewModel.LoginConfigViewModel.CreateServerCommand}"/>
+                                            <i:InvokeCommandAction x:Name="CreateServerCloseDialog"  Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                                            <i:InvokeCommandAction x:Name="CreateServerMoveFirst" Command="{x:Static materialDesign:Transitioner.MoveFirstCommand}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+                                <Button Grid.Row="3"
+                                        VerticalAlignment="Top"
+                                        Height="50"
+                                        FontSize="18" 
+                                        Background="#7f7f7f"
+                                        BorderBrush="Gray"   
+                                        IsCancel="True"
+                                        materialDesign:ButtonAssist.CornerRadius="20"
+                                        Style="{StaticResource MaterialDesignRaisedButton}"
+                                        Content="{DynamicResource cancel}">
+                                    <Button.CommandParameter>
+                                        <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                                            False
+                                        </system:Boolean>
+                                    </Button.CommandParameter>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Click">
+                                            <i:InvokeCommandAction  Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                                            <i:InvokeCommandAction  Command="{x:Static materialDesign:Transitioner.MoveFirstCommand}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+                            </Grid>
+                        </materialDesign:TransitionerSlide>
+                    </materialDesign:Transitioner>
+                </Border>
             </Border>
-          
         </materialDesign:DialogHost.DialogContent>
         <DockPanel>
-            <Button DockPanel.Dock="Top"
-                    HorizontalAlignment="Left"
-                    Height="40"
-                    Margin="0 15 10 0"
-                    Background="Transparent"                    
-                    BorderBrush="Transparent"
-                    Foreground="Black"
-                    Command="{x:Static materialDesign:Transitioner.MoveFirstCommand}">
-                <materialDesign:PackIcon Kind="ArrowBack"
-                                         Width="30"
-                                         Height="30"/>
-            </Button>
-            <Grid Width="400"
-                  Margin="0 50 0 50">
+            <Grid Width="400">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*"/>
                     <RowDefinition Height="*"/>
@@ -277,9 +226,9 @@
                          BorderBrush="Black"
                          FontStyle="Oblique"
                          FontWeight="Bold"
-                         materialDesign:HintAssist.HelperText="Número de série"
+                         materialDesign:HintAssist.HelperText="{DynamicResource  serialNumber}"
                          materialDesign:HintAssist.HelperTextFontSize="15"
-                         Text="{Binding LoginViewModel.LoginConfig.SerialNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                         Text="{Binding LoginViewModel.LoginConfigViewModel.SerialNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 </TextBox>
                 <ComboBox Grid.Row="2"
                           VerticalAlignment="Bottom"
@@ -292,12 +241,12 @@
                           BorderBrush="Black"
                           FontStyle="Oblique"
                           FontWeight="Bold"
-                          materialDesign:HintAssist.HelperText="Servidor"
+                          materialDesign:HintAssist.HelperText="{DynamicResource server}"
                           materialDesign:HintAssist.HelperTextFontSize="15"
                           materialDesign:TextFieldAssist.HasClearButton="True"
                           materialDesign:ThemeAssist.Theme="Light"
-                          ItemsSource="{Binding LoginViewModel.LoginConfig.Servers}"
-                          SelectedItem="{Binding LoginViewModel.LoginConfig.SelectedServer}">
+                          ItemsSource="{Binding LoginViewModel.LoginConfigViewModel.Servers}"
+                          SelectedItem="{Binding LoginViewModel.LoginConfigViewModel.SelectedServer}">
                 </ComboBox>
 
                 <Button Grid.Row="3"
@@ -305,16 +254,14 @@
                         Height="50"
                         FontSize="18"
                         Background="#0078bf"
-                        Content="Salvar" 
+                        Content="{DynamicResource save}" 
                         materialDesign:ButtonAssist.CornerRadius="10"
+                        Command="{Binding LoginViewModel.LoginConfigViewModel.SwitchServerCommand}"
                         Style="{StaticResource MaterialDesignRaisedButton}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <i:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
                 </Button>
 
+                
+                <!-- LOGO BUTTON-->
                 <Button Grid.Row="5"
                         BorderBrush="Transparent"
                         Height="150">
@@ -323,7 +270,6 @@
                     </Button.Background>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDoubleClick">
-                            <i:InvokeCommandAction Command="{Binding LoginViewModel.LoginConfig.ShowAdminLoginCommand}"/>
                             <i:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>

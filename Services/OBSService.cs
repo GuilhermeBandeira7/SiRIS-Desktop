@@ -59,14 +59,14 @@ namespace SiRISApp.Services
                         if (Process.GetProcessesByName("obs64").Count() > 0)
                             continue;
 
-                        obs.StartInfo.FileName = "obs-studio\\bin\\64bit\\obs64.exe";
-                        obs.StartInfo.WorkingDirectory = "obs-studio\\bin\\64bit\\";
+                        obs.StartInfo.FileName = "_ExternalApps\\obs-studio\\bin\\64bit\\obs64.exe";
+                        obs.StartInfo.WorkingDirectory = "_ExternalApps\\obs-studio\\bin\\64bit\\";
                         obs.Start();
                     }
                     catch
                     {
-                        obs.StartInfo.FileName = "obs-studio\\bin\\64bit\\obs64.exe";
-                        obs.StartInfo.WorkingDirectory = "obs-studio\\bin\\64bit\\";
+                        obs.StartInfo.FileName = "_ExternalApps\\obs-studio\\bin\\64bit\\obs64.exe";
+                        obs.StartInfo.WorkingDirectory = "_ExternalApps\\obs-studio\\bin\\64bit\\";
                         obs.Start();
                     }
                 }

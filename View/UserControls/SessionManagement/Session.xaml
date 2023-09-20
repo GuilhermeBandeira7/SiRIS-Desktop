@@ -31,7 +31,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="80"/>
             </Grid.RowDefinitions>
-            <!-- ROW0: Name, class, datetime -->
+            <!-- ROW0: Name, curriculum course, course, datetime -->
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -55,7 +55,7 @@
                          Foreground="White" 
                          Background="{x:Null}"
                          BorderBrush="White"
-                         materialDesign:HintAssist.HelperText="Nome da aula"
+                         materialDesign:HintAssist.HelperText="{DynamicResource sessionName}"
                          materialDesign:HintAssist.HelperTextFontSize="18"
                          Text="{Binding SessionManagementViewModel.SelectedSession.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 </TextBox>
@@ -69,7 +69,7 @@
                           BorderBrush="White"
                           DisplayMemberPath="Name"
                           materialDesign:ThemeAssist.Theme="Dark"
-                          materialDesign:HintAssist.HelperText="Fase"
+                          materialDesign:HintAssist.HelperText="{DynamicResource phase}"
                           materialDesign:HintAssist.HelperTextFontSize="18"
                           ItemsSource="{Binding SessionManagementViewModel.SelectedSession.CurriculumCourses, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding SessionManagementViewModel.SelectedSession.SelectedCurriculumCourse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -84,7 +84,7 @@
                           BorderBrush="White"
                           DisplayMemberPath="Name"
                           materialDesign:ThemeAssist.Theme="Dark"
-                          materialDesign:HintAssist.HelperText="Disciplina"
+                          materialDesign:HintAssist.HelperText="{DynamicResource schoolSubjects}"
                           materialDesign:HintAssist.HelperTextFontSize="18"
                           Visibility="{Binding SessionManagementViewModel.SelectedSession.CourseVisibility}"
                           ItemsSource="{Binding SessionManagementViewModel.SelectedSession.Courses, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -99,7 +99,7 @@
                             Foreground="White"
                             BorderBrush="White"
                             materialDesign:ThemeAssist.Theme="Dark"
-                            materialDesign:HintAssist.HelperText="Data de Início"
+                            materialDesign:HintAssist.HelperText="{DynamicResource startDate}"
                             materialDesign:HintAssist.HelperTextFontSize="18"
                             materialDesign:TextFieldAssist.HasClearButton="True"
                             Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
@@ -113,7 +113,7 @@
                                            BorderBrush="White"
                                            Is24Hours="True"
                                            materialDesign:ThemeAssist.Theme="Dark"
-                                           materialDesign:HintAssist.HelperText="Tempo de Início"
+                                           materialDesign:HintAssist.HelperText="{DynamicResource startTime}"
                                            materialDesign:HintAssist.HelperTextFontSize="18"
                                            SelectedTime="{Binding SessionManagementViewModel.SelectedSession.StartTime}"
                                            Style="{StaticResource MaterialDesignFloatingHintTimePicker}"/>
@@ -125,7 +125,7 @@
                             Foreground="White"
                             BorderBrush="White"
                             materialDesign:ThemeAssist.Theme="Dark"
-                            materialDesign:HintAssist.HelperText="Data de Início"
+                            materialDesign:HintAssist.HelperText="{DynamicResource endDate}"
                             materialDesign:HintAssist.HelperTextFontSize="18"
                             materialDesign:TextFieldAssist.HasClearButton="True"
                             Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
@@ -139,7 +139,7 @@
                                            BorderBrush="White"
                                            Is24Hours="True"
                                            materialDesign:ThemeAssist.Theme="Dark"
-                                           materialDesign:HintAssist.HelperText="Tempo de Fim"
+                                           materialDesign:HintAssist.HelperText="{DynamicResource endTime}"
                                            materialDesign:HintAssist.HelperTextFontSize="18"
                                            Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
                                            SelectedTime="{Binding SessionManagementViewModel.SelectedSession.EndTime}"/>
@@ -151,7 +151,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBox x:Name="DescriptionTextBox"
                          Grid.Column="0"
-                         materialDesign:HintAssist.HelperText="Conteúdo"
+                         materialDesign:HintAssist.HelperText="{DynamicResource content}"
                          materialDesign:HintAssist.HelperTextFontSize="18"
                          Height="160"
                          Foreground="White" 
@@ -195,11 +195,10 @@
                            Grid.Row="0"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Left">
-                        <TextBlock Text="   Disponíveis"
+                        <TextBlock Text="{DynamicResource available}"
                                    Foreground="White"
                                    FontSize="24"/>
                     </Label>
-
                     <TextBox x:Name="AvailableFilterTextBox"
                              Grid.Column="1"
                              Grid.Row="0"
@@ -207,13 +206,12 @@
                              FontSize="18"
                              MaxLength="20"
                              Foreground="White"
-                             materialDesign:HintAssist.Hint="Filtros"
+                             materialDesign:HintAssist.Hint="{DynamicResource filters}"
                              materialDesign:HintAssist.FloatingScale="0"
                              materialDesign:TextFieldAssist.HasClearButton="True"
                              Style="{StaticResource MaterialDesignFilledTextBox}"
                              Text="{Binding SessionManagementViewModel.SelectedSession.AvailableFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              TextWrapping="Wrap" />
-
                     <TextBox x:Name="RelationAvailableTextBox"
                              Grid.Column="0"
                              Grid.Row="1"
@@ -222,12 +220,11 @@
                              VerticalAlignment="Bottom"
                              Foreground="White"
                              materialDesign:TextFieldAssist.HasClearButton="True"
-                             materialDesign:HintAssist.Hint="Matricula"
+                             materialDesign:HintAssist.Hint="{DynamicResource registration}"
                              materialDesign:HintAssist.FloatingScale="0"
                              Style="{StaticResource MaterialDesignFilledTextBox}"
                              TextWrapping="Wrap"
                              KeyDown="TextBox_KeyDown" />
-
                     <ListBox x:Name="SelectedAvailableListBox"
                              Grid.Row="2"
                              Grid.Column="0"
@@ -261,7 +258,7 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </Grid>
-                <!-- ROW0: Available menu - Filter texte box, relation chip textbox -->
+                <!-- ROW0: Inserted menu - Filter texte box, relation chip textbox -->
                 <Grid Grid.Row="0"
                       Grid.Column="2">
                     <Grid.ColumnDefinitions>
@@ -278,11 +275,10 @@
                            Grid.Row="0"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Left">
-                        <TextBlock Text="   Inseridos"
+                        <TextBlock Text="{DynamicResource inserted}"
                                Foreground="White"
                                FontSize="24"/>
                     </Label>
-
                     <TextBox x:Name="FilterInsertedTextBox" 
                              Grid.Row="0"
                              Grid.Column="1"
@@ -290,13 +286,12 @@
                              MaxLength="20"
                              FontSize="18"
                              Foreground="White"
-                             materialDesign:HintAssist.Hint="Filtros"
+                             materialDesign:HintAssist.Hint="{DynamicResource filters}"
                              materialDesign:HintAssist.FloatingScale="0"
                              materialDesign:TextFieldAssist.HasClearButton="True"
                              Style="{StaticResource MaterialDesignFilledTextBox}"
                              Text="{Binding SessionManagementViewModel.SelectedSession.InsertedFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              TextWrapping="Wrap" />
-
                     <TextBox x:Name="RelationInsertedTextBox"
                              Grid.Row="1"
                              Grid.Column="0"
@@ -305,11 +300,10 @@
                              VerticalAlignment="Bottom"
                              Foreground="White"
                              materialDesign:TextFieldAssist.HasClearButton="True"
-                             materialDesign:HintAssist.Hint="Matricula"
+                             materialDesign:HintAssist.Hint="{DynamicResource registration}"
                              materialDesign:HintAssist.FloatingScale="0"
                              Style="{StaticResource MaterialDesignFilledTextBox}"
                              TextWrapping="Wrap" KeyDown="TextBoxInserted_KeyDown" />
-
                     <ListBox x:Name="SelectedInsertedListBox" 
                              Grid.Row="2"
                              Grid.Column="0"
@@ -394,7 +388,7 @@
                         BorderBrush="LightGray"
                         Style="{StaticResource MaterialDesignPaperLightButton}"
                         Command="{x:Static materialDesign:Transitioner.MovePreviousCommand}"
-                        Content="Retornar" 
+                        Content="{StaticResource return}" 
                         IsCancel="True">
 
                 </Button>
@@ -403,7 +397,7 @@
                         Margin="10"
                         FontSize="18"
                         Style="{StaticResource MaterialDesignPaperLightButton}"
-                        Content="Salvar">
+                        Content="{StaticResource save}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <i:InvokeCommandAction Command="{Binding SessionManagementViewModel.SelectedSession.CreateSessionCommand}" />

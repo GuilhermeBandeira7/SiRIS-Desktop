@@ -30,7 +30,7 @@ namespace SiRISApp.View.UserControls.Login
             if(e.Key == Key.Enter)
             {
                 LoginCommand.Command.Execute(null);
-                MoveNextCommand.Command.Execute(null);
+               
             }
         }
     }

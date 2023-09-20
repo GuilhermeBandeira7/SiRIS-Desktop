@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,6 +24,24 @@ namespace SiRISApp.View.UserControls.Login
         public LoginConfig()
         {
             InitializeComponent();
+        }
+
+        private void PasswordBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                LoginButton.Command.Execute(null);
+            }
+        }
+
+        private void NewServer_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                CreateServerCommand.Command.Execute(null);
+                CreateServerCloseDialog.Command.Execute(null);
+                CreateServerMoveFirst.Command.Execute(null);
+            }
         }
     }
 }

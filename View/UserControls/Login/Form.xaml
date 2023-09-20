@@ -9,20 +9,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel>
-        <Button DockPanel.Dock="Top"
-                HorizontalAlignment="Left"
-                Height="40"
-                Margin="0 15 10 0"
-                Background="Transparent"
-                BorderBrush="Transparent"
-                Foreground="Black"
-                Command="{x:Static materialDesign:Transitioner.MoveLastCommand}">
-            <materialDesign:PackIcon Kind="cog"
-                                     Width="30"
-                                     Height="30"/>
-        </Button>
-        <Grid Width="400"
-              Margin="0 50 0 50">
+
+        <!-- LOGIN FORM -->
+        <Grid Width="400">
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*"/>
                 <RowDefinition Height="*"/>
@@ -31,7 +20,8 @@
                 <RowDefinition Height="2*"/>
             </Grid.RowDefinitions>
 
-            <Image Grid.Row="0" Source="../../Assets/Logo-Siris-HD.png"/>
+            <Image Grid.Row="0" 
+                   Source="../../Assets/Logo-Siris-HD.png"/>
             <TextBox Grid.Row="1"
                      VerticalAlignment="Top"
                      VerticalContentAlignment="Center"
@@ -43,12 +33,11 @@
                      BorderBrush="Black"
                      FontStyle="Oblique"
                      FontWeight="Bold"
-                     materialDesign:HintAssist.HelperText="Usuário"
+                     materialDesign:HintAssist.HelperText="{DynamicResource userName}"
                      materialDesign:HintAssist.HelperTextFontSize="15"
                      materialDesign:TextFieldAssist.HasClearButton="True"
-                     Text="{Binding LoginViewModel.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                     Text="{Binding LoginViewModel.LoginFormViewModel.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             </TextBox>
-
             <PasswordBox Grid.Row="2"
                          VerticalAlignment="Bottom"
                          VerticalContentAlignment="Center"
@@ -61,29 +50,26 @@
                          FontStyle="Oblique"
                          FontWeight="Bold"
                          KeyDown="PasswordBox_KeyDown"
-                         materialDesign:HintAssist.HelperText="Senha"
+                         materialDesign:HintAssist.HelperText="{DynamicResource password}"
                          materialDesign:HintAssist.HelperTextFontSize="15"
                          materialDesign:TextFieldAssist.HasClearButton="True"
                          Style="{StaticResource MaterialDesignRevealPasswordBox}" 
-                         materialDesign:PasswordBoxAssist.Password="{Binding Path= LoginViewModel.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" />
-
-            <Button x:Name="LoginButton"
-                    Grid.Row="3"
+                         materialDesign:PasswordBoxAssist.Password="{Binding Path= LoginViewModel.LoginFormViewModel.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" />
+            <Button Grid.Row="3"
                     Width="200"  
                     Height="50"
                     FontSize="18"
-                    Content="Iniciar Sessão" 
+                    Content="{DynamicResource initSession}" 
                     Background="#0078bf"
                     materialDesign:ButtonAssist.CornerRadius="10"
                     Style="{StaticResource MaterialDesignRaisedButton}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger x:Name="LoginEvent" EventName="Click">
-                        <i:InvokeCommandAction x:Name="LoginCommand" Command="{Binding  LoginViewModel.LoginCommand}"/>
-                        <i:InvokeCommandAction x:Name="MoveNextCommand" Command="{x:Static materialDesign:Transitioner.MoveNextCommand}"/>
+                        <i:InvokeCommandAction x:Name="LoginCommand" Command="{Binding  LoginViewModel.LoginFormViewModel.LoginCommand}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>
-            <Image Grid.Row="5"
+            <Image Grid.Row="4"
                    Source="../../Assets/LogoRemaster.png"/>
         </Grid>
     </DockPanel>

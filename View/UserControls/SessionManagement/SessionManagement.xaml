@@ -57,9 +57,9 @@
                         
                         <!--LIST OF SESSIONS-->
                         <ListBox Grid.Row="1"
-                                ItemsSource="{Binding SessionManagementViewModel.Sessions}"
-                                SelectedItem="{Binding SessionManagementViewModel.SelectedSession, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                Panel.ZIndex="0">
+                                 ItemsSource="{Binding SessionManagementViewModel.Sessions}"
+                                 SelectedItem="{Binding SessionManagementViewModel.SelectedSession, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Panel.ZIndex="0">
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel IsItemsHost="True" />

@@ -18,9 +18,9 @@ namespace SiRISApp.View.UserControls.SessionPlayer
     /// <summary>
     /// Interaction logic for SessionPreviewMenu.xaml
     /// </summary>
-    public partial class SessionPreview : UserControl
+    public partial class SessionPreviewMenu : UserControl
     {
-        public SessionPreview()
+        public SessionPreviewMenu()
         {
             InitializeComponent();
         }

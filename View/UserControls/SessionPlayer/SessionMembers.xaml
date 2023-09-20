@@ -11,7 +11,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <ListBox Grid.Row="2"
              Background="#00000000"
-             ItemsSource="{Binding SessionPlayerViewModel.Cells}">
+             ItemsSource="{Binding SessionPlayerViewModel.SessionMembersViewModel.Cells}">
         <ListBox.ItemContainerStyle>
             <Style TargetType="{x:Type ListBoxItem}">
                 <Setter Property="Background" Value="Transparent"/>

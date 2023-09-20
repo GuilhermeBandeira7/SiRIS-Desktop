@@ -31,78 +31,172 @@
 
 
         <!--Menu do main player-->
-        <Grid Grid.Row="0" 
-              HorizontalAlignment="Center"
-              VerticalAlignment="Bottom" 
-              Grid.ColumnSpan="2"
-              Margin="10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="0"
-                    Background="Transparent"
-                    BorderBrush="Transparent"
-                    Command="{Binding SessionPlayerViewModel.TogglePauseCommand}">
-                <Button.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon VerticalAlignment="Center" 
-                                             Margin="0 3 20 2"
-                                             Kind="{Binding SessionPlayerViewModel.StatusImage}"/>
-                        <TextBlock Text="{Binding SessionPlayerViewModel.StatusText}"/>
-                    </StackPanel>
-                </Button.Content>
-           
-            </Button>
-            <Button Grid.Column="1"
-                    Background="Transparent"
-                    BorderBrush="Transparent">
-                <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon VerticalAlignment="Center" 
-                                             Margin="0 3 20 2"
-                                             Kind="Stop"/>
-                    <TextBlock Text="Encerrar Transmissão"/>
-                </StackPanel>
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Click">
-                        <i:InvokeCommandAction Command="{x:Static materialDesign:Transitioner.MovePreviousCommand}"/>
-                        <i:InvokeCommandAction Command="{Binding SessionPlayerViewModel.StopSessionCommand}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Button>
-            <Button Grid.Column="2"
-                    Background="Transparent"
-                    BorderBrush="Transparent">
-                <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon VerticalAlignment="Center" 
-                                             Margin="0 3 20 2"
-                                             Kind="RecordRec"/>
-                    <TextBlock Text="REC"/>
-                </StackPanel>
-            </Button>
-            <Button Grid.Column="3"
-                    Background="Transparent"
-                    BorderBrush="Transparent"
-                    Click="FolderButton_Click">
-                <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon VerticalAlignment="Center" 
-                                             Margin="0 3 20 2"
-                                             Kind="FolderAccount"/>
-                    <TextBlock Text="Buscar arquivos"/>
-                </StackPanel>
-            </Button>
-        </Grid>
+        <Border Grid.Row="0"
+                CornerRadius="20"
+                Margin="10" 
+                Background="#FFFFFFFF" 
+                Width="1200">
+            <Border CornerRadius="20">
+                <Border.Background>
+                    <ImageBrush ImageSource="../../Assets/Texture/shattered.png" 
+                                Opacity="1" 
+                                TileMode="FlipX" 
+                                Viewport="0,0,150,150"
+                                ViewportUnits="Absolute" />
+                </Border.Background>
+                <Grid HorizontalAlignment="Center"
+                      VerticalAlignment="Bottom" 
+                      Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="175"/>
+                        <ColumnDefinition Width="175"/>
+                        <ColumnDefinition Width="175"/>
+                        <ColumnDefinition Width="175"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0"
+                 
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Command="{Binding SessionPlayerViewModel.TogglePauseCommand}">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon VerticalAlignment="Center" 
+                                                         Margin="0 3 20 2"
+                                                         Foreground="Black"
+                                                         Kind="{Binding SessionPlayerViewModel.StatusImage}"/>
+                                <TextBlock Foreground="Black"
+                                           Text="{Binding SessionPlayerViewModel.StatusText}"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Grid.Column="1"
+                            Background="Transparent"
+                            BorderBrush="Transparent">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon VerticalAlignment="Center" 
+                                                     Margin="0 3 20 2"
+                                                     Foreground="Black"
+                                                     Kind="Stop"/>
+                            <TextBlock Foreground="Black" 
+                                       Text="{DynamicResource stopTransmission}"/>
+                        </StackPanel>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:InvokeCommandAction Command="{x:Static materialDesign:Transitioner.MovePreviousCommand}"/>
+                                <i:InvokeCommandAction Command="{Binding SessionPlayerViewModel.StopSessionCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                    <Button Grid.Column="2"
+                            Background="Transparent"
+                            BorderBrush="Transparent">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon VerticalAlignment="Center" 
+                                                     Margin="0 3 20 2"
+                                                     Foreground="Black"
+                                                     Kind="RecordRec"/>
+                            <TextBlock Foreground="Black"
+                                       Text="{DynamicResource record}"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Grid.Column="3"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Click="FolderButton_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon VerticalAlignment="Center" 
+                                                     Margin="0 3 20 2"
+                                                     Foreground="Black"
+                                                     Kind="FolderAccount"/>
+                            <TextBlock Foreground="Black" 
+                                       Text="{DynamicResource searchFile}"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Grid.Column="4"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Click="FolderButton_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon VerticalAlignment="Center" 
+                                                     Margin="0 3 20 2"
+                                                     Foreground="Black"
+                                                     Kind="Webcam"/>
+                            <TextBlock Foreground="Black" 
+                                       Text="{DynamicResource enableCamera}"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Grid.Column="5"
+                            x:Name="ComputerAudioButton"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Click="FolderButton_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon VerticalAlignment="Center" 
+                                                     Margin="0 3 20 2"
+                                                     Foreground="Black"
+                                                     Kind="Webcam"/>
+                            <TextBlock Foreground="Black" 
+                                       Text="{DynamicResource computerAudio}"/>
+                            <Popup Name="myPopup" IsOpen="True" PlacementTarget="{Binding ElementName=ComputerAudioButton}">
+                                <Border BorderThickness="1">
+                                    <TextBlock Name="myPopupText" Background="LightBlue" Foreground="Blue" Padding="30">
+                                        Popup Text
+                                    </TextBlock>
+                                </Border>
+                            </Popup>
+                        </StackPanel>
+                    </Button>
+
+    
+
+                    <!--
+                    <Button Grid.Column="5"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Click="FolderButton_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon VerticalAlignment="Center" 
+                                                     Margin="0 3 20 2"
+                                                     Foreground="Black"
+                                                     Kind="VolumeHigh"/>
+                            <TextBlock Foreground="Black" 
+                                       Text="{DynamicResource computerAudio}"/>
+                        </StackPanel>
+                    </Button>
+                    
+                    -->
         
-        <!--Menu do main player-->
+                    <Button Grid.Column="6"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Click="FolderButton_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon VerticalAlignment="Center" 
+                                                     Margin="0 3 20 2"
+                                                     Foreground="Black"
+                                                     Kind="Microphone"/>
+                            <TextBlock Foreground="Black" 
+                                       Text="{DynamicResource microphoneAudio}"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+
+        </Border>
+      
+        
+        <!--Player preview and player-->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <local:SessionPreview/>
-            <local:Player/>
+            <local:SessionPreviewMenu Grid.Column="0"/>
+            <local:Player Grid.Column="1"/>
         </Grid>
         <!--Students menu-->
         <local:SessionMembers Grid.Row="2"/>

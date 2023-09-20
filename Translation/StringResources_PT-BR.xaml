@@ -1,0 +1,78 @@
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    
+   
+    <!--A-->
+    <system:String x:Key="available">Disponiveis</system:String>
+
+    <!--C-->
+    <system:String x:Key="cancel">Cancelar</system:String>
+    <system:String x:Key="classBegin">Tem certeza que deseja iniciar a aula {0}?</system:String>
+    <system:String x:Key="classIsAboutToStart">Uma aula esta para come&#231;ar! Por favor prepare-se.</system:String>
+    <system:String x:Key="close">Fechar</system:String>
+    <system:String x:Key="confirm">Confirmar</system:String>
+    <system:String x:Key="content">Conte&#250;do</system:String>
+    <system:String x:Key="computerAudio">&#225;udio do computador</system:String>
+    
+    <!--E-->
+    <system:String x:Key="endDate">Data de t&#233;rmino</system:String>
+    <system:String x:Key="endTime">Hora de t&#233;rmino</system:String>
+    <system:String x:Key="enableCamera">Habilitar C&#226;mera</system:String>
+    
+    <!--F-->
+    <system:String x:Key="failToLogin">Usu&#225;rio ou senha inv&#225;lidos, para recuepera&#231;&#227;o de login por favor entre em contato com o suporte da MTW</system:String>
+    <system:String x:Key="filters">Filtros</system:String>
+
+    <!--I-->
+    <system:String x:Key="initSession">Iniciar Sess&#227;o</system:String>
+    <system:String x:Key="inserted">Inseridos</system:String>
+    <system:String x:Key="ip">IP</system:String>
+
+    <!--L-->
+    <system:String x:Key="language">Linguagem</system:String>
+    <system:String x:Key="login">Login</system:String>
+
+    <!--M-->
+    <system:String x:Key="microphoneAudio">&#225;udio do microfone</system:String>
+    
+    <!--N-->
+    <system:String x:Key="name">Nome</system:String>
+
+    <!--O-->
+    <system:String x:Key="openFolder">Abrir arquivos</system:String>
+
+    <!--P-->
+    <system:String x:Key="password">Senha</system:String>
+
+    <system:String x:Key="pauseTransmission">Pausar transmiss&#227;o</system:String>
+    <system:String x:Key="phase">Fase</system:String>
+
+    <!--R-->
+    <system:String x:Key="record">grava&#231;&#227;o</system:String>
+    <system:String x:Key="registration">Matr&#237;cula</system:String>
+    <system:String x:Key="restartTransmission">Retomar transmiss&#227;o</system:String>
+    <system:String x:Key="return">Retornar</system:String>
+
+    <!--S-->
+    <system:String x:Key="save">Salvar</system:String>
+    <system:String x:Key="schedule">Agendamento</system:String>
+
+    <system:String x:Key="schoolSubjects">Mat&#233;ria</system:String>
+    <system:String x:Key="server">Servidor</system:String>
+    <system:String x:Key="serialNumber">N&#250;mero de s&#233;rie</system:String>
+    <system:String x:Key="serverChanged">Altera&#231;&#227;o realizada com sucesso!&#x0a; Para que as modifica&#231;&#245;es tenham efeito &#233; necess&#225;rio reinciar o sistema</system:String>
+    <system:String x:Key="serverSelect">Tem certeza que deseja conectar ao servidor {0}?</system:String>
+    <system:String x:Key="sessionName">Nome da aula</system:String>
+    <system:String x:Key="success">Opera&#231;&#227;o realizada com sucesso</system:String>
+    <system:String x:Key="startDate">Data de In&#237;cio</system:String>
+    <system:String x:Key="startTime">Hora de In&#237;cio</system:String>
+    <system:String x:Key="stopTransmission">Parar transmiss&#227;o</system:String>
+    <system:String x:Key="searchFile">Procurar arquivo</system:String> 
+
+    <!--U-->
+    <system:String x:Key="unsuccess">Falha na opera&#231;&#227;o {0}</system:String>
+    <system:String x:Key="update">Atualizar</system:String>
+    <system:String x:Key="userName">Nome de usu&#225;rio</system:String>
+</ResourceDictionary>

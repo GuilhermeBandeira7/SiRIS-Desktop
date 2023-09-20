@@ -48,7 +48,7 @@ namespace SiRISApp.Services
 
         public void Init()
         {
-            List<string> lines = File.ReadAllLines("ftp.txt").ToList();
+            List<string> lines = File.ReadAllLines("_Configs//ftp.txt").ToList();
             string ip = lines.First();
             username = lines[1];
             password = lines[2];

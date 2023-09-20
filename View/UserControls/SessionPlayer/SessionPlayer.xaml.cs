@@ -23,6 +23,7 @@ namespace SiRISApp.View.UserControls.SessionPlayer
         }
 
         public ApplicationsMenu? applicationMenu = null;
+        public bool ShowComputerAudio = true;
 
 
         private void FolderButton_Click(object sender, System.Windows.RoutedEventArgs e)

@@ -50,7 +50,7 @@ namespace SiRISApp.View.UserControls.SessionPlayer
 
                 var currentAssembly = Assembly.GetEntryAssembly();
                 var currentDirectory = new FileInfo(currentAssembly.Location).DirectoryName;
-                var libDirectory = new DirectoryInfo(Path.Combine(currentDirectory, "libvlc", IntPtr.Size == 4 ? "win-x86" : "win-x64"));
+                var libDirectory = new DirectoryInfo(Path.Combine(currentDirectory, "_ExternalApps" ,"libvlc", IntPtr.Size == 4 ? "win-x86" : "win-x64"));
 
                 this.VlcControl.SourceProvider.CreatePlayer(libDirectory);
                 this.VlcControl.SourceProvider.MediaPlayer.Audio.ToggleMute();
