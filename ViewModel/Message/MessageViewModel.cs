@@ -1,10 +1,14 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Humanizer;
+using Newtonsoft.Json.Linq;
+using SiRISApp.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 
 namespace SiRISApp.ViewModel.SiRIS
@@ -13,14 +17,26 @@ namespace SiRISApp.ViewModel.SiRIS
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        private string message = string.Empty;
-        public string Message
+        private string type = string.Empty;
+        public string Type
         {
-            get { return message; }
+            get { return type; }
             set
             {
-                message = value;
-                OnPropertyChanged(nameof(Message));
+                type = value;
+                OnPropertyChanged(nameof(Type));
+
+            }
+        }
+
+        private string text = string.Empty;
+        public string Text
+        {
+            get { return text; }
+            set
+            {
+                text = value;
+                OnPropertyChanged(nameof(Text));
             }
         }
 
@@ -58,8 +74,54 @@ namespace SiRISApp.ViewModel.SiRIS
             }
         }
 
-        private int progressBarValue;
-        public int ProgressBarValue
+        private int statusBarValue = 0;
+        public int StatusBarValue
+        {
+            get { return statusBarValue; }
+            set
+            {
+                statusBarValue = value;
+                OnPropertyChanged(nameof(StatusBarValue));
+            }
+        }
+
+        private int maximum = 100;
+        public int Maximum
+        {
+            get { return maximum; }
+            set
+            {
+                maximum = value;
+                OnPropertyChanged(nameof(Maximum));
+
+            }
+        }
+
+        private int minimum = 0;
+        public int Minimum
+        {
+            get { return minimum; }
+            set
+            {
+                minimum = value;
+                OnPropertyChanged(nameof(Minimum));
+            }
+        }
+
+        private int position = 0;
+        public int Position
+        {
+            get { return position; }
+            set
+            {
+                position = value;
+                OnPropertyChanged(nameof(position));
+
+            }
+        }
+
+        private double progressBarValue = 0;
+        public double ProgressBarValue
         {
             get { return progressBarValue; }
             set
@@ -69,8 +131,81 @@ namespace SiRISApp.ViewModel.SiRIS
             }
         }
 
-        public void SetMessage(string type, string message)
+        private string progressText = "0/0";
+        public string ProgressText
         {
+            get { return progressText; }
+            set
+            {
+                progressText = value;
+                OnPropertyChanged(nameof(ProgressText));
+
+            }
+        }
+
+        private Visibility statusBarVisibility;
+        public Visibility StatusBarVisibility
+        {
+            get { return statusBarVisibility; }
+            set
+            {
+                statusBarVisibility = value;
+                OnPropertyChanged(nameof(StatusBarVisibility));
+            }
+        }
+
+        private Visibility inputVisibility;
+        public Visibility InputVisibility
+        {
+            get { return inputVisibility; }
+            set
+            {
+                inputVisibility = value;
+                OnPropertyChanged(nameof(InputVisibility));
+
+            }
+        }
+
+        private Visibility progressBarVisibility;
+        public Visibility ProgressBarVisibility
+        {
+            get { return progressBarVisibility; }
+            set
+            {
+                progressBarVisibility = value;
+                OnPropertyChanged(nameof(ProgressBarVisibility));
+
+            }
+        }
+
+        private bool buttons = false;
+        private bool loading = false;
+
+        public EventHandler? CloseWindowEventHandler;
+
+
+        public MessageViewModel()
+        {
+
+        }
+
+        public MessageViewModel(MessageModel message)
+        {
+            Init(message);
+        }
+
+        public void Init(MessageModel message)
+        {
+            buttons = message.Buttons;
+            loading = message.Loading;
+            Minimum = message.Min;
+            Maximum = message.Max;
+            Type = message.Type;
+
+            StatusBarVisibility = buttons || loading ? Visibility.Collapsed : Visibility.Visible;
+            InputVisibility = buttons ? Visibility.Visible : Visibility.Collapsed;
+            ProgressBarVisibility = loading ? Visibility.Visible : Visibility.Collapsed;
+
             if (type == "error")
             {
                 PrimaryColor = "#E84C3D";
@@ -83,17 +218,58 @@ namespace SiRISApp.ViewModel.SiRIS
                 SecondaryColor = "#FFD38A";
                 Image = "pack://application:,,,/View/Assets/LottieAnimations/warning.json";
             }
+            else if (type == "info")
+            {
+                PrimaryColor = "#739DE1";
+                SecondaryColor = "#2355A6";
+                Image = $"pack://application:,,,/View/Assets/LottieAnimations/{message.Image}.json";
+            }
 
-            var app = (App)System.Windows.Application.Current;
-            string? text = app.LanguageDictionary[message]?.ToString();
+            App app = (App)Application.Current;
+            string? text = app.LanguageDictionary[message.Text]?.ToString();
 
-            if(text != null) Message = text;
-            else Message = message;
+            if (text != null) Text = text;
+            else Text = message.Text;
+        }
+
+
+        public void RunStatusMessage()
+        {
+            if (!buttons)
+            {
+                int charCount = Text.Length;
+                int timePerChar = charCount * 50;
+                int sleepTime = (timePerChar) / 100;
+                if (sleepTime < 50) { sleepTime = 50; }
+                while (StatusBarValue < 100)
+                {
+                    StatusBarValue++;
+                    Thread.Sleep(sleepTime);
+                }
+
+            }
+
+        }
+
+        public void StepProgressBar()
+        {
+            if (loading)
+            {
+                double stepValue = 100 / (double)(Maximum - Minimum);
+                ProgressBarValue += stepValue;
+                Position += 1;
+                ProgressText = $"{Position}/{Maximum}";
+
+                /*  if(progressBarCalcValue >= 100)
+                      CloseWindowEventHandler?.Invoke(this, EventArgs.Empty);*/
+            }
         }
 
         public void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+
     }
 }

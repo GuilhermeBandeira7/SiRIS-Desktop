@@ -1,8 +1,6 @@
-﻿using SiRISApp.View.Windows;
-using SiRISApp.ViewModel;
-using SiRISApp.ViewModel.SessionManagement;
+﻿using Microsoft.Office.Interop.Word;
+using SiRISApp.View.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace SiRISApp.View.UserControls.SessionManagement
 {
@@ -23,7 +21,7 @@ namespace SiRISApp.View.UserControls.SessionManagement
 
         private void FolderButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            FileManagement fileManagement = new FileManagement();
+            FileManagement fileManagement = new();
             fileManagement.ShowDialog();    
         }
     }

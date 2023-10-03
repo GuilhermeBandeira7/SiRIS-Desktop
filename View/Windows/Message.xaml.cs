@@ -1,5 +1,8 @@
-﻿using SiRISApp.ViewModel.SiRIS;
+﻿using Humanizer;
+using SiRISApp.ViewModel.SiRIS;
+using System;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace SiRISApp.View.Windows.SiRIS
@@ -9,9 +12,8 @@ namespace SiRISApp.View.Windows.SiRIS
     /// </summary>
     public partial class Message : Window
     {
-        public delegate void CloseWindow();
+        public delegate void CloseWindow(object? sender, EventArgs e);
         public CloseWindow closeWindowCallback;
-        public bool userInput = false;
 
         public Message()
         {
@@ -19,25 +21,7 @@ namespace SiRISApp.View.Windows.SiRIS
             closeWindowCallback = new CloseWindow(CloseWindowsCallback);
         }
 
-
-        public void SetType(string type, string message, bool userInput = false)
-        {
-            if (userInput)
-            {
-                ProgressBar.Visibility = Visibility.Collapsed;
-                InputGrid.Visibility = Visibility.Visible;
-            }
-
-            this.userInput = userInput;
-
-            if (Resources["vm"] != null)
-            {
-                MessageViewModel viewModel = (MessageViewModel)Resources["vm"];
-                viewModel.SetMessage(type, message);
-            }
-        }
-
-        private void CloseWindowsCallback()
+        private void CloseWindowsCallback(object? sender, EventArgs e)
         {
             Close();
         }
@@ -56,32 +40,12 @@ namespace SiRISApp.View.Windows.SiRIS
         private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if ((bool)e.NewValue)
-            {
-                Thread thread = new(() =>
-                {
-                    if (Resources["vm"] != null)
-                    {
-                        MessageViewModel viewModel = (MessageViewModel)Resources["vm"];
-                        if(!userInput)
-                        {
-                            int charCount = viewModel.Message.Length;
-                            int timePerChar = charCount * 50;
-                            int sleepTime = (timePerChar) / 100;
-                            if(sleepTime < 50) { sleepTime = 50; }
-                            while (viewModel.ProgressBarValue < 100)
-                            {
-                                viewModel.ProgressBarValue++;
-                                Thread.Sleep(sleepTime);
-                            }
+                Topmost = true;
+        }
 
-                            Dispatcher.BeginInvoke(closeWindowCallback, new object[] { });
-                        }
-                    }
-                });
-
-                thread.Start();
-    
-            }
+        public void SetContext(MessageViewModel viewModel)
+        {
+            DataContext = viewModel;
         }
     }
 }

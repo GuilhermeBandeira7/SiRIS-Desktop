@@ -16,23 +16,19 @@
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         Deactivated="Window_Deactivated"
-        Activated="Window_Activated" StateChanged="Window_StateChanged">
-
+        Activated="Window_Activated"
+        StateChanged="Window_StateChanged">
     <Window.Resources>
         <ResourceDictionary>
             <vm:SiRISViewModel x:Key="vm"/>
         </ResourceDictionary>
     </Window.Resources>
-
-
     <Window.Background>
         <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
             <GradientStop Color="#141613" Offset="0.0"/>
             <GradientStop Color="#282725" Offset="1" />
         </LinearGradientBrush>
     </Window.Background>
-
-
     <DockPanel DataContext="{StaticResource vm}">
         <DockPanel.Background>
             <ImageBrush ImageSource="../Assets/bg.jpg" Opacity="0.3"/>

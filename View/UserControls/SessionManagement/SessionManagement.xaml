@@ -11,7 +11,7 @@
     <DockPanel>
         <Grid>
             <materialDesign:Transitioner AutoApplyTransitionOrigins="True"
-                                         SelectedIndex="0"
+                                         SelectedIndex="{Binding SessionManagementViewModel.Index}"
                                          Grid.Row="0">
                 <materialDesign:TransitionerSlide OpeningEffect="{materialDesign:TransitionEffect FadeIn}">
                     <Grid>
@@ -20,12 +20,9 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <!--REFRESH AND CREATE SESSION BUTTON-->
-                        <Grid Grid.Row="0"
-                              Panel.ZIndex="999">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Row="0"
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
                             <Button x:Name="CreateButton"
                                     Grid.Column="0"
                                     Margin="10"
@@ -39,10 +36,9 @@
                                         <i:InvokeCommandAction Command="{x:Static materialDesign:Transitioner.MoveNextCommand}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
-                                <materialDesign:PackIcon Kind="Add"/>
+                                <materialDesign:PackIcon Width="25" Height="25" Kind="Add"/>
                             </Button>
                             <Button x:Name="RefreshButton"
-                                    Grid.Column="1"
                                     Margin="10"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
@@ -51,14 +47,39 @@
                                     Panel.ZIndex="999"
                                     Background="DodgerBlue"
                                     BorderBrush="DodgerBlue">
-                                <materialDesign:PackIcon Kind="Refresh" />
+                                <materialDesign:PackIcon Width="25" Height="25" Kind="Refresh" />
                             </Button>
-                        </Grid>
+                            <Button x:Name="RecoverButton"
+                                    Margin="10"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Panel.ZIndex="999"
+                                    Background="White"
+                                    BorderBrush="White"
+                                    Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}"
+                                    Command="{Binding SessionManagementViewModel.ShowRecoveredCommand}">
+                                <materialDesign:PackIcon Width="25" Height="25" Kind="Autorenew" />
+                            </Button>
+                            <Button x:Name="FolderButton"
+                                    Margin="10"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}"
+                                    Panel.ZIndex="999"
+                                    Background="Wheat"
+                                    BorderBrush="Wheat"
+                                    Click="FolderButton_Click">
+                                <materialDesign:PackIcon Width="25" Height="25" Kind="Folder" />
+                            </Button>
+                        </StackPanel>
+
                         
+
+
+
                         <!--LIST OF SESSIONS-->
                         <ListBox Grid.Row="1"
                                  ItemsSource="{Binding SessionManagementViewModel.Sessions}"
-                                 SelectedItem="{Binding SessionManagementViewModel.SelectedSession, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  Panel.ZIndex="0">
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -76,7 +97,7 @@
                     </Grid>
                 </materialDesign:TransitionerSlide>
                 <materialDesign:TransitionerSlide OpeningEffect="{materialDesign:TransitionEffect FadeIn}">
-                    <local:Session/>
+                    <local:SessionConfiguration/>
                 </materialDesign:TransitionerSlide>
             </materialDesign:Transitioner>
         </Grid>

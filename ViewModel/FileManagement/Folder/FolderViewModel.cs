@@ -42,6 +42,9 @@ namespace SiRISApp.ViewModel.FileManagement.Folder
         public ObservableCollection<FolderViewModel> SubFolders { get; set; } = new();
         public ObservableCollection<FileViewModel> Files { get; set; } = new();
 
+        public ObservableCollection<FolderViewModel> FilteredSubFolders { get; set; } = new();
+        public ObservableCollection<FileViewModel> FilteredFiles { get; set; } = new();
+
         public FolderViewModel()
         {
 
@@ -58,11 +61,43 @@ namespace SiRISApp.ViewModel.FileManagement.Folder
 
             foreach (string file in FtpService.Instance.GetFiles(Path))
                 Files.Add(new(file.Replace($"{name}/", ""), $"{path}/{ file.Replace($"{name}/", "") }"));
+
+            ApplyFileFilter(string.Empty);
         }
 
         public void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void ApplyFolderFilter(string filter)
+        {
+            FilteredSubFolders.Clear();
+            foreach(var subfolder in SubFolders)
+            {
+                subfolder.ApplyFolderFilter(filter);
+
+                if (subfolder.Name.Contains(filter))
+                    FilteredSubFolders.Add(subfolder);
+                else if(subfolder.FilteredSubFolders.Count > 0)
+                    FilteredSubFolders.Add(subfolder);
+
+                  
+            }
+        }
+
+        public void ApplyFileFilter(string filter)
+        {
+            FilteredFiles.Clear();
+            foreach (var file in Files)
+                if (file.Name.Contains(filter))
+                    FilteredFiles.Add(file);
+        }
+
+        public void UnselectFiles()
+        {
+            foreach(var file in Files)
+                file.IsSelected = false;
         }
     }
 }

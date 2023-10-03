@@ -26,9 +26,14 @@ namespace SiRISApp.View.UserControls.SessionPlayer
         public bool ShowComputerAudio = true;
 
 
-        private void FolderButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void FolderButton_Click(object sender, RoutedEventArgs e)
         {
             FtpService.Instance.ShowFileManagement();
+        }
+
+        private void ShowComputerVolume_Click(object sender, RoutedEventArgs e)
+        {
+            ComputedAudioPopup.IsOpen = !ComputedAudioPopup.IsOpen;
         }
 
         private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)

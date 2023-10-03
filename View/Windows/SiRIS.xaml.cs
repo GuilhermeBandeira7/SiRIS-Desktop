@@ -41,6 +41,8 @@ namespace SiRISApp.View
                 OBSService.Instance.Stop();
                 if (viewModel.SessionPlayerViewModel.Status)
                     viewModel.SessionPlayerViewModel.PauseSession();
+
+                viewModel.SessionPlayerViewModel.SessionPreviewViewModel.StopPip();
             }
 
             Close();

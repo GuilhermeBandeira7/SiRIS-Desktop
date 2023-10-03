@@ -1,12 +1,6 @@
-﻿using EntityMtwServer.Entities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
-namespace SiRISApp.ViewModel.SessionManagement
+namespace SiRISApp.ViewModel.SiRIS.SessionManagement.User
 {
     public class UserViewModel : INotifyPropertyChanged
     {
@@ -69,7 +63,7 @@ namespace SiRISApp.ViewModel.SessionManagement
 
         }
 
-        public UserViewModel(User user)
+        public UserViewModel(EntityMtwServer.Entities.User user)
         {
             Id = user.Id;
             Nome = user.Name;

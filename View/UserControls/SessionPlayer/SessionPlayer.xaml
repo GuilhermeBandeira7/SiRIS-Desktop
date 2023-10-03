@@ -35,7 +35,7 @@
                 CornerRadius="20"
                 Margin="10" 
                 Background="#FFFFFFFF" 
-                Width="1200">
+                Width="1400">
             <Border CornerRadius="20">
                 <Border.Background>
                     <ImageBrush ImageSource="../../Assets/Texture/shattered.png" 
@@ -51,10 +51,10 @@
                         <ColumnDefinition Width="200"/>
                         <ColumnDefinition Width="200"/>
                         <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="175"/>
-                        <ColumnDefinition Width="175"/>
-                        <ColumnDefinition Width="175"/>
-                        <ColumnDefinition Width="175"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="225"/>
+                        <ColumnDefinition Width="225"/>
                     </Grid.ColumnDefinitions>
                     <Button Grid.Column="0"
                  
@@ -133,19 +133,40 @@
                             x:Name="ComputerAudioButton"
                             Background="Transparent"
                             BorderBrush="Transparent"
-                            Click="FolderButton_Click">
+                            Click="ShowComputerVolume_Click">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon VerticalAlignment="Center" 
                                                      Margin="0 3 20 2"
                                                      Foreground="Black"
-                                                     Kind="Webcam"/>
+                                                     Kind="VolumeHigh"/>
                             <TextBlock Foreground="Black" 
                                        Text="{DynamicResource computerAudio}"/>
-                            <Popup Name="myPopup" IsOpen="True" PlacementTarget="{Binding ElementName=ComputerAudioButton}">
-                                <Border BorderThickness="1">
-                                    <TextBlock Name="myPopupText" Background="LightBlue" Foreground="Blue" Padding="30">
-                                        Popup Text
-                                    </TextBlock>
+                            <Popup x:Name="ComputedAudioPopup" 
+                                   AllowsTransparency="True"
+                                   PopupAnimation="Scroll"
+                                   IsOpen="False" 
+                                   PlacementTarget="{Binding ElementName=ComputerAudioButton}">
+                                <Border BorderThickness="1"
+                                        CornerRadius="20"
+                                        Padding="10 25 10 25"
+                                        Background="White">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon VerticalAlignment="Center" 
+                                                                 Margin="10 0 0 5"
+                                                                 Foreground="Black"
+                                                                 Kind="VolumeHigh"/>
+                                        <Slider Width="210"
+                                                Margin="10"
+                                                Background="White"
+                                                materialDesign:SliderAssist.OnlyShowFocusVisualWhileDragging="True"
+                                                Maximum="100"
+                                                Minimum="0"
+                                                TickFrequency="10"
+                                                TickPlacement="BottomRight"
+                                                Value="60"
+                                                Style="{StaticResource MaterialDesignDiscreteSlider}"/>
+                                    </StackPanel>
+      
                                 </Border>
                             </Popup>
                         </StackPanel>

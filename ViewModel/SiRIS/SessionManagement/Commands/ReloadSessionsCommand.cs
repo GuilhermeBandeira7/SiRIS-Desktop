@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace SiRISApp.ViewModel.SessionManagement.Commads
+namespace SiRISApp.ViewModel.SiRIS.SessionManagement
 {
     public class ReloadSessionsCommand : ICommand
     {

@@ -31,6 +31,7 @@
                     Background="Transparent"
                     BorderBrush="Transparent"
                     Foreground="Black"
+                    Visibility="{Binding LoginViewModel.NavigateVisibility}"
                     Command="{Binding LoginViewModel.NavigateCommand}">
                 <materialDesign:PackIcon Kind="{Binding LoginViewModel.NavigateButtonImage}"
                                          Width="30"

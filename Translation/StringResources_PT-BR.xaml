@@ -15,6 +15,13 @@
     <system:String x:Key="confirm">Confirmar</system:String>
     <system:String x:Key="content">Conte&#250;do</system:String>
     <system:String x:Key="computerAudio">&#225;udio do computador</system:String>
+
+    <!--D-->
+    <system:String x:Key="differentExtension">Para reprodu&#231;&#227;o de lista, todos os arquivos devem ter a mesma extens&#227;o</system:String>
+    <system:String x:Key="downloadingFiles">Baixando arquivos</system:String>
+    <system:String x:Key="downloadSuccess">Arquivos baixados com sucesso</system:String>
+    <system:String x:Key="deletingFiles">Removendo arquivos</system:String>
+    <system:String x:Key="deleteSuccess">Arquivos removidos com sucesso</system:String>
     
     <!--E-->
     <system:String x:Key="endDate">Data de t&#233;rmino</system:String>
@@ -24,6 +31,8 @@
     <!--F-->
     <system:String x:Key="failToLogin">Usu&#225;rio ou senha inv&#225;lidos, para recuepera&#231;&#227;o de login por favor entre em contato com o suporte da MTW</system:String>
     <system:String x:Key="filters">Filtros</system:String>
+    <system:String x:Key="folderName">Nome da pasta</system:String>
+    
 
     <!--I-->
     <system:String x:Key="initSession">Iniciar Sess&#227;o</system:String>
@@ -32,6 +41,8 @@
 
     <!--L-->
     <system:String x:Key="language">Linguagem</system:String>
+    <system:String x:Key="loadingServers">Carregando servidores</system:String>
+    <system:String x:Key="loadingFolders">Carregando pastas e arquivos</system:String>
     <system:String x:Key="login">Login</system:String>
 
     <!--M-->
@@ -51,6 +62,7 @@
 
     <!--R-->
     <system:String x:Key="record">grava&#231;&#227;o</system:String>
+    <system:String x:Key="liveClass">Aula ao vivo</system:String>
     <system:String x:Key="registration">Matr&#237;cula</system:String>
     <system:String x:Key="restartTransmission">Retomar transmiss&#227;o</system:String>
     <system:String x:Key="return">Retornar</system:String>
@@ -66,6 +78,7 @@
     <system:String x:Key="serverSelect">Tem certeza que deseja conectar ao servidor {0}?</system:String>
     <system:String x:Key="sessionName">Nome da aula</system:String>
     <system:String x:Key="success">Opera&#231;&#227;o realizada com sucesso</system:String>
+    <system:String x:Key="Success">Opera&#231;&#227;o realizada com sucesso</system:String>
     <system:String x:Key="startDate">Data de In&#237;cio</system:String>
     <system:String x:Key="startTime">Hora de In&#237;cio</system:String>
     <system:String x:Key="stopTransmission">Parar transmiss&#227;o</system:String>
@@ -74,5 +87,11 @@
     <!--U-->
     <system:String x:Key="unsuccess">Falha na opera&#231;&#227;o {0}</system:String>
     <system:String x:Key="update">Atualizar</system:String>
+    <system:String x:Key="uploadingData">Enviando arquivos para o servidor</system:String>
     <system:String x:Key="userName">Nome de usu&#225;rio</system:String>
+
+    <!--W-->
+    <system:String x:Key="wrongTypeOfFile">Tipo de extens&#227;o n&#227;o suportado</system:String>
+
+
 </ResourceDictionary>

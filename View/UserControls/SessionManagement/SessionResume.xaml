@@ -5,7 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SiRISApp.View.UserControls.SessionManagement"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
+             xmlns:sessionresume="clr-namespace:SiRISApp.ViewModel.SiRIS.SessionManagement.SessionResume" 
+             d:DataContext="{d:DesignInstance Type=sessionresume:SessionResumeViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="250">
     <Border Background="{Binding Color}"
@@ -31,7 +33,7 @@
                 </Grid.RowDefinitions>
                 <Image Grid.Row="1"
                        Height="140"
-                       Source="{Binding SelectedCourse.Image.bytes}"
+                       Source="{Binding Course.Image.bytes}"
                        Stretch="Fill"/>
                 <!-- BUTTONS-->
                 <StackPanel Grid.Row="1"
@@ -44,7 +46,7 @@
                             Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
-                                <i:InvokeCommandAction Command="{Binding SelectSessionCommand}" CommandParameter="{Binding}"/>
+                                <i:InvokeCommandAction Command="{Binding StartSessionCommand}"/>
                                 <i:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
@@ -56,7 +58,7 @@
                             Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
-                                <i:InvokeCommandAction Command="{Binding SelectSessionCommand}" CommandParameter="{Binding}"/>
+                                <i:InvokeCommandAction Command="{Binding EditSessionCommand}"/>
                                 <i:InvokeCommandAction Command="{x:Static materialDesign:Transitioner.MoveNextCommand}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
@@ -65,14 +67,28 @@
                     <Button Margin="2" 
                             BorderBrush="Black"
                             Background="Crimson"
+                             Visibility="{Binding DeleteVisibility}"
                             Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
-                                <i:InvokeCommandAction Command="{Binding SelectSessionCommand}" CommandParameter="{Binding}"/>
+                                <i:InvokeCommandAction Command="{Binding DeleteSessionCommand}"/>
                                 <i:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <materialDesign:PackIcon Kind="Trash" />
+                    </Button>
+                    <Button Margin="2" 
+                            BorderBrush="Black"
+                            Background="Orange"
+                            Visibility="{Binding RestoreVisibility}"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:InvokeCommandAction Command="{Binding RestoreSessionCommand}"/>
+                                <i:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <materialDesign:PackIcon Kind="DeleteRestore" />
                     </Button>
                 </StackPanel>
                 <!--SESSION INFO-->

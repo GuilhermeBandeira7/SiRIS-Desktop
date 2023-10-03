@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace SiRISApp.ViewModel.Login
+namespace SiRISApp.ViewModel.FileManagement.Commands
 {
-    public class UpdateServerConfigCommand : ICommand
+    public class RunFilesCommand : ICommand
     {
-        public LoginConfigViewModel viewModel { get; set; }
+        public FileManagementViewModel ViewModel { get; set; }
 
         public event EventHandler? CanExecuteChanged
         {
@@ -23,19 +23,21 @@ namespace SiRISApp.ViewModel.Login
             }
         }
 
-        public UpdateServerConfigCommand(LoginConfigViewModel viewModel)
+        public RunFilesCommand(FileManagementViewModel viewModel)
         {
-            this.viewModel = viewModel;
+            ViewModel = viewModel;
         }
 
         public bool CanExecute(object? parameter)
         {
-            return true;
+            if (ViewModel.SelectedFolder == null)
+                return false;
+            return ViewModel.SelectedFolder.Files.Any(x => x.IsSelected);
         }
 
         public void Execute(object? parameter)
         {
-            viewModel.SaveConfig();
+            ViewModel.RunFiles();
         }
     }
 }

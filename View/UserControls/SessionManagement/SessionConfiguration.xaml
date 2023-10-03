@@ -1,10 +1,10 @@
-﻿<UserControl x:Class="SiRISApp.View.UserControls.SessionManagement.Session"
+﻿<UserControl x:Class="SiRISApp.View.UserControls.SessionManagement.SessionConfiguration"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     
@@ -57,7 +57,7 @@
                          BorderBrush="White"
                          materialDesign:HintAssist.HelperText="{DynamicResource sessionName}"
                          materialDesign:HintAssist.HelperTextFontSize="18"
-                         Text="{Binding SessionManagementViewModel.SelectedSession.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                         Text="{Binding SessionManagementViewModel.SessionConfigurationViewModel.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 </TextBox>
                 <ComboBox x:Name="CurriculumCourseComboBox"
                           Grid.Column="2"
@@ -71,8 +71,8 @@
                           materialDesign:ThemeAssist.Theme="Dark"
                           materialDesign:HintAssist.HelperText="{DynamicResource phase}"
                           materialDesign:HintAssist.HelperTextFontSize="18"
-                          ItemsSource="{Binding SessionManagementViewModel.SelectedSession.CurriculumCourses, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                          SelectedItem="{Binding SessionManagementViewModel.SelectedSession.SelectedCurriculumCourse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                          ItemsSource="{Binding SessionManagementViewModel.SessionConfigurationViewModel.CurriculumCourses, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedItem="{Binding SessionManagementViewModel.SessionConfigurationViewModel.SelectedCurriculumCourse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 </ComboBox>
                 <ComboBox x:Name="CourseComboBox" 
                           Grid.Column="4"
@@ -86,9 +86,9 @@
                           materialDesign:ThemeAssist.Theme="Dark"
                           materialDesign:HintAssist.HelperText="{DynamicResource schoolSubjects}"
                           materialDesign:HintAssist.HelperTextFontSize="18"
-                          Visibility="{Binding SessionManagementViewModel.SelectedSession.CourseVisibility}"
-                          ItemsSource="{Binding SessionManagementViewModel.SelectedSession.Courses, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                          SelectedItem="{Binding SessionManagementViewModel.SelectedSession.SelectedCourse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                          Visibility="{Binding SessionManagementViewModel.SessionConfigurationViewModel.CourseVisibility}"
+                          ItemsSource="{Binding SessionManagementViewModel.SessionConfigurationViewModel.Courses, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedItem="{Binding SessionManagementViewModel.SessionConfigurationViewModel.SelectedCourse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 </ComboBox>
                 <DatePicker x:Name="StartDatePicker"
                             Grid.Row="1"
@@ -103,7 +103,7 @@
                             materialDesign:HintAssist.HelperTextFontSize="18"
                             materialDesign:TextFieldAssist.HasClearButton="True"
                             Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
-                            SelectedDate="{Binding SessionManagementViewModel.SelectedSession.StartDate}"/>
+                            SelectedDate="{Binding SessionManagementViewModel.SessionConfigurationViewModel.StartDate}"/>
                 <materialDesign:TimePicker x:Name="StartTimePicker"
                                            Grid.Row="1"
                                            Grid.Column="1"
@@ -115,7 +115,7 @@
                                            materialDesign:ThemeAssist.Theme="Dark"
                                            materialDesign:HintAssist.HelperText="{DynamicResource startTime}"
                                            materialDesign:HintAssist.HelperTextFontSize="18"
-                                           SelectedTime="{Binding SessionManagementViewModel.SelectedSession.StartTime}"
+                                           SelectedTime="{Binding SessionManagementViewModel.SessionConfigurationViewModel.StartTime}"
                                            Style="{StaticResource MaterialDesignFloatingHintTimePicker}"/>
                 <DatePicker x:Name="EndDatePicker"
                             Grid.Row="1"
@@ -129,7 +129,7 @@
                             materialDesign:HintAssist.HelperTextFontSize="18"
                             materialDesign:TextFieldAssist.HasClearButton="True"
                             Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
-                            SelectedDate="{Binding SessionManagementViewModel.SelectedSession.EndDate}"/>
+                            SelectedDate="{Binding SessionManagementViewModel.SessionConfigurationViewModel.EndDate}"/>
                 <materialDesign:TimePicker x:Name="EndTimePicker"
                                            Grid.Row="1"
                                            Grid.Column="3"
@@ -142,12 +142,51 @@
                                            materialDesign:HintAssist.HelperText="{DynamicResource endTime}"
                                            materialDesign:HintAssist.HelperTextFontSize="18"
                                            Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
-                                           SelectedTime="{Binding SessionManagementViewModel.SelectedSession.EndTime}"/>
+                                           SelectedTime="{Binding SessionManagementViewModel.SessionConfigurationViewModel.EndTime}"/>
+                <StackPanel Orientation="Horizontal"
+                            x:Name="RecordSessionInfo"
+                            Margin="17"
+                            VerticalAlignment="Bottom"
+                            Grid.Row="2"
+                            Grid.Column="4"
+                            Grid.ColumnSpan="2">
+                    <CheckBox Margin="20 0 0 0" 
+                              FontSize="18"
+                              Foreground="White"
+                              materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                              materialDesign:ThemeAssist.Theme="Dark"
+                              IsChecked="{Binding SessionManagementViewModel.SessionConfigurationViewModel.LiveSession}"
+                              Content="{DynamicResource liveClass}" />
+                    <TextBox Width="300"
+                             Margin="20 0 0 0"
+                             FontSize="24"                           
+                             Foreground="White" 
+                             Background="{x:Null}"
+                             BorderBrush="White"
+                             materialDesign:HintAssist.HelperText="{DynamicResource sessionPath}"
+                             materialDesign:HintAssist.HelperTextFontSize="18"
+                             Visibility="{Binding SessionManagementViewModel.SessionConfigurationViewModel.RecordInfoVisibility}"
+                             Text="{Binding SessionManagementViewModel.SessionConfigurationViewModel.RecordPath}">
+                    </TextBox>
+                    <Button x:Name="FolderButton"
+                            Width="45"
+                            Height="45"
+                            Margin="20 0 0 0"
+                            Background="Wheat"
+                            BorderBrush="Wheat"
+                            Visibility="{Binding SessionManagementViewModel.SessionConfigurationViewModel.RecordInfoVisibility}"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}"
+                            Command="{Binding SessionManagementViewModel.SessionConfigurationViewModel.GetRecordFileCommand}">
+                        <materialDesign:PackIcon Width="30" Height="30" Kind="FolderArrowDown" />
+                    </Button>
+                </StackPanel>
+                            
             </Grid>
             <!-- ROW1: Description -->
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBox x:Name="DescriptionTextBox"
                          Grid.Column="0"
@@ -164,8 +203,43 @@
                          SpellCheck.IsEnabled="True" 
                          TextWrapping="Wrap"
                          Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                         Text="{Binding SessionManagementViewModel.SelectedSession.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                         Text="{Binding SessionManagementViewModel.SessionConfigurationViewModel.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 </TextBox>
+
+                <Grid Grid.Column="1"
+                      Visibility="{Binding SessionManagementViewModel.SessionConfigurationViewModel.RecordInfoVisibility}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" 
+                           Margin="20 0 20 20"
+                           FontSize="24"
+                           FontWeight="Bold"
+                           FontStyle="Italic"
+                           Foreground="White" 
+                           Content="Arquivos"/>
+                    <ScrollViewer Grid.Row="1"
+                                  materialDesign:ThemeAssist.Theme="Dark"
+                                  VerticalScrollBarVisibility="Auto">
+                        <ItemsControl  MinWidth="600"
+                                       Margin="20 0 20 20"
+                                       materialDesign:ThemeAssist.Theme="Dark"
+                                       ItemsSource="{Binding SessionManagementViewModel.SessionConfigurationViewModel.Files}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Label Margin="0 5 0 5"
+                                           FontSize="18" 
+                                           FontWeight="SemiBold" 
+                                           BorderBrush="White"
+                                           BorderThickness="0 0 0 1"
+                                           FontStyle="Italic" 
+                                           Content="{Binding}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
             </Grid>
             <!-- ROW2: User datagrid -->
             <Grid Grid.Row="2">
@@ -210,7 +284,7 @@
                              materialDesign:HintAssist.FloatingScale="0"
                              materialDesign:TextFieldAssist.HasClearButton="True"
                              Style="{StaticResource MaterialDesignFilledTextBox}"
-                             Text="{Binding SessionManagementViewModel.SelectedSession.AvailableFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Text="{Binding SessionManagementViewModel.SessionConfigurationViewModel.AvailableFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              TextWrapping="Wrap" />
                     <TextBox x:Name="RelationAvailableTextBox"
                              Grid.Column="0"
@@ -234,7 +308,7 @@
                              IsHitTestVisible="False"
                              materialDesign:ThemeAssist.Theme="Dark"
                              Style="{StaticResource MaterialDesignFilterChipListBox}"
-                             ItemsSource="{Binding SessionManagementViewModel.SelectedSession.FilteredAvailableUsers}">
+                             ItemsSource="{Binding SessionManagementViewModel.SessionConfigurationViewModel.FilteredAvailableUsers}">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="{x:Type ListBoxItem}">
                                 <Setter Property="Visibility" Value="{Binding Selecionado,  Converter={StaticResource BoolToVis}}"/>
@@ -290,7 +364,7 @@
                              materialDesign:HintAssist.FloatingScale="0"
                              materialDesign:TextFieldAssist.HasClearButton="True"
                              Style="{StaticResource MaterialDesignFilledTextBox}"
-                             Text="{Binding SessionManagementViewModel.SelectedSession.InsertedFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Text="{Binding SessionManagementViewModel.SessionConfigurationViewModel.InsertedFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              TextWrapping="Wrap" />
                     <TextBox x:Name="RelationInsertedTextBox"
                              Grid.Row="1"
@@ -313,7 +387,7 @@
                              IsHitTestVisible="False"
                              materialDesign:ThemeAssist.Theme="Dark"
                              Style="{StaticResource MaterialDesignFilterChipListBox}"
-                             ItemsSource="{Binding SessionManagementViewModel.SelectedSession.FilteredInsertedUsers}">
+                             ItemsSource="{Binding SessionManagementViewModel.SessionConfigurationViewModel.FilteredInsertedUsers}">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="{x:Type ListBoxItem}">
                                 <Setter Property="Visibility" Value="{Binding Selecionado,  Converter={StaticResource BoolToVis}}"/>
@@ -347,7 +421,7 @@
                           Margin="10"
                           Padding="10"
                           materialDesign:ThemeAssist.Theme="Dark"
-                          ItemsSource="{Binding SessionManagementViewModel.SelectedSession.FilteredAvailableUsers}"
+                          ItemsSource="{Binding SessionManagementViewModel.SessionConfigurationViewModel.FilteredAvailableUsers}"
                           SelectionMode="Extended"
                           SelectionUnit="FullRow">
                 </DataGrid>
@@ -357,7 +431,7 @@
                         Margin="10"
                         Background="#00282725"
                         BorderBrush="#00000000"
-                        Command="{Binding SessionManagementViewModel.SelectedSession.UpdateUsersCommand}">
+                        Command="{Binding SessionManagementViewModel.SessionConfigurationViewModel.UpdateUsersCommand}">
                     <materialDesign:PackIcon Kind="ArrowLeftRight"  HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32"/>
                 </Button>
                 <DataGrid Grid.Row="1"
@@ -369,7 +443,7 @@
                           Foreground="White"
                           BorderBrush="White"
                           materialDesign:ThemeAssist.Theme="Dark"
-                          ItemsSource="{Binding SessionManagementViewModel.SelectedSession.InsertedUsers}"
+                          ItemsSource="{Binding SessionManagementViewModel.SessionConfigurationViewModel.InsertedUsers}"
                           SelectionMode="Extended"
                           SelectionUnit="FullRow">
                 </DataGrid>
@@ -381,30 +455,39 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" 
+                <Button Grid.Column="0"
+                        VerticalAlignment="Top"
                         MaxWidth="200"
-                        Margin="10"
+                        Height="50"
                         FontSize="18"
-                        BorderBrush="LightGray"
+                        Foreground="White"
+                        Background="Crimson"      
+                        BorderBrush="Crimson"
+                        materialDesign:ButtonAssist.CornerRadius="20"
                         Style="{StaticResource MaterialDesignPaperLightButton}"
-                        Command="{x:Static materialDesign:Transitioner.MovePreviousCommand}"
-                        Content="{StaticResource return}" 
-                        IsCancel="True">
+                        Content="{DynamicResource cancel}"
+                        Command="{x:Static materialDesign:Transitioner.MovePreviousCommand}"/>
 
-                </Button>
                 <Button Grid.Column="1"
+                        VerticalAlignment="Top"
                         MaxWidth="200"
-                        Margin="10"
+                        Height="50"
                         FontSize="18"
+                        Foreground="White"
+                        Background="#36B285"      
+                        BorderBrush="#36B285"
+                        materialDesign:ButtonAssist.CornerRadius="20"
                         Style="{StaticResource MaterialDesignPaperLightButton}"
-                        Content="{StaticResource save}">
+                        Content="{DynamicResource save}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
-                            <i:InvokeCommandAction Command="{Binding SessionManagementViewModel.SelectedSession.CreateSessionCommand}" />
+                            <i:InvokeCommandAction Command="{Binding SessionManagementViewModel.SessionConfigurationViewModel.SaveSessionCommand}" />
                             <i:InvokeCommandAction Command="{x:Static materialDesign:Transitioner.MovePreviousCommand}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </Button>
+
+
             </Grid>
         </Grid>
     </DockPanel>

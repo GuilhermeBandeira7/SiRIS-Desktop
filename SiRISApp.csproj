@@ -20,6 +20,7 @@
     <None Remove="View\Assets\bg.jpg" />
     <None Remove="View\Assets\bg.png" />
     <None Remove="View\Assets\bg2.jpg" />
+    <None Remove="View\Assets\bg_files.jpg" />
     <None Remove="View\Assets\close.png" />
     <None Remove="View\Assets\ConfigBg.jpg" />
     <None Remove="View\Assets\Flags\brazil-.png" />
@@ -34,6 +35,8 @@
     <None Remove="View\Assets\LogoSiRIS.ico" />
     <None Remove="View\Assets\LogoSiRIS.jpg" />
     <None Remove="View\Assets\LogoSiRIS.png" />
+    <None Remove="View\Assets\LottieAnimations\deleteFiles.json" />
+    <None Remove="View\Assets\LottieAnimations\downloadFiles.json" />
     <None Remove="View\Assets\LottieAnimations\error.json" />
     <None Remove="View\Assets\LottieAnimations\loading1.json" />
     <None Remove="View\Assets\LottieAnimations\loading2.json" />
@@ -43,7 +46,10 @@
     <None Remove="View\Assets\LottieAnimations\loading6.json" />
     <None Remove="View\Assets\LottieAnimations\loading7.json" />
     <None Remove="View\Assets\LottieAnimations\loading8.json" />
+    <None Remove="View\Assets\LottieAnimations\loadingFolder.json" />
+    <None Remove="View\Assets\LottieAnimations\loadingServer.json" />
     <None Remove="View\Assets\LottieAnimations\success.json" />
+    <None Remove="View\Assets\LottieAnimations\uploadFiles.json" />
     <None Remove="View\Assets\LottieAnimations\warning.json" />
     <None Remove="View\Assets\menu.png" />
     <None Remove="View\Assets\menudois.png" />
@@ -121,6 +127,9 @@
     <Resource Include="View\Assets\bg2.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="View\Assets\bg_files.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="View\Assets\close.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -163,6 +172,12 @@
     <Resource Include="View\Assets\LogoSiRIS.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="View\Assets\LottieAnimations\deleteFiles.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Assets\LottieAnimations\downloadFiles.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="View\Assets\LottieAnimations\error.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -190,7 +205,16 @@
     <Resource Include="View\Assets\LottieAnimations\loading8.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="View\Assets\LottieAnimations\loadingFolder.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Assets\LottieAnimations\loadingServer.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="View\Assets\LottieAnimations\success.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Assets\LottieAnimations\uploadFiles.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="View\Assets\LottieAnimations\warning.json">

@@ -1,5 +1,5 @@
 ﻿using EntityMtwServer.Entities;
-using SiRISApp.ViewModel.SessionManagement;
+using SiRISApp.ViewModel.SiRIS.SessionManagement.User;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 

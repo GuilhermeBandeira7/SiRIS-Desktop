@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Core;
+﻿using EntityMtwServer.Entities;
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Interop.Word;
 using System;
@@ -80,7 +81,7 @@ namespace SiRISApp.Services
 
 
 
-        public void ExecuteFile(string path)
+        public Response ExecuteFile(string path)
         {
             string extension = path.Split("\\").Last().Split(".").Last();
             if (extension == "mkv" || extension == "mp4" || extension == "avi")
@@ -95,9 +96,13 @@ namespace SiRISApp.Services
                 ExecutePdf(path);
             else if (extension == "jpeg" || extension == "jpg" || extension == "png" || extension == "bnp")
                 ExecuteImage(path);
+            else
+                return new(false, "wrongTypeOfFile");
+
+            return new(true);
         }
 
-        public void ExecuteListOfFiles(List<string> files)
+        public Response ExecuteListOfFiles(List<string> files)
         {
             if (CheckExtension(files))
             {
@@ -115,7 +120,18 @@ namespace SiRISApp.Services
 
                     });
                 }
+                else
+                {
+                    return new(false, "wrongTypeOfFile");
+                }
+
             }
+            else
+            {
+                return new(false, "differentExtension");
+            }
+
+            return new(true);
         }
 
         public void OpenProcess(string processName)

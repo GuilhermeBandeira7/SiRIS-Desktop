@@ -1,30 +1,65 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EntityMtwServer.Entities;
+using EntityMtwServer.Services;
+using Microsoft.EntityFrameworkCore;
 using SiRISApp.Services;
-using SiRISApp.ViewModel.SessionManagement.Commads;
+using SiRISApp.View.Windows.SiRIS;
+using SiRISApp.ViewModel.SiRIS.SessionManagement.SessionConfiguration;
+using SiRISApp.ViewModel.SiRIS.SessionManagement.SessionResume;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 
-namespace SiRISApp.ViewModel.SessionManagement
+namespace SiRISApp.ViewModel.SiRIS.SessionManagement
 {
     public class SessionManagementViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
 
-        public ObservableCollection<SessionViewModel> Sessions { get; set; } = new();
-
-        private SessionViewModel selectedSession = new();
-        public SessionViewModel SelectedSession
+        public enum SESSION_MANAGEMENT_INDEX
         {
-            get { return selectedSession; }
+            MENU = 0,
+            DETAILS = 1,
+            CALENDAR = 2,
+        }
+
+        private int index;
+        public int Index
+        {
+            get { return index; }
+            set
+            {
+                index = value;
+                OnPropertyChanged(nameof(Index));
+
+            }
+        }
+
+        private bool showDeleted = false;
+        public bool ShowDeleted
+        {
+            get { return showDeleted; }
+            set
+            {
+                showDeleted = value;
+                OnPropertyChanged(nameof(showDeleted));
+
+            }
+        }
+
+
+        public ObservableCollection<SessionResumeViewModel> Sessions { get; set; } = new();
+
+        private SessionConfigurationViewModel sessionConfigurationViewModel = new();
+        public SessionConfigurationViewModel SessionConfigurationViewModel
+        {
+            get { return sessionConfigurationViewModel; }
             set
             {
                 if (value != null)
                 {
-                    selectedSession = value;
-                    OnPropertyChanged(nameof(SelectedSession));
+                    sessionConfigurationViewModel = value;
+                    OnPropertyChanged(nameof(SessionConfigurationViewModel));
                 }
             }
         }
@@ -32,11 +67,15 @@ namespace SiRISApp.ViewModel.SessionManagement
 
         public ReloadSessionsCommand ReloadSessionsCommand { get; set; }
         public CreateSessionCommand CreateSessionCommand { get; set; }
+        public ShowRecoveredCommand ShowRecoveredCommand { get; set; }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public SessionManagementViewModel()
         {
             ReloadSessionsCommand = new(this);
             CreateSessionCommand = new(this);
+            ShowRecoveredCommand = new(this);
         }
 
         public void OnPropertyChanged(string propertyName)
@@ -49,12 +88,22 @@ namespace SiRISApp.ViewModel.SessionManagement
             ReloadSessions();
         }
 
-        public void SelectSessionEvent(object? sender, EventArgs e)
+        public async void SelectSessionEvent(object? sender, EventArgs e)
         {
             if (sender != null)
             {
-                SessionViewModel selectedSession = (SessionViewModel)sender;
-                SelectedSession = selectedSession;
+                SessionsService sessionsService = AppSessionService.Instance.SessionService;
+                Session? session = await sessionsService.GetSession(((EditSessionEventArgs)e).Id);
+                if (session != null)
+                {
+                    SessionConfigurationViewModel = new SessionConfigurationViewModel(session);
+                    Index = (int)SESSION_MANAGEMENT_INDEX.DETAILS;
+                }
+                else
+                {
+                    MessageService.Instance.Show("success", "Sessao inexistente");
+                }
+
             }
         }
 
@@ -62,11 +111,12 @@ namespace SiRISApp.ViewModel.SessionManagement
         {
             Sessions.Clear();
 
-            List<EntityMtwServer.Entities.Session> sessions = AppSessionService.Instance.Context.Sessions
+            List<Session> sessions = AppSessionService.Instance.Context.Sessions
                 .Include(s => s.Course)
                 .Include(s => s.Recipients)
                 .Include(s => s.Transmitter)
                 .Where(s => s.StartDateTime > DateTime.Now.Date)
+                .Where(s => s.Enable == !ShowDeleted)
                 .AsNoTracking()
                 .ToList();
 
@@ -80,9 +130,10 @@ namespace SiRISApp.ViewModel.SessionManagement
                         .Include(c => c.Image)
                         .Where(c => c.Id == session.Course.Id)
                         .First();
-                    SessionViewModel sessionViewModel = new SessionViewModel(session);
+                    SessionResumeViewModel sessionViewModel = new SessionResumeViewModel(session);
                     sessionViewModel.ReloadSessions += ReloadSessionEvent;
                     sessionViewModel.SelectSession += SelectSessionEvent;
+                    sessionViewModel.Enable = session.Enable;
                     Sessions.Add(sessionViewModel);
                 }
             }

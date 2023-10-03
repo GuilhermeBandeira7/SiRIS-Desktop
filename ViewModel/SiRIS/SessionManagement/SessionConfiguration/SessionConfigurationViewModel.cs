@@ -6,15 +6,16 @@ using System.ComponentModel;
 using System.Linq;
 using SiRISApp.Services;
 using SixLabors.ImageSharp;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Windows;
-using SiRISApp.ViewModel.SiRIS;
 using SiRISApp.View.Windows.SiRIS;
+using SiRISApp.ViewModel.FileManagement;
+using SiRISApp.ViewModel.SiRIS.SessionManagement.User;
+using SiRISApp.ViewModel.SiRIS.SessionManagement.SessionConfiguration.Commands;
 
-namespace SiRISApp.ViewModel.SessionManagement
+namespace SiRISApp.ViewModel.SiRIS.SessionManagement.SessionConfiguration
 {
-    public class SessionViewModel : INotifyPropertyChanged
+    public class SessionConfigurationViewModel : INotifyPropertyChanged
     {
         private long id;
         public long Id
@@ -112,6 +113,32 @@ namespace SiRISApp.ViewModel.SessionManagement
             }
         }
 
+        private bool liveSession = true;
+        public bool LiveSession
+        {
+            get { return liveSession; }
+            set
+            {
+                liveSession = value;
+                OnPropertyChanged(nameof(LiveSession));
+                RecordInfoVisibility = !value ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
+        private string recordPath = string.Empty;
+        public string RecordPath
+        {
+            get { return recordPath; }
+            set
+            {
+                recordPath = value;
+                OnPropertyChanged(nameof(RecordPath));
+                Files.Clear();
+                foreach (var file in recordPath.Split(";"))
+                    Files.Add(file);
+            }
+        }
+
         private Course selectedCourse = new();
         public Course SelectedCourse
         {
@@ -148,7 +175,7 @@ namespace SiRISApp.ViewModel.SessionManagement
             }
         }
 
-        private Visibility courseVisibility = Visibility.Hidden;
+        private Visibility courseVisibility = Visibility.Collapsed;
         public Visibility CourseVisibility
         {
             get { return courseVisibility; }
@@ -157,6 +184,17 @@ namespace SiRISApp.ViewModel.SessionManagement
                 courseVisibility = value;
                 OnPropertyChanged(nameof(CourseVisibility));
 
+            }
+        }
+
+        private Visibility recordInfoVisibility = Visibility.Collapsed;
+        public Visibility RecordInfoVisibility
+        {
+            get { return recordInfoVisibility; }
+            set
+            {
+                recordInfoVisibility = value;
+                OnPropertyChanged(nameof(RecordInfoVisibility));
             }
         }
 
@@ -192,7 +230,8 @@ namespace SiRISApp.ViewModel.SessionManagement
 
         public ObservableCollection<CurriculumCourse> CurriculumCourses { get; set; } = new();
         public ObservableCollection<Course> Courses { get; set; } = new();
-        public ObservableCollection<User> Users { get; set; } = new();
+        public ObservableCollection<EntityMtwServer.Entities.User> Users { get; set; } = new();
+        public ObservableCollection<string> Files { get; set; } = new();
 
         //TODO: CREATE GENERIC RELATION TABLE
         public ObservableCollection<UserViewModel> AvailableUsers { get; set; } = new();
@@ -200,31 +239,30 @@ namespace SiRISApp.ViewModel.SessionManagement
         public ObservableCollection<UserViewModel> InsertedUsers { get; set; } = new();
         public ObservableCollection<UserViewModel> FilteredInsertedUsers { get; set; } = new();
 
-        public event EventHandler? ReloadSessions;
-        public event EventHandler? SelectSession;
         public event PropertyChangedEventHandler? PropertyChanged;
+        public event EventHandler? ReloadSessions;
 
+        public GetRecordFileCommand GetRecordFileCommand { get; set; }
         public UpdateSessionUsersCommand UpdateUsersCommand { get; set; }
-        public EditSessionCommand CreateSessionCommand { get; set; }
-        public SelectSessionCommand SelectSessionCommand { get; set; }
+        public SaveSessionCommand SaveSessionCommand { get; set; }
+     
 
-        public SessionViewModel()
+        public SessionConfigurationViewModel()
         {
             UpdateUsersCommand = new(this);
-            CreateSessionCommand = new(this);
-            SelectSessionCommand = new(this);
+            SaveSessionCommand = new(this);
+            GetRecordFileCommand = new(this);
 
             AvailableFilter = string.Empty;
             InsertedFilter = string.Empty;
         }
 
-
-        public SessionViewModel(Session session)
+        public SessionConfigurationViewModel(Session session) : this()
         {
             foreach (var course in AppSessionService.Instance.Context.CurriculumCourses.ToList())
                 CurriculumCourses.Add(course);
 
-            foreach (var user in AppSessionService.Instance.Context.Users.ToList())
+            foreach (var user in AppSessionService.Instance.Context.Users.Include(u => u.Cell).ToList())
                 if (user.Cell != null && user.Id > 0)
                     Users.Add(user);
 
@@ -235,6 +273,9 @@ namespace SiRISApp.ViewModel.SessionManagement
             StartTime = session.StartDateTime;
             EndDate = session.EndDateTime;
             EndTime = session.EndDateTime;
+            LiveSession = session.Live;
+            RecordPath = session.RecordPath;
+
 
             if (session.Course != null)
             {
@@ -264,82 +305,60 @@ namespace SiRISApp.ViewModel.SessionManagement
                 InsertedFilter = string.Empty;
             }
 
-            UpdateUsersCommand = new(this);
-            CreateSessionCommand = new(this);
-            SelectSessionCommand = new(this);
-        }
+
+        } 
 
         public void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void OnSelectSession()
-        {
-            SelectSession?.Invoke(this, EventArgs.Empty);
-        }
 
-        public async void EditSession()
+
+        public async void SaveSession()
         {
-            Session session = new Session();
-            session.Name = Name;
-            session.Description = Description;
-            session.StartDateTime = startDate.Date + StartTime.TimeOfDay;
-            session.EndDateTime = endDate.Date + EndTime.TimeOfDay;
-            session.Course = selectedCourse;
-            session.Transmitter = AppSessionService.Instance.User;
-            session.Recipients = Users.Where(u => InsertedUsers.Select(u => u.Id).Contains(u.Id)).ToList();
-            session.Color = session.Course.Color;
-            SessionsService sessionsService = new SessionsService(AppSessionService.Instance.Context);
+            Session session = new()
+            {
+                Name = Name,
+                Description = Description,
+                StartDateTime = startDate.Date + StartTime.TimeOfDay,
+                EndDateTime = endDate.Date + EndTime.TimeOfDay,
+                Course = selectedCourse,
+                Transmitter = AppSessionService.Instance.User,
+                Recipients = Users.Where(u => InsertedUsers.Select(u => u.Id).Contains(u.Id)).ToList(),
+                Record = LiveSession,
+                Color = selectedCourse.Color,
+                Live = LiveSession,
+                RecordPath = RecordPath,
+            };
+
+            session.Recipients = Users.Where(u => InsertedUsers.Select(iu => iu.Id).Contains(u.Id)).ToList();
+            SessionsService sessionsService = AppSessionService.Instance.SessionService;
+            long userId = AppSessionService.Instance.User.Id;
             Response response = new();
 
             if (Id <= 0)
             {
-                response = await sessionsService.PostSession(session);
+                response = await sessionsService.PostSession(session, userId);
                 ReloadSessions?.Invoke(this, EventArgs.Empty);
-                Message message = new();
-                if(response.Result)
-                {
-                    string messageText = "Aula criada com sucesso!";
-                    message.SetType("success", messageText);
 
-                }
+                if (response.Result)
+                    MessageService.Instance.Show("success", "Aula criada com sucesso!");
                 else
-                {
-                    string messageText = $"Falha ao criar a aula, causa: {response.Message}\r\n Para mais informações consulte o manual ou o suporte técnico especializado";
-                    message.SetType("error", messageText);
-
-                }
-
-                message.Show();
+                    MessageService.Instance.Show("success", $"Falha ao criar a aula, causa: {response.Message}\r\n Para mais informações consulte o manual ou o suporte técnico especializado");
             }
             else
             {
                 session.Id = Id;
                 await sessionsService.PutSessionStudents(id, session);
-                response = await sessionsService.PutSession(Id, session);
+                response = await sessionsService.PutSession(Id, session, userId);
 
-                Message message = new();
                 if (response.Result)
-                {
-                    string messageText = "Aula editada com sucesso!";
-                    message.SetType("success", messageText);
-
-                }
+                    MessageService.Instance.Show("success", "Aula editada com sucesso!");
                 else
-                {
-                    string messageText = $"Falha ao criar a aula, causa: {response.Message}\r\n Para mais informações consulte o manual ou o suporte técnico especializado";
-                    message.SetType("error", messageText);
-
-                }
-
-                message.Show();
+                    MessageService.Instance.Show("success", $"Falha ao criar a aula, causa: {response.Message}\r\n Para mais informações consulte o manual ou o suporte técnico especializado");
             }
-
- 
-
         }
-
 
         public void LoadCourses()
         {
@@ -360,6 +379,21 @@ namespace SiRISApp.ViewModel.SessionManagement
             InsertedFilter = string.Empty;
         }
 
+        public void GetRecordFile()
+        {
+            View.Windows.FileManagement fileManagement = new();
+            fileManagement.ReturnSelectedFile += FileManagement_ReturnSelectedFile;
+            fileManagement.IsSelecting = true;
+            fileManagement.Show();
+        }
+
+        private void FileManagement_ReturnSelectedFile(object? sender, EventArgs e)
+        {
+            ReturnSelectedFileEventArg args = (ReturnSelectedFileEventArg)e;
+            RecordPath = string.Join(";", args.SelectedFiles.ToArray());
+        }
+
+        //TODO: CONVERT TO GENERIC CLASS
         #region RELATION_TABLE
 
         public void UpdateUsers()
@@ -410,6 +444,8 @@ namespace SiRISApp.ViewModel.SessionManagement
 
             return true;
         }
+
+
 
         #endregion
 

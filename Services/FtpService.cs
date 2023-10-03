@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using EntityMtwServer.Entities;
+using Microsoft.AspNetCore.Authentication;
 using SiRISApp.View.Windows;
 using System;
 using System.Collections.Generic;
@@ -44,14 +45,20 @@ namespace SiRISApp.Services
         string root = "";
         string user = AppSessionService.Instance.User.Registration;
 
-        public FileManagement fileManagement;
+        public FileManagement? fileManagement;
 
         public void Init()
         {
-            List<string> lines = File.ReadAllLines("_Configs//ftp.txt").ToList();
+            List<string> lines = System.IO.File.ReadAllLines("_Configs//ftp.txt").ToList();
             string ip = lines.First();
             username = lines[1];
             password = lines[2];
+            SetRoot(ip);
+
+        }
+
+        public void SetRoot(string ip)
+        {
             root = $"ftp://{ip}:21/files/";
             if (!ListDirectory(root).Contains(AppSessionService.Instance.User.Registration))
                 CreateDirectory($"{root}/{AppSessionService.Instance.User.Registration}");
@@ -60,7 +67,7 @@ namespace SiRISApp.Services
         }
 
         public void ShowFileManagement()
-        { 
+        {
 
             fileManagement = new FileManagement();
             fileManagement.Show();
@@ -82,15 +89,14 @@ namespace SiRISApp.Services
             return ListDirectory($"{userRoot}{folderPath}");
         }
 
-        public void CreateFolder(string folderPath)
+        public Response CreateFolder(string folderPath)
         {
-            CreateDirectory($"{userRoot}/{folderPath}");
+            return CreateDirectory($"{userRoot}/{folderPath}");
         }
 
-
-        public void DeleteFolder(string folderPath)
+        public Response DeleteFolder(string folderPath)
         {
-            DeleteDirectory($"{userRoot}/{folderPath}");
+            return DeleteDirectory($"{userRoot}/{folderPath}");
         }
 
         #endregion
@@ -102,20 +108,20 @@ namespace SiRISApp.Services
             return ListData($"{userRoot}/{filePath}");
         }
 
-        public void UploadFile(string folderPath, string filename)
+        public Response UploadFile(string folderPath, string filename)
         {
-            UploadData($"{userRoot}{folderPath}/{filename.Split("\\").Last()}", filename);
+            return UploadData($"{userRoot}{folderPath}/{filename.Split("\\").Last()}", filename);
         }
 
-        public void DownloadFile(string folderPath, string filename)
+        public Response DownloadFile(string folderPath, string filename)
         {
-            DownloadData($"{userRoot}{folderPath}", $"{filename}\\{folderPath.Split("/").Last()}");
-            fileManagement.Close();
+            fileManagement?.Close();
+            return DownloadData($"{userRoot}{folderPath}", $"{filename}\\{folderPath.Split("/").Last()}");
         }
 
-        public void DeleteFile(string folderPath)
+        public Response DeleteFile(string folderPath)
         {
-            DeleteData($"{userRoot}{folderPath}");
+            return DeleteData($"{userRoot}{folderPath}");
         }
 
         #endregion
@@ -154,7 +160,7 @@ namespace SiRISApp.Services
             }
         }
 
-        private bool CreateDirectory(string url)
+        private Response CreateDirectory(string url)
         {
             try
             {
@@ -166,16 +172,15 @@ namespace SiRISApp.Services
                 Console.WriteLine("Delete status: {0}", response.StatusDescription);
 
 
-                return true;
+                return new(true);
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                return new(false, ex.Message);
             }
         }
 
-
-        private bool DeleteDirectory(string url)
+        private Response DeleteDirectory(string url)
         {
             try
             {
@@ -186,11 +191,11 @@ namespace SiRISApp.Services
                 FtpWebResponse response = (FtpWebResponse)request.GetResponse();
                 Console.WriteLine("Delete status: {0}", response.StatusDescription);
 
-                return true;
+                return new(true);
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                return new(false, ex.Message);
             }
         }
 
@@ -228,7 +233,7 @@ namespace SiRISApp.Services
             }
         }
 
-        private bool UploadData(string url, string fileName)
+        private Response UploadData(string url, string fileName)
         {
             try
             {
@@ -260,15 +265,15 @@ namespace SiRISApp.Services
                 Console.WriteLine("Delete status: {0}", response.StatusDescription);
 
 
-                return true;
+                return new(true);
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                return new(false, ex.Message);
             }
         }
 
-        private bool DownloadData(string url, string filename)
+        private Response DownloadData(string url, string filename)
         {
             try
             {
@@ -280,11 +285,11 @@ namespace SiRISApp.Services
                 Console.WriteLine("Delete status: {0}", response.StatusDescription);
 
                 Stream responseStream = response.GetResponseStream();
-                if (File.Exists(filename))
-                    File.Delete(filename);
+                if (System.IO.File.Exists(filename))
+                    System.IO.File.Delete(filename);
 
 
-                FileStream fs = File.OpenWrite(filename);
+                FileStream fs = System.IO.File.OpenWrite(filename);
 
                 while (responseStream.CanRead)
                 {
@@ -296,15 +301,15 @@ namespace SiRISApp.Services
                 fs.Close();
                 response.Close();
 
-                return true;
+                return new(true);
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                return new(false, ex.Message);
             }
         }
 
-        private bool DeleteData(string url)
+        private Response DeleteData(string url)
         {
             try
             {
@@ -315,11 +320,11 @@ namespace SiRISApp.Services
                 FtpWebResponse response = (FtpWebResponse)request.GetResponse();
                 Console.WriteLine("Delete status: {0}", response.StatusDescription);
 
-                return true;
+                return new(true);
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                return new(false, ex.Message);
             }
         }
 

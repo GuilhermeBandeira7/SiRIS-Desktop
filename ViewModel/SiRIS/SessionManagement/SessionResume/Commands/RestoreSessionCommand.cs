@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace SiRISApp.ViewModel.SessionManagement
+namespace SiRISApp.ViewModel.SiRIS.SessionManagement.SessionResume
 {
-    public class EditSessionCommand : ICommand
+    public class RestoreSessionCommand : ICommand
     {
-        private readonly SessionViewModel _vm;
-
+        public SessionResumeViewModel ViewModel { get; set; }
         public event EventHandler? CanExecuteChanged
         {
             add
@@ -19,11 +22,10 @@ namespace SiRISApp.ViewModel.SessionManagement
             }
         }
 
-        public EditSessionCommand(SessionViewModel vm)
+        public RestoreSessionCommand(SessionResumeViewModel viewModel)
         {
-            _vm = vm;
+            ViewModel = viewModel;
         }
-
 
         public bool CanExecute(object? parameter)
         {
@@ -32,7 +34,7 @@ namespace SiRISApp.ViewModel.SessionManagement
 
         public void Execute(object? parameter)
         {
-            _vm.EditSession();
+            ViewModel.RestoreSession();
         }
     }
 }

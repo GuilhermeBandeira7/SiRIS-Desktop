@@ -1,5 +1,6 @@
 ﻿using EntityMtwServer;
 using EntityMtwServer.Entities;
+using EntityMtwServer.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,16 @@ namespace SiRISApp.Services
     public class AppSessionService
     {
         #region Singleton
-        private AppSessionService() { }
+        private AppSessionService()
+        {
+            Context = new();
+            UsersService = new(Context);
+            AccessRulesService = new(Context, UsersService);
+            SessionService = new(Context, AccessRulesService, UsersService);
+            CoursesService = new();
+            CurriculumCoursesService = new(Context);
+        
+        }
 
         private static AppSessionService? instance;
 
@@ -27,9 +37,15 @@ namespace SiRISApp.Services
         }
         #endregion
         
-        public MasterServerContext Context { get; private set; } = new MasterServerContext();
+        public MasterServerContext Context { get; private set; }
         public User User { get; set; } = new User();
         public DVC Device { get; set; } = new DVC();
-        public long RunningSessionId { get; set; } 
+        public long RunningSessionId { get; set; }
+
+        private AccessRulesService AccessRulesService { get; set; }
+        public UsersService UsersService { get; set; }
+        public SessionsService SessionService { get; set; }
+        public CurriculumCoursesService CurriculumCoursesService { get; set; }
+        public CoursesService CoursesService { get; set; }
     }
 }

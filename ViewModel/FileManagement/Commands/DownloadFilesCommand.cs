@@ -38,6 +38,7 @@ namespace SiRISApp.ViewModel.FileManagement.Commands
         public void Execute(object? parameter)
         {
             ViewModel.DownloadFiles();  
+            ViewModel.SelectedFiles.Clear();
         }
     }
 }

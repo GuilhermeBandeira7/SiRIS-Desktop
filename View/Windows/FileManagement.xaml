@@ -14,7 +14,9 @@
         Background="Transparent"
         AllowsTransparency="True"
         WindowStartupLocation="CenterScreen"
-        WindowStyle="None">
+        WindowStyle="None"
+        Closing="Window_Closing"
+        KeyDown="Window_KeyDown" IsVisibleChanged="Window_IsVisibleChanged" ContentRendered="Window_ContentRendered">
     <Window.Resources>
         <ResourceDictionary>
             <vm:FileManagementViewModel x:Key="vm"/>
@@ -31,79 +33,92 @@
                                 DialogTheme="Inherit"
                                 DataContext="{StaticResource vm}">
         <materialDesign:DialogHost.DialogContent>
-            <Border CornerRadius="20"
+            <Border Width="400"
+                    Height="600"
+                    CornerRadius="20"
                     BorderThickness="2"
                     BorderBrush="LightYellow">
                 <Border.Background>
-                    <RadialGradientBrush GradientOrigin="0.5,0.5">
-                        <GradientStop Color="#003278" Offset="1"/>
-                        <GradientStop Color="#00508f" Offset="0" />
-                    </RadialGradientBrush>
+                    <ImageBrush ImageSource="../Assets/bg_files.jpg" Opacity="1"/>
                 </Border.Background>
-                <Border Width="500"
-                        Height="300">
-                    <Border.Background>
-                        <ImageBrush ImageSource="../Assets/Texture/low-contrast-linen.png" Opacity="1"/>
-                    </Border.Background>
-                    <Grid Width="400"
-                        Height="300"
-                        Margin="10">
+                <Border Width="395"
+                        Height="595"
+                        CornerRadius="20"
+                        Background="#da003278">
+                    <!--CREATE NEW FOLDER-->
+                    <Grid Width="300"
+                          Height="600">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="75"/>
-                            <RowDefinition Height="75"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="100"/>
+                            <RowDefinition Height="70"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0"
+                        <TextBlock TextWrapping="WrapWithOverflow"
+                                   Grid.Row="0"
+                                   x:Name="MessageBox"
+                                   Margin="10"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    TextAlignment="Center"
                                    Foreground="White"
                                    FontSize="18"
                                    FontStyle="Italic"
-                                   TextWrapping="Wrap"
-                                   materialDesign:ThemeAssist.Theme="Dark"
-                                   Text="{Binding Path=CurrentPath, StringFormat='Por favor insira o nome da pasta a ser criada!&#x0a;Caminho: {0}'}" />
+                                   FontWeight="Bold"
+                                   Text="{Binding Path=CurrentPath, StringFormat='Por favor insira o nome da pasta a ser criada!&#x0a;Caminho: {0}'}" 
+                                   KeyDown="TextBox_KeyDown">
+                        </TextBlock>
                         <TextBox Grid.Row="1"
                                  VerticalContentAlignment="Center"
+                                 HorizontalContentAlignment="Center"
                                  VerticalAlignment="Center"
-                                 FontSize="18"
+                                 FontSize="18"    
+                                 FontWeight="Bold"
                                  Foreground="White" 
-                                 Background="{x:Null}"
-                                 BorderBrush="White" 
-                                 materialDesign:HintAssist.HelperText="Nova pasta"
-                                 materialDesign:HintAssist.HelperTextFontSize="18"
-                                 materialDesign:TextFieldAssist.HasClearButton="True"
+                                 Background="#1fffffff"
+                                 BorderThickness="0"
                                  materialDesign:ThemeAssist.Theme="Dark"
-                                 Text="{Binding NewDirectoryName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                        </TextBox>
-                        <Grid Grid.Row="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Button Grid.Column="0"
-                                        Margin="0 0 10 0"
-                                        Background="#7f7f7f7f"
-                                        BorderBrush="Gray"   
-                                        Height="40"
-                                        FontSize="18"
-                                        Content="Cancelar"
-                                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
-                            </Button>
-                            <Button Grid.Column="1"
-                                        Height="40"
-                                        Margin="10 0 0 0"
-                                        Background="#7f0078bf"   
-                                        FontSize="18"
-                                        Content="Confirmar">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="Click">
-                                        <i:InvokeCommandAction  Command="{Binding CreateDirectoryCommand}"/>
-                                        <i:InvokeCommandAction  Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </Button>
-                        </Grid>
+                                 materialDesign:TextFieldAssist.HasClearButton="True"
+                                 materialDesign:TextFieldAssist.TextFieldCornerRadius="30"
+                                 materialDesign:HintAssist.HelperTextFontSize="18"
+                                 materialDesign:HintAssist.FloatingHintHorizontalAlignment="Center"
+                                 materialDesign:HintAssist.Foreground="White"
+                                 materialDesign:HintAssist.Background="Transparent"
+                                 materialDesign:HintAssist.Hint="{DynamicResource folderName}"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Text="{Binding NewDirectoryName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 KeyDown="TextBox_KeyDown"/>
+                        <Button Grid.Row="2"
+                                VerticalAlignment="Top"
+                                Height="50"
+                                FontSize="18"
+                                Background="#36B285"     
+                                BorderThickness="0"
+                                materialDesign:ButtonAssist.CornerRadius="20"
+                                Style="{StaticResource MaterialDesignRaisedButton}"
+                                Content="{DynamicResource save}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:InvokeCommandAction x:Name="CreateServerCloseDialog" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                                    <i:InvokeCommandAction x:Name="CreateServerCommand" Command="{Binding  CreateDirectoryCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                        <Button Grid.Row="3"
+                                VerticalAlignment="Top"
+                                Height="50"
+                                FontSize="18" 
+                                Background="#EC6E60"
+                                BorderThickness="0"   
+                                materialDesign:ButtonAssist.CornerRadius="20"
+                                Style="{StaticResource MaterialDesignRaisedButton}"
+                                Content="{DynamicResource cancel}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:InvokeCommandAction  Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
                     </Grid>
                 </Border>
             </Border>
@@ -129,8 +144,45 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0"
+                                Grid.Column="0"
+                                Orientation="Horizontal">
+                        <Label Margin="30"                           
+                               FontSize="24"
+                               FontWeight="Bold"
+                               FontStyle="Italic"
+                               Foreground="White"
+                               Content="Acesso aos arquivos:"/>
+                        <ComboBox Width="300"
+                                  FontSize="24"
+                                  FontWeight="Bold"
+                                  FontStyle="Italic"
+                                  Foreground="White"
+                                  materialDesign:ThemeAssist.Theme="Dark"
+                                  ItemsSource="{Binding Servers}"
+                                  SelectedItem="{Binding SelectedServer}">
+                        </ComboBox>
+                    </StackPanel>
+                    <Button Grid.Row="0"
+                            Grid.Column="1"
+                            VerticalContentAlignment="Top"
+                            HorizontalContentAlignment="Right"
+                            Margin="10"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            FontWeight="Bold"
+                            FontStyle="Italic"
+                            Foreground="White"
+                            Click="Button_Click">
+                        <materialDesign:PackIcon Width="30" Height="30" Kind="Close"/>
+                    </Button>
                     <!--COLUMN 1 -->
                     <Border Grid.Column="0"
+                            Grid.Row="1"
                             CornerRadius="30"
                             Margin="10"
                             Padding="20"
@@ -140,32 +192,73 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <TreeView Grid.Row="0"
-                                      MinWidth="400"
-                                      FontSize="24"
-                                      FontStyle="Oblique"
-                                      FontWeight="DemiBold"
-                                      ItemsSource="{Binding Folders}"
-                                      SelectedItemChanged="TreeView_SelectedItemChanged">
-                                <TreeView.Resources>
-                                    <Style TargetType="TreeViewItem" BasedOn="{StaticResource MaterialDesignTreeViewItem}">
-                                        <Setter Property="materialDesign:TreeViewAssist.ExpanderSize" Value="32" />
-                                    </Style>
-                                    <HierarchicalDataTemplate DataType="{x:Type folderVm:FolderViewModel}"
-                                                          ItemsSource="{Binding SubFolders}">
-                                        <DockPanel LastChildFill="True">
-                                            <TextBlock Margin="3,2" Text="{Binding Name, Mode=OneTime}" />
-                                        </DockPanel>
-                                    </HierarchicalDataTemplate>
-                                </TreeView.Resources>
-                                <materialDesign:TreeViewAssist.AdditionalTemplate>
-                                    <DataTemplate>
-                                        <materialDesign:ColorZone  CornerRadius="6">
-                                            <Separator Background="Black"/>
-                                        </materialDesign:ColorZone>
-                                    </DataTemplate>
-                                </materialDesign:TreeViewAssist.AdditionalTemplate>
-                            </TreeView>
+                            <StackPanel Grid.Row="0"
+                                        MinWidth="400">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0"
+                                           VerticalContentAlignment="Center"
+                                           Margin="10"
+                                           FontSize="24"
+                                           FontWeight="Bold"
+                                           FontStyle="Oblique"
+                                           Foreground="Black"
+                                           Content="Arquivos locais"/>
+                                    <TextBox Grid.Column="1"
+                                             Margin="10"
+                                             VerticalContentAlignment="Center"
+                                             HorizontalContentAlignment="Center"
+                                             VerticalAlignment="Bottom"
+                                             FontSize="18"    
+                                             FontWeight="Bold"
+                                             Foreground="Black" 
+                                             Background="#9E9077"
+                                             BorderThickness="0"
+                                             materialDesign:ThemeAssist.Theme="Dark"
+                                             materialDesign:TextFieldAssist.HasClearButton="True"
+                                             materialDesign:TextFieldAssist.TextFieldCornerRadius="30"
+                                             materialDesign:HintAssist.HelperTextFontSize="18"
+                                             materialDesign:HintAssist.FloatingHintHorizontalAlignment="Center"
+                                             materialDesign:HintAssist.Foreground="White"
+                                             materialDesign:HintAssist.Background="Transparent"
+                                             materialDesign:HintAssist.Hint="{DynamicResource filters}"
+                                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                             Text="{Binding FolderFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </Grid>
+
+                                <Rectangle HorizontalAlignment="Stretch" Height="2" Margin="2" Stroke="Black" />
+
+                                <TreeView Height="540" 
+                                          FontSize="24"
+                                          FontStyle="Oblique"
+                                          FontWeight="DemiBold"
+                                          materialDesign:ThemeAssist.Theme="Dark"
+                                          Foreground="Black"
+                                          ItemsSource="{Binding FilteredFolders}"
+                                          SelectedItemChanged="TreeView_SelectedItemChanged">
+                                    <TreeView.Resources>
+                                        <Style TargetType="TreeViewItem" BasedOn="{StaticResource MaterialDesignTreeViewItem}">
+                                            <Setter Property="materialDesign:TreeViewAssist.ExpanderSize" Value="32" />
+                                        </Style>
+                                        <HierarchicalDataTemplate DataType="{x:Type folderVm:FolderViewModel}"
+                                                                  ItemsSource="{Binding FilteredSubFolders}">
+                                            <DockPanel LastChildFill="True">
+                                                <TextBlock Margin="3,2" Text="{Binding Name, Mode=OneTime}" />
+                                            </DockPanel>
+                                        </HierarchicalDataTemplate>
+                                    </TreeView.Resources>
+                                    <materialDesign:TreeViewAssist.AdditionalTemplate>
+                                        <DataTemplate>
+                                            <materialDesign:ColorZone Background="Transparent"  CornerRadius="6">
+                                                <Separator Background="Black"/>
+                                            </materialDesign:ColorZone>
+                                        </DataTemplate>
+                                    </materialDesign:TreeViewAssist.AdditionalTemplate>
+                                </TreeView>
+                            </StackPanel>
                             <materialDesign:PopupBox Grid.Row="1"
                                                      HorizontalAlignment="Right"
                                                      VerticalAlignment="Bottom"
@@ -174,10 +267,11 @@
                                                      PlacementMode="LeftAndAlignMiddles"
                                                      Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
                                                      ToolTip="Manage items"
-                                                     UnfurlOrientation="Horizontal">
+                                                     UnfurlOrientation="Horizontal"
+                                                     Visibility="{Binding ManagingVisibility}">
                                 <StackPanel Orientation="Horizontal">
                                     <Button Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
-                                        ToolTip="Adicionar novo diretório">
+                                            ToolTip="Adicionar novo diretório">
                                         <materialDesign:PackIcon Width="25"
                                                                  Height="25"
                                                                  Kind="FolderPlus"/>
@@ -198,60 +292,109 @@
                     </Border>
                     <!--COLUMN 2 -->
                     <Border Grid.Column="1"
+                            Grid.Row="1"
                             Margin="10"
                             CornerRadius="30"
-                        Padding="20"
+                            Padding="20"
                             Background="#AFF5DEB3">
                         <Grid MinWidth="400">
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <ItemsControl MinWidth="440" 
-                                      Grid.IsSharedSizeScope="True"
-                                      materialDesign:ThemeAssist.Theme="Dark"
-                                      ItemsSource="{Binding SelectedFolder.Files}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border x:Name="Border"
-                                            Padding="8"
-                                            BorderBrush="{DynamicResource MaterialDesignDivider}"
-                                            BorderThickness="0,0,0,1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition SharedSizeGroup="Checkerz" />
-                                                    <ColumnDefinition />
-                                                </Grid.ColumnDefinitions>
-                                                <ToggleButton VerticalAlignment="Center"
-                                                              Width="48"
-                                                              Height="48"
-                                                              IsChecked="{Binding IsSelected}"
-                                                              Style="{StaticResource MaterialDesignActionLightToggleButton}">
-                                                    <materialDesign:PackIcon Width="32" 
-                                                                             Height="32"
-                                                                             Kind="{Binding Image}"/>
-                                                </ToggleButton>
-                                                <TextBlock Grid.Column="1"
-                                                           VerticalAlignment="Center"
-                                                           Margin="8,0,0,0"
-                                                           FontSize="20"
-                                                           FontStyle="Italic"
-                                                           FontWeight="DemiBold"
-                                                           Text="{Binding Name}" />
-                                            </Grid>
-                                        </Border>
-                                        <DataTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding IsSelected}"
-                                                         Value="True">
-                                                <Setter TargetName="Border"
-                                                        Property="Background"
-                                                        Value="ForestGreen" />
-                                            </DataTrigger>
-                                        </DataTemplate.Triggers>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                            <materialDesign:PopupBox Grid.Row="1"
+
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                                <Label Grid.Column="0"
+                                       VerticalContentAlignment="Center"
+                                       Margin="10"
+                                       FontSize="24"
+                                       FontWeight="Bold"
+                                       FontStyle="Oblique"
+                                       Foreground="Black"
+                                       Content="Arquivos remotos"/>
+                                <TextBox Grid.Column="1"
+                                         Margin="10"
+                                         VerticalContentAlignment="Center"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalAlignment="Bottom"
+                                         FontSize="18"    
+                                         FontWeight="Bold"
+                                         Foreground="Black" 
+                                         Background="#9E9077"
+                                         BorderThickness="0"
+                                         materialDesign:ThemeAssist.Theme="Dark"
+                                         materialDesign:TextFieldAssist.HasClearButton="True"
+                                         materialDesign:TextFieldAssist.TextFieldCornerRadius="30"
+                                         materialDesign:HintAssist.HelperTextFontSize="18"
+                                         materialDesign:HintAssist.FloatingHintHorizontalAlignment="Center"
+                                         materialDesign:HintAssist.Foreground="White"
+                                         materialDesign:HintAssist.Background="Transparent"
+                                         materialDesign:HintAssist.Hint="{DynamicResource filters}"
+                                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                         Text="{Binding FileFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Rectangle Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Height="2" Margin="2" Stroke="Black" />
+                            </Grid>
+
+                          
+                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto"
+                                          materialDesign:ThemeAssist.Theme="Dark">
+                                <ItemsControl materialDesign:ThemeAssist.Theme="Dark"
+                                              ItemsSource="{Binding SelectedFolder.FilteredFiles}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border x:Name="Border"
+                                                    Padding="8"
+                                                    BorderBrush="{DynamicResource MaterialDesignDivider}"
+                                                    BorderThickness="0,0,0,1">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <ToggleButton Grid.Column="0"
+                                                                    VerticalAlignment="Center"
+                                                                    Width="48"
+                                                                    Height="48"
+                                                                    IsChecked="{Binding IsSelected}"
+                                                                    Style="{StaticResource MaterialDesignActionLightToggleButton}">
+                                                        <materialDesign:PackIcon Width="32" 
+                                                                                    Height="32"
+                                                                                    Kind="{Binding Image}"/>
+                                                    </ToggleButton>
+                                                    <TextBlock Grid.Column="1"
+                                                               VerticalAlignment="Center"
+                                                               Margin="8,0,0,0"
+                                                               FontSize="20"
+                                                               FontStyle="Italic"
+                                                               FontWeight="DemiBold"
+                                                               Text="{Binding Name}" />
+                                                </Grid>
+                                            </Border>
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding IsSelected}"
+                                                             Value="True">
+                                                    <Setter TargetName="Border"
+                                                            Property="Background"
+                                                            Value="ForestGreen" />
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                              
+               
+                           
+                            <materialDesign:PopupBox Grid.Row="2"
                                                      HorizontalAlignment="Right"
                                                      VerticalAlignment="Bottom"
                                                      Margin="0,0,10,10"
@@ -259,7 +402,8 @@
                                                      PlacementMode="LeftAndAlignMiddles"
                                                      Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
                                                      ToolTip="Manage items"
-                                                     UnfurlOrientation="Horizontal">
+                                                     UnfurlOrientation="Horizontal"
+                                                     Visibility="{Binding ManagingVisibility}">
                                 <StackPanel Orientation="Horizontal">
                                     <Button Command="{Binding AddFileCommand}"
                                             CommandParameter="{Binding SelectedFolder}"
@@ -297,6 +441,20 @@
                                     </Button>
                                 </StackPanel>
                             </materialDesign:PopupBox>
+                            <Button Grid.Row="2"
+                                    Width="55"
+                                    Height="55"
+                                    Margin="0,0,10,10"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}"
+                                    Panel.ZIndex="999"
+                                    Background="LightGreen"
+                                    BorderBrush="LightGreen"
+                                    Click="Button_Click"
+                                    Visibility="{Binding SelectingVisibility}">
+                                <materialDesign:PackIcon Width="25" Height="25" Kind="Check" />
+                            </Button>
                         </Grid>
                     </Border>
                 </Grid>

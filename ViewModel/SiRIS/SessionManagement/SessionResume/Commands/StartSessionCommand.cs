@@ -1,18 +1,15 @@
-﻿using SiRISApp.Services;
-using SiRISApp.View.Windows.SiRIS;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace SiRISApp.ViewModel.Login
+namespace SiRISApp.ViewModel.SiRIS.SessionManagement.SessionResume
 {
-    public class ValidateLoginCommand : ICommand
+    public class StartSessionCommand : ICommand
     {
-        LoginConfigViewModel loginConfigViewModel;
-
+        public SessionResumeViewModel ViewModel { get; set; }
         public event EventHandler? CanExecuteChanged
         {
             add
@@ -25,9 +22,9 @@ namespace SiRISApp.ViewModel.Login
             }
         }
 
-        public ValidateLoginCommand(LoginConfigViewModel loginConfigViewModel)
+        public StartSessionCommand(SessionResumeViewModel viewModel)
         {
-            this.loginConfigViewModel = loginConfigViewModel;
+            ViewModel = viewModel;
         }
 
         public bool CanExecute(object? parameter)
@@ -37,13 +34,7 @@ namespace SiRISApp.ViewModel.Login
 
         public void Execute(object? parameter)
         {
-            if (loginConfigViewModel.Username == "mtw" && loginConfigViewModel.Password == "Senha1@siris")
-                loginConfigViewModel.SelectedIndex++;
-            else
-                MessageService.Instance.Show("error", "failToLogin");
-
-
-
+            ViewModel.StartSession();
         }
     }
 }

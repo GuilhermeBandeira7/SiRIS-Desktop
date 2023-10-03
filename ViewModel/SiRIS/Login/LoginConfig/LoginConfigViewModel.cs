@@ -94,35 +94,20 @@ namespace SiRISApp.ViewModel.Login
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public SwitchServerCommand SwitchServerCommand { get; set; }
-        public UpdateServerConfigCommand UpdateServerConfigCommand { get; set; }
         public ValidateLoginCommand ValidateLoginCommand { get; set; }
         public CreateServerCommand CreateServerCommand { get; set; }
 
 
-        string configServerFilePath = "_Configs\\serverConfig.txt";
-        string serversFilePath = "_Configs\\servers.txt";
-
         public LoginConfigViewModel()
         {
             SwitchServerCommand = new(this);
-            UpdateServerConfigCommand = new(this);
             ValidateLoginCommand = new(this);
             CreateServerCommand = new(this);
 
-            if (System.IO.File.Exists(serversFilePath))
-            {
-                List<string> lines = System.IO.File.ReadAllLines(serversFilePath).ToList();
-                foreach (string line in lines)
-                {
-                    List<string> lineValues = line.Split(":").ToList();
-                    ServerNames.Add(lineValues.First(), lineValues.Last());
-                    Servers.Add(lineValues.Last());
-                }
-            }
-            else
-            {
-                System.IO.File.WriteAllLines(serversFilePath, new string[] { "localhost:local" });
-            }
+            ServerNames = ServerConfigService.Instance.GetServers();
+            foreach (var server in ServerNames)
+                Servers.Add(server.Value);
+
 
             ServerConfig config = ServerConfigService.Instance.GetServerConfig();
             serialNumber = config.SerialNumber;
@@ -134,42 +119,19 @@ namespace SiRISApp.ViewModel.Login
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void SaveConfig()
-        {
-            ServerConfig serverConfig = ServerConfigService.Instance.GetServerConfig();
-            serverConfig.SerialNumber = serialNumber;
-            serverConfig.Ip = ServerNames.Where(s => s.Value == SelectedServer).First().Key;
-            ServerConfigService.Instance.SetServerConfig(serverConfig);
-        }
 
         public void CreateServer()
         {
-            if (!Servers.Contains(NewServerName))
-            {
-                List<string> lines = System.IO.File.ReadAllLines(serversFilePath).ToList();
-                lines.Add($"{NewServerIp}:{NewServerName}");
-                System.IO.File.WriteAllLines(serversFilePath, lines.ToArray());
-            }
-
+            ServerConfigService.Instance.AddServer(newServerIp, newServerName);
             ServerNames.Clear();
             Servers.Clear();
-
-            if (System.IO.File.Exists(serversFilePath))
-            {
-                List<string> lines = System.IO.File.ReadAllLines(serversFilePath).ToList();
-                foreach (string line in lines)
-                {
-                    List<string> lineValues = line.Split(":").ToList();
-                    ServerNames.Add(lineValues.First(), lineValues.Last());
-                    Servers.Add(lineValues.Last());
-                }
-            }
+            ServerNames = ServerConfigService.Instance.GetServers();
+            foreach (var server in ServerNames)
+                Servers.Add(server.Value);
         }
 
         public void SwitchServer()
         {
-            View.Windows.SiRIS.Message message = new();
-
             var app = (App)System.Windows.Application.Current;
             string? text = app.LanguageDictionary["serverSelect"].ToString();
             if (text != null)
@@ -178,15 +140,16 @@ namespace SiRISApp.ViewModel.Login
                 text = string.Empty;
 
 
-            message.SetType("warning", text, true);
-
-            bool? result = message.ShowDialog();
+            bool? result = MessageService.Instance.ShowDialog("warning", text, true);
             if (result != null && result == true)
             {
-                SaveConfig();
-                message = new();
-                message.SetType("success", "serverChanged");
-                message.Show();
+                ServerConfig serverConfig = ServerConfigService.Instance.GetServerConfig();
+                serverConfig.SerialNumber = serialNumber;
+                serverConfig.Ip = ServerNames.Where(s => s.Value == SelectedServer).First().Key;
+                ServerConfigService.Instance.SetServerConfig(serverConfig);
+                ServerConfigService.Instance.SetFtpConfig(serverConfig.Ip, "mtw", "Senha@mtw");
+
+                MessageService.Instance.Show("success", "serverChanged");
             }
         }
     }

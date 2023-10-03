@@ -1,15 +1,13 @@
-﻿using EntityMtwServer.Entities;
+﻿using EntityMtwServer;
+using EntityMtwServer.Entities;
 using EntityMtwServer.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Office.Interop.Word;
 using SiRISApp.Services;
-using SiRISApp.View.UserControls.SessionManagement;
 using SiRISApp.View.Windows.SiRIS;
 using SiRISApp.ViewModel.Login;
 using SiRISApp.ViewModel.SessionCalendar;
-using SiRISApp.ViewModel.SessionManagement;
 using SiRISApp.ViewModel.SessionPlayer;
-using SiRISApp.ViewModel.SiRIS.Commands;
+using SiRISApp.ViewModel.SiRIS.SessionManagement;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -87,69 +85,63 @@ namespace SiRISApp.ViewModel
         }
 
 
-        public async void StartSession()
-        {
-            if (SessionManagementViewModel.SelectedSession != null)
-            {
-                EntityMtwServer.Entities.Session session = await AppSessionService.Instance.Context.Sessions
-                    .Include(s => s.Transmitter)
-                    .Include(s => s.Course)
-                    .Include(s => s.Recipients)
-                    .Where(s => s.Id == SessionManagementViewModel.SelectedSession.Id).FirstAsync();
-                SessionsService sessionsService = new(AppSessionService.Instance.Context);
-                TimeSpan time = session.EndDateTime - session.StartDateTime;
-                SessionManagementViewModel.SelectedSession.StartDate = DateTime.Now;
-                SessionManagementViewModel.SelectedSession.EndDate = DateTime.Now.Add(time);
-                Response response = await sessionsService.PutSession(session.Id, session);
-                Message message = new();
-                message.SetType(response.Result ? "sucess" : "error", response.Message);
-                message.Show();
-            }
-        }
 
         private void Authenticated(object? sender, EventArgs e)
         {
+            SelectedIndex = (int)SIRIS_INDEX.SESSION_MANAGER;
+
             Thread thread = new(CheckActiveSession);
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
         }
 
-        private void CheckActiveSession()
+        private async void CheckActiveSession()
         {
+            Thread.Sleep(3000);
+            MasterServerContext _context = new();
+            UsersService _usersService = new(_context);
+            AccessRulesService _accessRulesService = new(_context, _usersService);
+            SessionsService _sessionsService = new(_context, _accessRulesService, _usersService);
+
             while (true)
             {
-                if (!SessionPlayerViewModel.SessionRunning)
+                try
                 {
-
-                    List<EntityMtwServer.Entities.Session> sessions = AppSessionService.Instance.Context.Sessions
-                       .Include(s => s.Transmitter)
-                       .Include(s => s.Course)
-                       .Include(s => s.Recipients)
-                       .ToList();
-
-                    sessions = sessions.Where(s => s.StartDateTime < DateTime.Now && s.EndDateTime > DateTime.Now)
-                        .OrderBy(s => s.StartDateTime)
-                        .ToList();
-                    
-                    foreach (EntityMtwServer.Entities.Session s in sessions)
+                    if (!SessionPlayerViewModel.SessionRunning)
                     {
-                        if (s.Transmitter != null && s.Transmitter.Id == AppSessionService.Instance.User.Id)
+
+                        List<Session> sessions = await _context.Sessions
+                           .Include(s => s.Transmitter)
+                           .Include(s => s.Course)
+                           .Include(s => s.Recipients)
+                           .ToListAsync();
+
+                        sessions = sessions.Where(s => s.StartDateTime < DateTime.Now && s.EndDateTime > DateTime.Now)
+                            .OrderBy(s => s.StartDateTime)
+                            .ToList();
+
+                        foreach (Session s in sessions)
                         {
-                            System.Windows.Application.Current.Dispatcher.Invoke(delegate
+                            if (s.Transmitter != null && s.Transmitter.Id == AppSessionService.Instance.User.Id)
                             {
-                                Message message = new();
-                                message.SetType("warning", "classIsAboutToStart");
-                                message.ShowDialog();
-                                SessionPlayerViewModel.InitSession(s.Id);
-                            });
-                   
-                            SelectedIndex = (int)SIRIS_INDEX.SESSION_PLAYER; 
-                            break;
+                                System.Windows.Application.Current.Dispatcher.Invoke((Action)(() =>
+                                {
+                                    MessageService.Instance.ShowDialog("warning", "classIsAboutToStart");
+                                    SelectedIndex = (int)SIRIS_INDEX.SESSION_PLAYER;
+                                    SessionPlayerViewModel.InitSession(s.Id);
+                                }));
+                
+                      
+                                break;
+                            }
                         }
                     }
-              
+                }
+                catch (Exception ex)
+                {
 
                 }
+
 
                 Thread.Sleep(1000);
             }

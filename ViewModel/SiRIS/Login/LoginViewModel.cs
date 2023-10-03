@@ -174,12 +174,7 @@ namespace SiRISApp.ViewModel.Login
             {
                 Index = (int)LOGIN_INDEX.FORM;
                 NavigateVisibility = Visibility.Visible;
-                Application.Current.Dispatcher.Invoke(delegate
-                {
-                    Message message = new();
-                    message.SetType("error", $"{ex.Message}");
-                    message.Show();
-                });
+                MessageService.Instance.Show("error", $"{ex.Message}");
             }
         }
 
@@ -206,24 +201,16 @@ namespace SiRISApp.ViewModel.Login
                 {
                     Index = (int)LOGIN_INDEX.FORM;
                     NavigateVisibility = Visibility.Visible;
-                    Application.Current.Dispatcher.Invoke(delegate
-                    {
-                        Message message = new();
-                        message.SetType("error", "failToLogin");
-                        message.ShowDialog();
-                    });
+                    MessageService.Instance.Show("error", "failToLogin");
+       
                 }
             }
             catch (Exception ex)
             {
                 Index = (int)LOGIN_INDEX.FORM;
                 NavigateVisibility = Visibility.Visible;
-                Application.Current.Dispatcher.Invoke(delegate
-                {
-                    Message message = new();
-                    message.SetType("error", $"{ex.Message}");
-                    message.ShowDialog();
-                });
+                MessageService.Instance.Show("error", $"{ex.Message}");
+
             }
 
         }
@@ -255,12 +242,7 @@ namespace SiRISApp.ViewModel.Login
             {
                 Index = (int)LOGIN_INDEX.FORM;
                 NavigateVisibility = Visibility.Visible;
-                Application.Current.Dispatcher.Invoke(delegate
-                {
-                    Message message = new();
-                    message.SetType("error", $"{ex.Message}");
-                    message.Show();
-                });
+                MessageService.Instance.Show("error", $"{ex.Message}");
 
             }
         }

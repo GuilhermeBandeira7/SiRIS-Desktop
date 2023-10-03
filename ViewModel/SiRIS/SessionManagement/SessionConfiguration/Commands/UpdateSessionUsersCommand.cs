@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace SiRISApp.ViewModel.SessionManagement
+namespace SiRISApp.ViewModel.SiRIS.SessionManagement.SessionConfiguration
 {
     public class UpdateSessionUsersCommand : ICommand
     {
-        public SessionViewModel vm { get; set; }
+        public SessionConfigurationViewModel vm { get; set; }
 
         public event EventHandler? CanExecuteChanged
         {
@@ -13,7 +13,7 @@ namespace SiRISApp.ViewModel.SessionManagement
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public UpdateSessionUsersCommand(SessionViewModel vm)
+        public UpdateSessionUsersCommand(SessionConfigurationViewModel vm)
         {
             this.vm = vm;
         }

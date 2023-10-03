@@ -159,7 +159,6 @@ namespace SiRISApp.Services
             get { return _obs.IsConnected; }
         }
 
-
         public void Start()
         {
             State = OBS_STATE.DISCONNECTED;
@@ -187,8 +186,6 @@ namespace SiRISApp.Services
 
             }
         }
-
-
 
         public void StartStreaming()
         {
@@ -302,8 +299,6 @@ namespace SiRISApp.Services
 
         }
 
-
-
         public void DisableSource(string sourceName)
         {
             int itemId = GetSceneItemId(sourceName);
@@ -345,8 +340,6 @@ namespace SiRISApp.Services
             DisableSource("PiP Cam Princ");
             lastPosition = -1;
         }
-
-
 
         internal void GetInputSettings()
         {

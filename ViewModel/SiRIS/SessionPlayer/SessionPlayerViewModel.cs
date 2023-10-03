@@ -1,8 +1,8 @@
 ﻿using EntityMtwServer.Entities;
 using Microsoft.EntityFrameworkCore;
 using SiRISApp.Services;
-using SiRISApp.ViewModel.SessionManagement;
 using SiRISApp.ViewModel.SessionPlayer.Commands;
+using SiRISApp.ViewModel.SiRIS.SessionManagement.SessionConfiguration;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -94,7 +94,7 @@ namespace SiRISApp.ViewModel.SessionPlayer
         public SessionPreviewViewModel SessionPreviewViewModel { get; set; }
         public SessionMembersViewModel SessionMembersViewModel { get; set; }
 
-        public SessionViewModel SessionViewModel { get; set; } = new();
+        public SessionConfigurationViewModel SessionViewModel { get; set; } = new();
         public TogglePauseCommand TogglePauseCommand { get; set; }
         public StopSessionCommand StopSessionCommand { get; set; }
 

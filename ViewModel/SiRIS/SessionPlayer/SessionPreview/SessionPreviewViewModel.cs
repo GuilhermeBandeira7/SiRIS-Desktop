@@ -51,6 +51,8 @@ namespace SiRISApp.ViewModel.SessionPlayer
             }
         }
 
+        private bool run = true;
+
         public ObservableCollection<SourceViewModel> Sources { get; set; } = new()
         {
             new("MonitorShare", "Captura De Tela", "#af04B8B4","DarkGray", "White" ),
@@ -86,7 +88,7 @@ namespace SiRISApp.ViewModel.SessionPlayer
 
         public void StartPip()
         {
-            while (true)
+            while (run)
             {
                 Thread.Sleep(100);
                 try
@@ -115,6 +117,12 @@ namespace SiRISApp.ViewModel.SessionPlayer
             }
         }
 
+
+        public void StopPip()
+        {
+            run = false;
+        }
+
         private void UpdateSource(object? sender, EventArgs e)
         {
             UpdateSourceEventArg source = (UpdateSourceEventArg)e;
@@ -124,10 +132,6 @@ namespace SiRISApp.ViewModel.SessionPlayer
                 SelectedSource = source.Source;
             }
         }
-
-      
-
-
 
     }
 }
