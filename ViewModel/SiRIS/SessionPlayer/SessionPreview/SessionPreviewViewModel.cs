@@ -61,9 +61,9 @@ namespace SiRISApp.ViewModel.SessionPlayer
             new("MicrosoftPowerpoint", "PPTx", "#D35230", "DarkGray", "White"),
             new("FilePdfBox", "PDF", "Snow", "DarkGray", "Red"),
             new("MicrosoftWord", "Word", "#103F91", "DarkGray", "White"),
-            new("FolderPlay", "Video Via Servidor", "#af282725", "DarkGray", "#FFCD41"),
-            new("Filmstrip", "Video Via Local", "#af282725", "DarkGray", "#904DEB"),
-            new("FolderImage", "Fotos Via Servidor", "#af282725", "DarkGray", "#2B73C2"),
+            //new("FolderPlay", "Video Via Servidor", "#af282725", "DarkGray", "#FFCD41"),
+            //new("Filmstrip", "Video Via Local", "#af282725", "DarkGray", "#904DEB"),
+            //new("FolderImage", "Fotos Via Servidor", "#af282725", "DarkGray", "#2B73C2"),
 
         };
 
@@ -76,6 +76,9 @@ namespace SiRISApp.ViewModel.SessionPlayer
 
             foreach (SourceViewModel source in Sources)
                 source.UpdateSourceEvent += UpdateSource;
+
+            foreach (SourceViewModel sourceViewModel in Sources)
+                sourceViewModel.IsEnabled = sourceViewModel.ObsSource != SelectedSource;
 
             Task.Run(StartPip);
         }
@@ -130,6 +133,9 @@ namespace SiRISApp.ViewModel.SessionPlayer
             {
                 OBSService.Instance.EnableSource(source.Source);
                 SelectedSource = source.Source;
+                foreach (SourceViewModel sourceViewModel in Sources)
+                    sourceViewModel.IsEnabled = sourceViewModel.ObsSource != SelectedSource;
+               
             }
         }
 

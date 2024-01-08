@@ -5,19 +5,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SiRISApp.View.UserControls.SessionPlayer"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors" xmlns:viewmodel="clr-namespace:SiRISApp.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:SiRISViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" 
              d:DesignWidth="800">
     <Grid Grid.Column="0"
           Width="500">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="300"/>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="4*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="6*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         <materialDesign:ColorZone HorizontalAlignment="Center"
@@ -27,7 +27,8 @@
                                   Background="#000000"
                                   BorderBrush="LightYellow"
                                   BorderThickness="2">
-            <Border CornerRadius="30">
+            <Border CornerRadius="30"
+                    Width="480">
                 <Border.Background>
                     <ImageBrush ImageSource="../../Assets/Texture/shattered.png" Opacity="0.5"/>
                 </Border.Background>
@@ -36,32 +37,32 @@
                            HorizontalAlignment="Center" 
                            Margin="10"                              
                            FontSize="24"
-                           Padding="20"
+                           Padding="0"
                            Foreground="White"
                            Content="Menu de transmissão"/>
-                    <ListBox Margin="0 0 0 20"
-                             ItemsSource="{Binding SessionPlayerViewModel.SessionPreviewViewModel.Sources}">
+                    <ListBox ItemsSource="{Binding SessionPlayerViewModel.SessionPreviewViewModel.Sources}"
+                             Margin="10">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="{x:Type ListBoxItem}">
-                                <Setter Property="Width" Value="150"/>
                                 <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
                             </Style>
                         </ListBox.ItemContainerStyle>
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <WrapPanel/>
+                                <UniformGrid Columns="3" Rows="2"/>
                             </ItemsPanelTemplate>
                         </ListBox.ItemsPanel>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <ListBoxItem>
-                                    <Button Padding="0"
-                                            Background="{Binding Color}"
+                                <ListBoxItem Name="Bd">
+                                    <Button Background="{Binding Color}"
                                             BorderBrush="{Binding BorderBrush}"
                                             Style="{StaticResource MaterialDesignFloatingActionButton}"
                                             ToolTip="{Binding ObsSource}"
                                             Foreground="{Binding ForeColor}"
-                                            Command="{Binding UpdateSourceCommand}">
+                                            Command="{Binding UpdateSourceCommand}"
+                                            IsEnabled="{Binding IsEnabled}">
                                         <materialDesign:PackIcon Height="30" Width="30" Kind="{Binding Image}"/>
                                     </Button>
                                 </ListBoxItem>

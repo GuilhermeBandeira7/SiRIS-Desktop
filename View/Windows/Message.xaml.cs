@@ -12,13 +12,10 @@ namespace SiRISApp.View.Windows.SiRIS
     /// </summary>
     public partial class Message : Window
     {
-        public delegate void CloseWindow(object? sender, EventArgs e);
-        public CloseWindow closeWindowCallback;
 
         public Message()
         {
             InitializeComponent();
-            closeWindowCallback = new CloseWindow(CloseWindowsCallback);
         }
 
         private void CloseWindowsCallback(object? sender, EventArgs e)

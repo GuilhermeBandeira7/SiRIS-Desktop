@@ -223,16 +223,10 @@ namespace SiRISApp.ViewModel.SiRIS.SessionManagement.SessionResume
                 session.StartDateTime = DateTime.Now;
                 session.EndDateTime = session.StartDateTime + duration;
                 Response response = await sessionsService.PutSession(session.Id, session, AppSessionService.Instance.User.Id);
-                Message message = new();
-                if (response.Result)
-                    MessageService.Instance.Show("success", "Aula editada com sucesso!");
-                else
-                    MessageService.Instance.Show("success", $"Falha ao remover a aula, causa: {response.Message}\r\n Para mais informações consulte o manual ou o suporte técnico especializado");
+                if (!response.Result)
+                    MessageService.Instance.Show("success", $"Falha ao iniciar a aula, causa: {response.Message}\r\n Para mais informações consulte o manual ou o suporte técnico especializado");
 
-                System.Windows.Application.Current.Dispatcher.Invoke(delegate
-                {
-                    message.Show();
-                });
+
                 ReloadSessions?.Invoke(this, new());
 
             }

@@ -47,6 +47,19 @@ namespace SiRISApp.ViewModel.SessionPlayer
             set { foreColor = value; }
         }
 
+        private bool isEnabled;
+        public bool IsEnabled
+        {
+            get { return isEnabled; }
+            set
+            {
+                isEnabled = value;
+                OnPropertyChanged(nameof(IsEnabled));
+
+            }
+        }
+
+
         public UpdateSourceCommand UpdateSourceCommand { get; set; }
         public EventHandler? UpdateSourceEvent { get; set; }
 

@@ -4,13 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SiRISApp.View.UserControls.SessionPlayer"
-             xmlns:wpf="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf" 
+             xmlns:wpf="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" 
              d:DesignWidth="800"
              IsVisibleChanged="UserControl_IsVisibleChanged">
     <Border BorderThickness="2"
-            CornerRadius="20"
+            CornerRadius="15"
             Background="Black"
             BorderBrush="LightYellow">
         <Grid>
@@ -19,14 +19,14 @@
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
             <wpf:VlcControl Grid.Row="0"
-                            Margin="20"
+                            Margin="5"
                             x:Name="VlcControl">
             </wpf:VlcControl>
             <Border Grid.Row="1"
-                    CornerRadius="20"
+                    CornerRadius="10"
                     DockPanel.Dock="Bottom"
                     Background="White">
-                <Border CornerRadius="20">
+                <Border CornerRadius="10">
                     <Border.Background>
                         <ImageBrush ImageSource="../../Assets/Texture/shattered.png" 
                                 Opacity="1" 
@@ -38,8 +38,24 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="60"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="2"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <materialDesign:PackIcon VerticalAlignment="Center" 
+                                                     Foreground="Black"
+                                                     Kind="VolumeHigh"/>
+                            <Slider Width="100"
+                                    Margin="10"
+                                    Background="Transparent"
+                                    Maximum="100"
+                                    Minimum="0"
+                                    Value="60"
+                                    materialDesign:SliderAssist.HideActiveTrack="True"
+                                    materialDesign:SliderAssist.OnlyShowFocusVisualWhileDragging="True" ValueChanged="Slider_ValueChanged"/>
+                            <Label Content="{DynamicResource Volume}"/>
+                        </StackPanel>
                     </Grid>
                 </Border>
             </Border>

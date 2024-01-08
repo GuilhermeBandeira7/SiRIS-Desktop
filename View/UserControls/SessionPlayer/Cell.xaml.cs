@@ -16,16 +16,14 @@ using System.Windows.Shapes;
 namespace SiRISApp.View.UserControls.SessionPlayer
 {
     /// <summary>
-    /// Interaction logic for SessionPreviewMenu.xaml
+    /// Interaction logic for Cell.xaml
     /// </summary>
-    public partial class SessionPreviewMenu : UserControl
+    public partial class Cell : UserControl
     {
-        public SessionPreviewMenu()
+        public Cell()
         {
             InitializeComponent();
         }
-
-
 
     }
 }

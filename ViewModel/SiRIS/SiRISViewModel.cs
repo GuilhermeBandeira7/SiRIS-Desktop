@@ -51,6 +51,10 @@ namespace SiRISApp.ViewModel
         public SessionCalendarViewModel SessionCalendarViewModel { get; set; }
         public SessionPlayerViewModel SessionPlayerViewModel { get; set; }
 
+        public bool run = true;
+
+        private bool logged = false;
+
 
         public SiRISViewModel()
         {
@@ -89,26 +93,29 @@ namespace SiRISApp.ViewModel
         private void Authenticated(object? sender, EventArgs e)
         {
             SelectedIndex = (int)SIRIS_INDEX.SESSION_MANAGER;
+            logged = true;
+
 
             Thread thread = new(CheckActiveSession);
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
+
         }
 
         private async void CheckActiveSession()
         {
             Thread.Sleep(3000);
-            MasterServerContext _context = new();
-            UsersService _usersService = new(_context);
-            AccessRulesService _accessRulesService = new(_context, _usersService);
-            SessionsService _sessionsService = new(_context, _accessRulesService, _usersService);
 
-            while (true)
+            while (run)
             {
                 try
                 {
                     if (!SessionPlayerViewModel.SessionRunning)
                     {
+                        MasterServerContext _context = new();
+                        UsersService _usersService = new(_context);
+                        AccessRulesService _accessRulesService = new(_context, _usersService);
+                        SessionsService _sessionsService = new(_context, _accessRulesService, _usersService);
 
                         List<Session> sessions = await _context.Sessions
                            .Include(s => s.Transmitter)
@@ -116,7 +123,7 @@ namespace SiRISApp.ViewModel
                            .Include(s => s.Recipients)
                            .ToListAsync();
 
-                        sessions = sessions.Where(s => s.StartDateTime < DateTime.Now && s.EndDateTime > DateTime.Now)
+                        sessions = sessions.Where(s => DateTime.Now >= s.StartDateTime && DateTime.Now <= s.EndDateTime )
                             .OrderBy(s => s.StartDateTime)
                             .ToList();
 
@@ -124,18 +131,23 @@ namespace SiRISApp.ViewModel
                         {
                             if (s.Transmitter != null && s.Transmitter.Id == AppSessionService.Instance.User.Id)
                             {
-                                System.Windows.Application.Current.Dispatcher.Invoke((Action)(() =>
+                                Application.Current.Dispatcher.Invoke(() =>
                                 {
                                     MessageService.Instance.ShowDialog("warning", "classIsAboutToStart");
-                                    SelectedIndex = (int)SIRIS_INDEX.SESSION_PLAYER;
                                     SessionPlayerViewModel.InitSession(s.Id);
-                                }));
+                                    SelectedIndex = (int)SIRIS_INDEX.SESSION_PLAYER;
+                                });
                 
                       
                                 break;
                             }
                         }
+
+                        if (!SessionPlayerViewModel.SessionRunning && SelectedIndex != (int)SIRIS_INDEX.SESSION_MANAGER)
+                            SelectedIndex = (int)(SIRIS_INDEX.SESSION_MANAGER);
                     }
+
+
                 }
                 catch (Exception ex)
                 {

@@ -319,6 +319,7 @@ namespace SiRISApp.Services
 
         public void ActivateSource(string item)
         {
+            CurrentSource = item;   
             int itemId = GetSceneItemId(item);
             var items = _obs.GetSceneItemList(CurrentScene);
             _obs.SetSceneItemIndex(CurrentScene, itemId, items.Count - lastPosition);
@@ -329,8 +330,10 @@ namespace SiRISApp.Services
             int itemId = GetSceneItemId("PiP Cam Princ");
             var items = _obs.GetSceneItemList(CurrentScene);
             _obs.SetSceneItemIndex(CurrentScene, itemId, items.Count - lastPosition);
+            DisableSource("Camera Principal");
             EnableSource("PiP Cam Princ");
             lastPosition = -2;
+            isPipActive = true;
         }
 
         public void DesactivatePip()
@@ -338,10 +341,12 @@ namespace SiRISApp.Services
             int itemId = GetSceneItemId("PiP Cam Princ");
             _obs.SetSceneItemIndex(CurrentScene, itemId, 0);
             DisableSource("PiP Cam Princ");
+            EnableSource("Camera Principal");
             lastPosition = -1;
+            isPipActive = false;
         }
 
-        internal void GetInputSettings()
+        public void GetInputSettings()
         {
             List<InputBasicInfo> list = new List<InputBasicInfo>();
             list = _obs.GetInputList();
@@ -356,10 +361,27 @@ namespace SiRISApp.Services
             }
         }
 
+        public void SetVolumeValue(string inputName, float inputVolume)
+        {
+            if(State == OBS_STATE.CONNECTED || State == OBS_STATE.STREAMING)
+            {
+                float myVolume1 = _obs.GetInputVolume(inputName).VolumeMul;
+                float myVolume = inputVolume / 100;
+                _obs.SetInputVolume(inputName, myVolume);
+            }
 
+        }
 
-
-
+        public float GetVolumeValue(string inputName)
+        {
+            if (State == OBS_STATE.CONNECTED)
+            {
+                float myVolume = _obs.GetInputVolume(inputName).VolumeMul;
+                return myVolume * 100;
+            }
+            
+            return 0;
+        }
 
         private void ConnectObs()
         {
@@ -380,7 +402,6 @@ namespace SiRISApp.Services
                 });
             }
         }
-
 
         private void OnConnected(object? sender, EventArgs e)
         {
@@ -412,7 +433,6 @@ namespace SiRISApp.Services
                 });
             }
         }
-
 
         private void OnStreamStateChanged(object? sender, StreamStateChangedEventArgs args)
         {

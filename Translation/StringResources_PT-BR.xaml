@@ -61,7 +61,7 @@
     <system:String x:Key="phase">Fase</system:String>
 
     <!--R-->
-    <system:String x:Key="record">grava&#231;&#227;o</system:String>
+    <system:String x:Key="record">Grava&#231;&#227;o</system:String>
     <system:String x:Key="liveClass">Aula ao vivo</system:String>
     <system:String x:Key="registration">Matr&#237;cula</system:String>
     <system:String x:Key="restartTransmission">Retomar transmiss&#227;o</system:String>

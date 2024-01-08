@@ -181,9 +181,6 @@ namespace SiRISApp.ViewModel.SiRIS
         private bool buttons = false;
         private bool loading = false;
 
-        public EventHandler? CloseWindowEventHandler;
-
-
         public MessageViewModel()
         {
 
@@ -232,25 +229,6 @@ namespace SiRISApp.ViewModel.SiRIS
             else Text = message.Text;
         }
 
-
-        public void RunStatusMessage()
-        {
-            if (!buttons)
-            {
-                int charCount = Text.Length;
-                int timePerChar = charCount * 50;
-                int sleepTime = (timePerChar) / 100;
-                if (sleepTime < 50) { sleepTime = 50; }
-                while (StatusBarValue < 100)
-                {
-                    StatusBarValue++;
-                    Thread.Sleep(sleepTime);
-                }
-
-            }
-
-        }
-
         public void StepProgressBar()
         {
             if (loading)
@@ -259,9 +237,6 @@ namespace SiRISApp.ViewModel.SiRIS
                 ProgressBarValue += stepValue;
                 Position += 1;
                 ProgressText = $"{Position}/{Maximum}";
-
-                /*  if(progressBarCalcValue >= 100)
-                      CloseWindowEventHandler?.Invoke(this, EventArgs.Empty);*/
             }
         }
 

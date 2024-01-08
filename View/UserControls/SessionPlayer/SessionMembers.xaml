@@ -6,156 +6,100 @@
              xmlns:local="clr-namespace:SiRISApp.View.UserControls.SessionPlayer"
              xmlns:wpf="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
+             xmlns:viewmodel="clr-namespace:SiRISApp.ViewModel"
+             d:DataContext="{d:DesignInstance Type=viewmodel:SiRISViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <ListBox Grid.Row="2"
-             Background="#00000000"
-             ItemsSource="{Binding SessionPlayerViewModel.SessionMembersViewModel.Cells}">
-        <ListBox.ItemContainerStyle>
-            <Style TargetType="{x:Type ListBoxItem}">
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="Margin" Value="0"/>
-            </Style>
-        </ListBox.ItemContainerStyle>
-        <ListBox.ItemsPanel>
-            <ItemsPanelTemplate>
-                <WrapPanel IsItemsHost="True" />
-            </ItemsPanelTemplate>
-        </ListBox.ItemsPanel>
-        <ListBox.ItemTemplate>
-            <DataTemplate>
-                <ListBoxItem>
-                    <Border CornerRadius="30"
-                            Background="#282725"
-                            BorderBrush="LightYellow"
-                            BorderThickness="2">
-                        <materialDesign:Flipper materialDesign:ElevationAssist.Elevation="Dp0">
-                            <materialDesign:Flipper.FrontContent>
-                                <Grid Width="300"
-                                      Height="256"
-                                      Background="Transparent">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="60" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition Width="60"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock x:Name="Name"
-                                                   Grid.Row="0"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
-                                                   FontSize="24"
-                                                   Foreground="White"
-                                                   FontStyle="Italic"
-                                                   FontWeight="Bold"
-                                                   Text="{Binding Name}"/>
-                                        <Button Grid.Row="0"
-                                                Grid.Column="1" 
-                                                Background="Transparent"
-                                                BorderBrush="Transparent"
-                                                Command="{x:Static materialDesign:Flipper.FlipCommand}">
-                                            <materialDesign:PackIcon Kind="MonitorEye"/>
-                                        </Button>
-                                        <Button Grid.Row="0"
-                                                Grid.Column="2" 
-                                                Background="Transparent"
-                                                BorderBrush="Transparent"
-                                                Command="{x:Static materialDesign:Flipper.FlipCommand}">
-                                            <materialDesign:PackIcon Kind="Hand"/>
-                                        </Button>
-                                        <Button Grid.Row="0"
-                                                Grid.Column="3" 
-                                                Background="Transparent"
-                                                BorderBrush="Transparent"
-                                                Command="{x:Static materialDesign:Flipper.FlipCommand}">
-                                            <materialDesign:PackIcon Kind="Videocam"/>
-                                        </Button>
-                                    </Grid>
-                                    <ListView Grid.Row="2"
-                                              HorizontalContentAlignment="Stretch"
-                                              ItemsSource="{Binding UsersInsideSession}">
-                                        <ListView.ItemContainerStyle>
-                                            <Style TargetType="{x:Type ListViewItem}">
-                                                <Setter Property="Focusable" Value="False"/>
-                                            </Style>
-                                        </ListView.ItemContainerStyle>
-                                        <ListView.ItemTemplate>
-                                            <DataTemplate>
-                                                <ListViewItem>
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*"/>
-                                                            <ColumnDefinition Width="*"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <TextBlock Grid.Row="0"
-                                                                   Grid.Column="0"
-                                                                   FontSize="18"
-                                                                   Foreground="White"
-                                                                   FontStyle="Oblique"
-                                                                   Text="{Binding Nome}"/>
-                                                        <Button Grid.Row="0"
-                                                                Grid.Column="1"
-                                                                HorizontalAlignment="Right"
-                                                                Background="Transparent"
-                                                                BorderBrush="Transparent"
-                                                                Foreground="Crimson">
-                                                            <materialDesign:PackIcon Kind="WindowClose"/>
-                                                        </Button>
-                                                    </Grid>
-                                                </ListViewItem>
-                                            </DataTemplate>
-                                        </ListView.ItemTemplate>
-                                    </ListView>
-                                </Grid>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!--MENU-->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0"
+                   VerticalContentAlignment="Center"
+                   Margin="30 0 30 0"                      
+                   FontSize="24"
+                   FontWeight="Bold"
+                   FontStyle="Italic"
+                   Foreground="White"
+                   Content="Membros"/>
+            <Label Grid.Column="1"
+                   VerticalContentAlignment="Center"
+                   Margin="30 0 30 0"                      
+                   FontSize="24"
+                   FontWeight="Bold"
+                   FontStyle="Italic"
+                   Foreground="White"
+                   Content="Adicionar novo membro:"/>
+            <CheckBox Grid.Column="2"
+                      Margin="20 0 0 0" 
+                      FontSize="18"
+                      Foreground="White"
+                      materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                      materialDesign:ThemeAssist.Theme="Dark"
+                      IsChecked="{Binding SessionPlayerViewModel.SessionMembersViewModel.SearchByName}"
+                      Content="{DynamicResource name}" />
+            <CheckBox Grid.Column="3"
+                      Margin="20 0 0 0" 
+                      FontSize="18"
+                      Foreground="White"
+                      materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                      materialDesign:ThemeAssist.Theme="Dark"
+                      IsChecked="{Binding SessionPlayerViewModel.SessionMembersViewModel.SearchByRegistration}"
+                      Content="{DynamicResource registration}" />
+            <TextBox  Grid.Column="4"
+                      Margin="20 0 20 0"     
+                      FontSize="24"
+                      VerticalAlignment="Bottom"
+                      Foreground="White" 
+                      Background="{x:Null}"
+                      BorderBrush="White"
+                      Text="{Binding SessionPlayerViewModel.SessionMembersViewModel.NewUserText}">
+            </TextBox>
+            <Button Grid.Column="5"
+                    HorizontalAlignment="Right"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}"
+                    Panel.ZIndex="999"
+                    Command="{Binding SessionPlayerViewModel.SessionMembersViewModel.AddUserToSessionCommand}">
+                <materialDesign:PackIcon Width="25" Height="25" Kind="Add"/>
+            </Button>
+        </Grid>
+        <!--LIST OF MEMBERS-->
+        <ListBox Grid.Row="1"
+                 Background="#00000000"
+                 ItemsSource="{Binding SessionPlayerViewModel.SessionMembersViewModel.Cells}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel IsItemsHost="True" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <ListBoxItem>
+                        <local:Cell/>
+                    </ListBoxItem>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
-                            </materialDesign:Flipper.FrontContent>
-                            <materialDesign:Flipper.BackContent>
-                                <materialDesign:ColorZone Background="#af282725"
-                                                          CornerRadius="30"
-                                                          Padding="0">
-                                    <Grid Width="300"
-                                          Height="256"
-                                          Background="Transparent">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="60" />
-                                            <RowDefinition Height="*" />
-                                        </Grid.RowDefinitions>
-                                        <Grid Grid.Row="0">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="60"/>
-                                                <ColumnDefinition Width="60"/>
-                                                <ColumnDefinition Width="60"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock x:Name="NameBack"
-                                                       FontSize="24"
-                                                       HorizontalAlignment="Center"
-                                                       VerticalAlignment="Center"
-                                                       Text="{Binding Name}"
-                                                       Background="#00000000">
-                                            </TextBlock>
-                                            <Button Grid.Column="3" 
-                                                    Background="Transparent"
-                                                    BorderBrush="Transparent"
-                                                    Command="{x:Static materialDesign:Flipper.FlipCommand}">
-                                                <materialDesign:PackIcon Kind="FormatListBulleted"/>
-                                            </Button>
-                                        </Grid>
-                                        <wpf:VlcControl Tag="{Binding PlayerName}"
-                                                        Grid.Row="1"/>
-                                    </Grid>
-                                </materialDesign:ColorZone>
-                            </materialDesign:Flipper.BackContent>
-                        </materialDesign:Flipper>
-                    </Border>
-                </ListBoxItem>
-            </DataTemplate>
-        </ListBox.ItemTemplate>
-    </ListBox>
+    </Grid>
+
 </UserControl>

@@ -21,16 +21,16 @@ namespace SiRISApp.View
             InitializeComponent();
         }
 
-        ApplicationsMenu? applicationMenu = null;
+       // ApplicationsMenu? applicationMenu = null;
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
-            if (SessionPlayer.applicationMenu != null)
+            /*if (SessionPlayer.applicationMenu != null)
             {
                 SessionPlayer.applicationMenu.Close();
                 SessionPlayer.applicationMenu = null;
-            }
+            }*/
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -41,6 +41,8 @@ namespace SiRISApp.View
                 OBSService.Instance.Stop();
                 if (viewModel.SessionPlayerViewModel.Status)
                     viewModel.SessionPlayerViewModel.PauseSession();
+
+                viewModel.run = false;
 
                 viewModel.SessionPlayerViewModel.SessionPreviewViewModel.StopPip();
             }
@@ -71,7 +73,7 @@ namespace SiRISApp.View
 
         private void Window_StateChanged(object sender, EventArgs e)
         {
-            if (Resources["vm"] != null)
+           /* if (Resources["vm"] != null)
             {
                 SiRISViewModel viewModel = (SiRISViewModel)Resources["vm"];
                 if (viewModel.SessionPlayerViewModel.SessionRunning)
@@ -93,7 +95,7 @@ namespace SiRISApp.View
                         }
                     }
                 }
-            }
+            }*/
         }
     }
 }

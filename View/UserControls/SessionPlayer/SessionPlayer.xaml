@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:SiRISApp.View.UserControls.SessionPlayer"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:wpf="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf" 
+             xmlns:wpf="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf" xmlns:viewmodel="clr-namespace:SiRISApp.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:SiRISViewModel}"
              mc:Ignorable="d" 
              IsVisibleChanged="UserControl_IsVisibleChanged">
     <UserControl.Resources>
@@ -22,9 +22,10 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="9*"/>
-            <RowDefinition Height="300"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="350"/>
         </Grid.RowDefinitions>
 
 
@@ -48,19 +49,20 @@
                       VerticalAlignment="Bottom" 
                       Margin="10">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="225"/>
-                        <ColumnDefinition Width="225"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
+                    <!--PAUSE-->
                     <Button Grid.Column="0"
-                 
                             Background="Transparent"
                             BorderBrush="Transparent"
-                            Command="{Binding SessionPlayerViewModel.TogglePauseCommand}">
+                            Command="{Binding SessionPlayerViewModel.TogglePauseCommand}"
+                            Visibility="{Binding SessionPlayerViewModel.RecordedSessionVisibility}">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon VerticalAlignment="Center" 
@@ -72,6 +74,7 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
+                    <!--STOP/PLAY-->
                     <Button Grid.Column="1"
                             Background="Transparent"
                             BorderBrush="Transparent">
@@ -90,9 +93,12 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </Button>
+                    <!--RECORD-->
                     <Button Grid.Column="2"
                             Background="Transparent"
-                            BorderBrush="Transparent">
+                            BorderBrush="Transparent"
+                            Command="{Binding SessionPlayerViewModel.SwitchToRecordedCommand}"
+                            Visibility="{Binding SessionPlayerViewModel.RecordedSessionVisibility}">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon VerticalAlignment="Center" 
                                                      Margin="0 3 20 2"
@@ -102,10 +108,12 @@
                                        Text="{DynamicResource record}"/>
                         </StackPanel>
                     </Button>
+                    <!--FILE-->
                     <Button Grid.Column="3"
                             Background="Transparent"
                             BorderBrush="Transparent"
-                            Click="FolderButton_Click">
+                            Click="FolderButton_Click"
+                            Visibility="{Binding SessionPlayerViewModel.RecordedSessionVisibility}">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon VerticalAlignment="Center" 
                                                      Margin="0 3 20 2"
@@ -115,20 +123,21 @@
                                        Text="{DynamicResource searchFile}"/>
                         </StackPanel>
                     </Button>
+                    <!--PIP-->
                     <Button Grid.Column="4"
                             Background="Transparent"
                             BorderBrush="Transparent"
-                            Click="FolderButton_Click">
+                            Command="{Binding SessionPlayerViewModel.EnablePipCommand}">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon VerticalAlignment="Center" 
                                                      Margin="0 3 20 2"
                                                      Foreground="Black"
                                                      Kind="Webcam"/>
                             <TextBlock Foreground="Black" 
-                                       Text="{DynamicResource enableCamera}"/>
+                                       Text="{Binding SessionPlayerViewModel.EnableCameraText}"/>
                         </StackPanel>
                     </Button>
-
+                    <!--AUDIO PC-->
                     <Button Grid.Column="5"
                             x:Name="ComputerAudioButton"
                             Background="Transparent"
@@ -161,10 +170,7 @@
                                                 materialDesign:SliderAssist.OnlyShowFocusVisualWhileDragging="True"
                                                 Maximum="100"
                                                 Minimum="0"
-                                                TickFrequency="10"
-                                                TickPlacement="BottomRight"
-                                                Value="60"
-                                                Style="{StaticResource MaterialDesignDiscreteSlider}"/>
+                                                Value="{Binding SessionPlayerViewModel.ComputerVolume}"/>
                                     </StackPanel>
       
                                 </Border>
@@ -172,55 +178,69 @@
                         </StackPanel>
                     </Button>
 
-    
+  
 
-                    <!--
-                    <Button Grid.Column="5"
+                    <!--AUDIO MICROPHONE-->
+                    <Button Grid.Column="6"
+                            x:Name="MicrophoneAudioButton"
                             Background="Transparent"
                             BorderBrush="Transparent"
-                            Click="FolderButton_Click">
+                            Click="ShowMicrophoneVolume_Click">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon VerticalAlignment="Center" 
                                                      Margin="0 3 20 2"
                                                      Foreground="Black"
                                                      Kind="VolumeHigh"/>
                             <TextBlock Foreground="Black" 
-                                       Text="{DynamicResource computerAudio}"/>
-                        </StackPanel>
-                    </Button>
-                    
-                    -->
-        
-                    <Button Grid.Column="6"
-                            Background="Transparent"
-                            BorderBrush="Transparent"
-                            Click="FolderButton_Click">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon VerticalAlignment="Center" 
-                                                     Margin="0 3 20 2"
-                                                     Foreground="Black"
-                                                     Kind="Microphone"/>
-                            <TextBlock Foreground="Black" 
                                        Text="{DynamicResource microphoneAudio}"/>
+                            <Popup x:Name="MicrophoneAudioPopup" 
+                                   AllowsTransparency="True"
+                                   PopupAnimation="Scroll"
+                                   IsOpen="False" 
+                                   PlacementTarget="{Binding ElementName=MicrophoneAudioButton}">
+                                <Border BorderThickness="1"
+                                        CornerRadius="20"
+                                        Padding="10 25 10 25"
+                                        Background="White">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon VerticalAlignment="Center" 
+                                                                 Margin="10 0 0 5"
+                                                                 Foreground="Black"
+                                                                 Kind="VolumeHigh"/>
+                                        <Slider Width="210"
+                                                Margin="10"
+                                                Background="White"
+                                                materialDesign:SliderAssist.OnlyShowFocusVisualWhileDragging="True"
+                                                Maximum="100"
+                                                Minimum="0"
+                                                Value="{Binding SessionPlayerViewModel.MicrophoneVolume}"/>
+                                    </StackPanel>
+
+                                </Border>
+                            </Popup>
                         </StackPanel>
                     </Button>
                 </Grid>
             </Border>
 
         </Border>
-      
-        
         <!--Player preview and player-->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <local:SessionPreviewMenu Grid.Column="0"/>
+            <local:SessionPreviewMenu Grid.Column="0"              
+                                      Visibility="{Binding SessionPlayerViewModel.RecordedSessionVisibility}"/>
             <local:Player Grid.Column="1"/>
         </Grid>
         <!--Students menu-->
-        <local:SessionMembers Grid.Row="2"/>
+        <Rectangle Grid.Row="2"  HorizontalAlignment="Stretch" Height="3" Margin="20 0 20 0" Stroke="LightYellow">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="LightYellow" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <local:SessionMembers Grid.Row="3"/>
    
     </Grid>
 </UserControl>

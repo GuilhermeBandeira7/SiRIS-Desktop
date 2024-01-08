@@ -37,18 +37,10 @@ namespace SiRISApp.Services
 
         #endregion
 
-        MessageViewModel viewModel = new();
         MessageModel messageModel = new();
-        Message message = new();
 
-        bool step = false;
-
-        public void Init()
-        {
-            viewModel = new(messageModel);
-            message = new();
-            message.SetContext(viewModel);
-        }
+        MessageViewModel ViewModel { get; set; }   
+        Message Message { get; set; }
 
         public void Show(string type = "success", string text = "sucess", bool buttons = false, bool loading = false, int min = 0, int max = 100, string image = "")
         {
@@ -84,6 +76,7 @@ namespace SiRISApp.Services
 
         public bool ShowDialog(string type = "success", string text = "sucess", bool buttons = false, bool loading = false, int min = 0, int max = 100, string image = "")
         {
+
             messageModel = new()
             {
                 Type = type,
@@ -95,12 +88,15 @@ namespace SiRISApp.Services
                 Image = image
             };
 
-            Init();
+            ViewModel = new(messageModel);
+            Message = new();
+            Message.SetContext(ViewModel);
+
             bool resultValue = false;
 
             if (buttons)
             {
-                bool? result = message.ShowDialog();
+                bool? result = Message.ShowDialog();
                 if (result == null)
                     resultValue = false;
                 else
@@ -115,25 +111,25 @@ namespace SiRISApp.Services
                     int sleepTime = (timePerChar) / 100;
                     if (sleepTime < 20) { sleepTime = 20; }
 
-                    while (viewModel.StatusBarValue < 100)
+                    while (ViewModel.StatusBarValue < 100)
                     {
-                        message.Dispatcher.Invoke((Action)(() =>
+                        Message.Dispatcher.Invoke((Action)(() =>
                         {
-                            viewModel.StatusBarValue++;
+                            ViewModel.StatusBarValue++;
                         }));
 
                         Thread.Sleep(sleepTime);
                     }
 
-                    message.Dispatcher.Invoke((Action)(() =>
+                    Message.Dispatcher.Invoke((Action)(() =>
                     {
-                        message.DialogResult = true;
-                        message.Close();
+                        Message.DialogResult = true;
+                        Message.Close();
                     }));
 
                 });
 
-                bool? result = message.ShowDialog();
+                bool? result = Message.ShowDialog();
                 if (result == null)
                     resultValue = false;
                 else
@@ -145,8 +141,11 @@ namespace SiRISApp.Services
 
         public void RunStatus()
         {
-            Init();
-            message.Show();
+
+            ViewModel = new(messageModel);
+            Message = new();
+            Message.SetContext(ViewModel);
+            Message.Show();
 
             Task.Run(() =>
             {
@@ -155,66 +154,68 @@ namespace SiRISApp.Services
                 int sleepTime = (timePerChar) / 100;
                 if (sleepTime < 20) { sleepTime = 20; }
 
-                while (viewModel.StatusBarValue < 100)
+                while (ViewModel.StatusBarValue < 100)
                 {
-                    message.Dispatcher.Invoke((Action)(() =>
+                    Message.Dispatcher.Invoke((Action)(() =>
                     {
-                        viewModel.StatusBarValue++;
+                        ViewModel.StatusBarValue++;
                     }));
 
                     Thread.Sleep(sleepTime);
                 }
 
-                message.Dispatcher.Invoke((Action)(() =>
+                Message.Dispatcher.Invoke((Action)(() =>
                 {
-                    message.Close();
+                    Message.Close();
                 }));
 
             });
 
-            message.Closed += (sender2, e2) => message.Dispatcher.InvokeShutdown();
+            Message.Closed += (sender2, e2) => Message.Dispatcher.InvokeShutdown();
             System.Windows.Threading.Dispatcher.Run();
-            viewModel.RunStatusMessage();
-            message.Close();
+          
+            if (Message.IsActive)
+                Message.Close();
         }
 
         public void RunProgress()
         {
-            Init();
-            message.Show();
-            step = false;
-            viewModel.ProgressText = $"{viewModel.Minimum}/{viewModel.Maximum}";
+            ViewModel = new(messageModel);
+            Message = new();
+            Message.SetContext(ViewModel);
+            Message.Show();
+            ViewModel.ProgressText = $"{ViewModel.Minimum}/{ViewModel.Maximum}";
 
             Task.Run(() =>
             {
-                while (viewModel.ProgressBarValue < 100)
+                while (ViewModel.ProgressBarValue < 100)
                 {
                     Thread.Sleep(100);
                 }
 
-                message.Dispatcher.Invoke((Action)(() =>
+                Message.Dispatcher.Invoke((Action)(() =>
                 {
-                    message.Close();
+                    Message.Close();
                 }));
-
             });
 
-            message.Closed += (sender2, e2) => message.Dispatcher.InvokeShutdown();
+            Message.Closed += (sender2, e2) => Message.Dispatcher.InvokeShutdown();
             System.Windows.Threading.Dispatcher.Run();
         }
 
         public void Step(string text = "", string image = "")
         {
             if (text != string.Empty)
-                viewModel.Text = text;
+                ViewModel.Text = text;
 
             if (image != string.Empty)
-                viewModel.Image = image;
+                ViewModel.Image = image;
 
-            message.Dispatcher.Invoke((Action)(() =>
+            Message.Dispatcher.Invoke((Action)(() =>
             {
-                viewModel.StepProgressBar();
+                ViewModel.StepProgressBar();
             }));
+
             Thread.Sleep(500);
         }
     }

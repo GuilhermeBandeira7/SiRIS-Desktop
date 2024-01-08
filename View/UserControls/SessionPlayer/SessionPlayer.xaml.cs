@@ -22,10 +22,6 @@ namespace SiRISApp.View.UserControls.SessionPlayer
             InitializeComponent();
         }
 
-        public ApplicationsMenu? applicationMenu = null;
-        public bool ShowComputerAudio = true;
-
-
         private void FolderButton_Click(object sender, RoutedEventArgs e)
         {
             FtpService.Instance.ShowFileManagement();
@@ -36,9 +32,14 @@ namespace SiRISApp.View.UserControls.SessionPlayer
             ComputedAudioPopup.IsOpen = !ComputedAudioPopup.IsOpen;
         }
 
+        private void ShowMicrophoneVolume_Click(object sender, RoutedEventArgs e)
+        {
+            MicrophoneAudioPopup.IsOpen = !MicrophoneAudioPopup.IsOpen;
+        }
+
         private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if((bool)e.NewValue)
+         /*   if((bool)e.NewValue)
             {
                 if(applicationMenu == null)
                 {
@@ -53,7 +54,7 @@ namespace SiRISApp.View.UserControls.SessionPlayer
                     applicationMenu.Close();
                     applicationMenu = null;
                 }
-            }
+            }*/
         }
     }
 }

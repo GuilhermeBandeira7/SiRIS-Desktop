@@ -68,18 +68,8 @@ namespace SiRISApp.Services
 
         public void ShowFileManagement()
         {
-
-            fileManagement = new FileManagement();
+            fileManagement = new();
             fileManagement.Show();
-            /*Thread t = new Thread(() =>
-            {
-                fileManagement = new FileManagement();
-                fileManagement.Show();
-            });
-            t.SetApartmentState(ApartmentState.STA);*/
-
-            //t.Start();
-
         }
 
         #region FOLDERS

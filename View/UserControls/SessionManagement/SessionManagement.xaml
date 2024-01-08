@@ -73,9 +73,6 @@
                             </Button>
                         </StackPanel>
 
-                        
-
-
 
                         <!--LIST OF SESSIONS-->
                         <ListBox Grid.Row="1"

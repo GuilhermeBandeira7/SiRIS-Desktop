@@ -181,6 +181,7 @@ namespace SiRISApp.ViewModel.FileManagement
         public DownloadFilesCommand DownloadFilesCommand { get; set; }
         public RunFilesCommand RunFilesCommand { get; set; }
 
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public FileManagementViewModel()

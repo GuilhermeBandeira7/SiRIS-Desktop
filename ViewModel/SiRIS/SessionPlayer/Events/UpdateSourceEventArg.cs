@@ -9,5 +9,6 @@ namespace SiRISApp.ViewModel.SessionPlayer.Events
     class UpdateSourceEventArg : EventArgs 
     {
         public string Source { get; set; } = string.Empty;
+        public bool IsEnabled { get; internal set; }
     }
 }

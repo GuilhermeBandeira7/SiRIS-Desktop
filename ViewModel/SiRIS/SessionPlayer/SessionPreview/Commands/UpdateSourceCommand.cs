@@ -1,4 +1,5 @@
-﻿using SiRISApp.ViewModel.SessionPlayer.Events;
+﻿using SiRISApp.Services;
+using SiRISApp.ViewModel.SessionPlayer.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,10 @@ namespace SiRISApp.ViewModel.SessionPlayer.Commands
 
         public void Execute(object? parameter)
         {
-            _viewModel.UpdateSourceEvent?.Invoke(this, new UpdateSourceEventArg() { Source = _viewModel.ObsSource } );
+            if (_viewModel.ObsSource == "Camera Principal" && OBSService.Instance.isPipActive)
+                MessageService.Instance.Show("error", "A camera ja está ativada no modo compartilhado, por favor desativa a câmera para poder usar essa opção");
+            else
+                _viewModel.UpdateSourceEvent?.Invoke(this, new UpdateSourceEventArg() { Source = _viewModel.ObsSource });
         }
     }
 }
